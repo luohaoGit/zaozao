@@ -13,7 +13,7 @@
 
     <!-- 静态资源 -->
     <!--<mvc:resources mapping="" location="" />-->
-    <context:property-placeholder location="classpath:config.properties"/>
+    <context:property-placeholder location="classpath:*.properties"/>
 
     <bean id="exceptionResolver" class="com.zaozao.exception.CustomSimpleMappingExceptionResolver">
         <property name="defaultErrorView" value="error/error" />

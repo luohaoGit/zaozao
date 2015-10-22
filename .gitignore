@@ -1,6 +1,7 @@
 .classpath
 /target
-config.properties
+jdbc.properties
+weixin.properties
 init.sql
 .project
 *.iml
