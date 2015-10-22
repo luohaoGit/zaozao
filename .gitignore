@@ -1,7 +1,7 @@
 .classpath
 /target
-/src/test
-/src/resources/config.properties
+config.properties
+init.sql
 .project
 *.iml
 *.apk
