@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zaozao.dao.UserDao">
+
+    <resultMap id="userResultMap" type="User">
+        <id property="id" column="id" javaType="string" />
+        <result property="name" column="name" javaType="string" />
+        <result property="username" column="username" javaType="string" />
+        <result property="password" column="password" javaType="string" />
+        <result property="nickName" column="nickname" javaType="string" />
+        <result property="gender" column="gender" javaType="string" />
+        <result property="telephone" column="telephone" javaType="string" />
+        <result property="birthday" column="birthday" javaType="java.sql.Date" />
+        <result property="wxNumber" column="wxnumber" javaType="string" />
+        <result property="address" column="address" javaType="string" />
+        <result property="idNumber" column="idnumber" javaType="string" />
+        <result property="registerTime" column="registertime" javaType="java.sql.Date" />
+        <result property="deleted" column="deleted" javaType="boolean" />
+        <result property="portrait" column="portrait" javaType="String" />
+        <result property="qrCode" column="qrcode" javaType="String" />
+        <result property="openId" column="openid" javaType="String" />
+        <result property="bundling" column="bundling" javaType="boolean" />
+        <collection property="cars" ofType="com.zaozao.model.po.Car" column="userid">
+            <id column="cid" property="id"/>
+            <result column="brand" property="brand"/>
+            <result column="model" property="model"/>
+            <result column="color" property="color"/>
+        </collection>
+    </resultMap>
+            
+    <sql id="userColumn">
+        id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait, qrcode,
+        openid, bundling
+    </sql>
+    
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_user;
+    </select>
+    
+    <insert id="insert" parameterType="User">
+        INSERT INTO t_user(
+        <include refid="userColumn" />
+        ) VALUES
+        (#{id}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
+        #{registerTime}, #{deleted}, #{portrait}, #{qrCode}, #{openId}, #{bundling});
+    </insert>
+
+    <update id="update" parameterType="User">
+        UPDATE t_user SET
+        password = #{password},
+        name = #{name},
+        username = #{username},
+        nickname = #{nickName},
+        gender = #{gender},
+        telephone = #{telephone},
+        birthday = #{birthday},
+        wxnumber = #{wxNumber},
+        address = #{address},
+        idnumber = #{idNumber},
+        registertime = #{registerTime},
+        deleted = #{deleted},
+        portrait = #{portrait},
+        qrcode = #{qrCode},
+        openid = #{openId},
+        bundling = #{bundling}
+        WHERE id = #{id};
+    </update>
+
+    <update id="bindWx" parameterType="User">
+        UPDATE t_user SET
+        openid = #{openId},
+        bundling = 1
+        WHERE id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM t_user WHERE id = #{id}
+    </delete>
+
+    <select id="searchById" resultMap="userResultMap" parameterType="String">
+        SELECT u.*, c.id cid, c.brand, c.model, c.color
+        from t_user u, t_car c
+        WHERE u.id=c.userid and u.id = #{id};
+    </select>
+
+    <select id="checkByTel" resultMap="int" parameterType="String">
+        SELECT count(*)
+        from t_user u
+        WHERE u.telephone = #{telephone};
+    </select>
+
+    <select id="findByTel" resultMap="User" parameterType="String">
+        SELECT <include refid="userColumn" />
+        from t_user u
+        WHERE u.telephone = #{telephone};
+    </select>
+</mapper>

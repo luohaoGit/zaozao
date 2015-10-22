@@ -1,0 +1,20 @@
+.classpath
+/target
+/src/test
+/src/resources/config.properties
+.project
+*.iml
+*.apk
+*.ap_
+*.dex
+*.class
+gen/
+.settings
+.externalToolBuilders
+.tomcatplugin
+work/
+proguard/
+*.ipr
+*.iws
+.idea
+h origin
