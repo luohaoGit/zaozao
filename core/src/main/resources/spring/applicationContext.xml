@@ -15,6 +15,16 @@
     <!--<mvc:resources mapping="" location="" />-->
     <context:property-placeholder location="classpath:*.properties"/>
 
+    <bean class="com.zaozao.weixin.bean.WXContext">
+        <property name="appId" value="${AppID}"/>
+        <property name="secret" value="${AppSecret}"/>
+        <property name="token" value=""/>
+        <property name="redirectUri" value=""/>
+        <property name="partnerId" value=""/>
+        <property name="partnerKey" value=""/>
+    </bean>
+
+
     <bean id="exceptionResolver" class="com.zaozao.exception.CustomSimpleMappingExceptionResolver">
         <property name="defaultErrorView" value="error/error" />
         <property name="exceptionAttribute" value="exception" />

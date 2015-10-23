@@ -5,7 +5,7 @@ import com.zaozao.model.vo.MessageVO;
 /**
  * Created by luohao on 2015/10/22.
  */
-public interface WXService {
+public interface WeixinService {
 
     void receive(String xml);
 
