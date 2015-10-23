@@ -9,9 +9,7 @@
     <context-param>  
         <param-name>contextConfigLocation</param-name>  
         <param-value>
-            classpath:spring/applicationContext.xml,
-            classpath:spring/spring-mybatis.xml,
-            classpath:spring/spring-quarts.xml
+            classpath:spring/applicationContext.xml
         </param-value>
     </context-param>  
   
@@ -35,7 +33,7 @@
   
     <!-- Spring监听 -->  
     <listener>  
-        <listener-class>com.zaozao.listener.ContextConfigListner</listener-class>
+        <listener-class>com.zaozao.listener.ZaozaoContextLoaderListner</listener-class>
     </listener>
 
     <!-- shiro 安全过滤器 -->

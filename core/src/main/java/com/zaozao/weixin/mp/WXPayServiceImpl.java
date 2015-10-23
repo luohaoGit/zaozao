@@ -31,6 +31,8 @@ import java.util.TreeMap;
 @Service
 public class WXPayServiceImpl extends WXServiceAdapter implements WXPayService {
 
+    public WXPayServiceImpl(){}
+
     public WXPayServiceImpl(WXContext context, WXRequestErrorHandler errorHandler) {
         super(context, errorHandler);
     }

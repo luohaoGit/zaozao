@@ -1,7 +1,9 @@
 package com.zaozao.weixin.kit.http;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qianmi.weixin.exception.WXException;
+import com.zaozao.weixin.exception.WXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import java.util.Map;
  * date: 2015/7/30
  */
 public class WXRequest extends Request {
+
+    protected static Logger logger = LoggerFactory.getLogger(WXRequest.class);
 
     private WXRequestErrorHandler errorHandler;
 

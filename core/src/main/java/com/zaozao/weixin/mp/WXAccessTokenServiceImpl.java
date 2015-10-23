@@ -7,7 +7,10 @@ import com.zaozao.weixin.bean.back.WXAccessToken;
 import com.zaozao.weixin.exception.WXException;
 import com.zaozao.weixin.kit.http.WXRequest;
 import com.zaozao.weixin.kit.http.WXRequestErrorHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,13 +21,18 @@ import java.util.concurrent.locks.ReentrantLock;
  * author: Tkk
  * date: 2015/8/4
  */
-@Service
+@Service("wxAccessTokenService")
+@Lazy(false)
 public class WXAccessTokenServiceImpl extends WXServiceAdapter implements WXAccessTokenService, WXRequestErrorHandler, InitializingBean {
+
+    protected static Logger logger = LoggerFactory.getLogger(WXRequest.class);
 
     /**
      * 刷新锁
      */
     private Lock refreshTokenLock = new ReentrantLock();
+
+    public WXAccessTokenServiceImpl(){}
 
     /**
      *
@@ -93,5 +101,6 @@ public class WXAccessTokenServiceImpl extends WXServiceAdapter implements WXAcce
         super.afterPropertiesSet();
         WXAccessToken accessToken = getAccessToken();
         context.setAccessToken(accessToken);
+        logger.info("**************" + context.getAccessToken().getAccessToken());
     }
 }

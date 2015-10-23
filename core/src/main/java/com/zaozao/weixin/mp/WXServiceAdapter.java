@@ -23,10 +23,6 @@ public class WXServiceAdapter implements InitializingBean {
      */
     protected WXRequest request;
 
-    /**
-     *
-     */
-    @Autowired
     protected WXRequestErrorHandler errorHandler;
 
     /**

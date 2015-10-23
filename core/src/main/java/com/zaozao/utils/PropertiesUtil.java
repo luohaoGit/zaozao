@@ -17,7 +17,7 @@ public class PropertiesUtil {
 
     protected static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 
-    private static String filePath = "private.properties";
+    private static String filePath = "config/private.properties";
     private static Map<String, String> configMap = new HashMap<String, String>();
     private static String accessToken;
 

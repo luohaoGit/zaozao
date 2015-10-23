@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * author: Tkk
  * date: 2015/7/30
  */
-@Service
+//@Service
 public class WXServiceImpl implements WXService {
 
     @Autowired
