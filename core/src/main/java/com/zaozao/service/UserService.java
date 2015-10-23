@@ -19,4 +19,5 @@ public interface UserService {
     void login(UserVO userVO);
 
     boolean checkByTel(String telephone);
+
 }

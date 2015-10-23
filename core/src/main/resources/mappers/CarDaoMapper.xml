@@ -23,6 +23,8 @@
             <result column="wxnumber" property="wxNumber"/>
             <result column="portrait" property="portrait"/>
             <result column="qrcode" property="qrCode"/>
+            <result column="bundling" property="bundling"/>
+            <result column="openid" property="openId"/>
         </association>
     </resultMap>
             
@@ -74,5 +76,12 @@
         c.*, u.id uid, u.name, u.wxnumber, u.portrait, u.qrcode
         from t_car c, t_user u
         WHERE c.userid=u.id and u.id = #{id};
+    </select>
+
+    <select id="serchByCarNumber" resultMap="carResultMap" parameterType="String">
+        SELECT
+        c.*, u.id uid, u.name, u.wxnumber, u.portrait, u.qrcode, u.bundling, u.openid
+        from t_car c, t_user u
+        WHERE c.userid=u.id and c.carnumber = #{carNumber};
     </select>
 </mapper>

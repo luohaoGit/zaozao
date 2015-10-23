@@ -30,13 +30,13 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value="login", method = RequestMethod.GET)
+	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String loginView(){
 
 		return "";
 	}
 
-	@RequestMapping(value="login", method = RequestMethod.POST)
+	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String login(@Valid @RequestBody UserVO userVO, HttpServletRequest request){
 		HttpSession session = request.getSession();
 		String code = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
@@ -47,19 +47,19 @@ public class UserController {
 		return "";
 	}
 
-	@RequestMapping(value="registration", method = RequestMethod.POST)
+	@RequestMapping(value="/registration", method = RequestMethod.POST)
 	public String register(@Valid @RequestBody UserVO userVO, ModelMap model) {
 		userService.register(userVO);
 		return "index";
 	}
 
-	@RequestMapping(value="wx/bind", method = RequestMethod.POST)
+	@RequestMapping(value="/wx/bind", method = RequestMethod.POST)
 	public String bindWX(@Valid @RequestBody UserVO userVO){
 		userService.bindWx(userVO);
 		return null;
 	}
 
-	@RequestMapping(value="captchaImage", method = RequestMethod.GET)
+	@RequestMapping(value="/captchaImage", method = RequestMethod.GET)
 	public String getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 

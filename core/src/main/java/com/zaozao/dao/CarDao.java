@@ -11,4 +11,6 @@ public interface CarDao extends BaseDao<Car> {
 
     Car searchByUserId(String id);
 
+    Car serchByCarNumber(String carNumber);
+
 }
