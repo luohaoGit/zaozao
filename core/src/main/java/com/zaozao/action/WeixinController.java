@@ -34,11 +34,9 @@ public class WeixinController {
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test(ModelMap model){
-        //wxAccessTokenService.getAccessToken(true);
+        wxAccessTokenService.getAccessToken(true);
         logger.info("**************" + wxContext.getAccessToken().getAccessToken());
         model.put("model", wxContext.getAccessToken());
-
-        model.put("model1", ZaozaoContextLoaderListner.getApplicationContext().getBeanDefinitionNames());
         return null;
     }
 

@@ -68,6 +68,7 @@ public class WXAccessTokenServiceImpl extends WXServiceAdapter implements WXAcce
                 now.setTime(now.getTime() + accessToken.getExpiresIn() * 1000);
                 accessToken.setExpireTime(now);
                 context.setAccessToken(accessToken);
+                logger.info("refresh weixin access_token:" + context.getAccessToken().getAccessToken());
             }
         }
         //

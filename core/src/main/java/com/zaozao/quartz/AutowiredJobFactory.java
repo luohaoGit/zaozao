@@ -8,11 +8,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
-import java.util.Map;
+public class AutowiredJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
 
-public class MyJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
-
-    protected static Logger logger = LoggerFactory.getLogger(MyJobFactory.class);
+    protected static Logger logger = LoggerFactory.getLogger(AutowiredJobFactory.class);
 
     private ApplicationContext applicationContext;
 
@@ -26,10 +24,7 @@ public class MyJobFactory extends SpringBeanJobFactory implements ApplicationCon
      */
     @Override
     protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
-        logger.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^createJobInstance");
         Object jobInstance = super.createJobInstance(bundle);
-
-
         applicationContext.getAutowireCapableBeanFactory().autowireBean(jobInstance);
         return jobInstance;
     }

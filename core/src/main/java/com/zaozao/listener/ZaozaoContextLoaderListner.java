@@ -7,6 +7,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.ServletContextEvent;
 
 /**
+ * zaozao 没有用
  * Created by luohao on 2015/10/20.
  */
 public class ZaozaoContextLoaderListner extends ContextLoaderListener {
