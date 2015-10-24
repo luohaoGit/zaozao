@@ -21,4 +21,8 @@ public class ZaozaoContextLoaderListner extends ContextLoaderListener {
     public static Object getBean(String beanName) {
         return applicationContext.getBean(beanName);
     }
+
+    public static ApplicationContext getApplicationContext(){
+        return applicationContext;
+    }
 }

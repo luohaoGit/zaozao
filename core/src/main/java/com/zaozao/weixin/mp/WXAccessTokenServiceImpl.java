@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * author: Tkk
  * date: 2015/8/4
  */
-@Service("wxAccessTokenService")
+@Service
 @Lazy(false)
 public class WXAccessTokenServiceImpl extends WXServiceAdapter implements WXAccessTokenService, WXRequestErrorHandler, InitializingBean {
 

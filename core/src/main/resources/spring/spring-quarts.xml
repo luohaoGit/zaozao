@@ -10,7 +10,8 @@
 
     <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="jobDetail"></property>
-        <property name="cronExpression" value="0 0 0/1 * * ?"></property>
+        <!--<property name="cronExpression" value="0 0 0/1 * * ?"></property>-->
+        <property name="cronExpression" value="0 0/29 * * * ?"></property>
     </bean>
 
     <bean id="trigger" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -19,5 +20,10 @@
                 <ref bean="cronTriggerBean"/>
             </list>
         </property>
+        <property name="jobFactory">
+            <ref bean="jobFactory"/>
+        </property>
     </bean>
+
+    <bean id="jobFactory" class="com.zaozao.quartz.MyJobFactory" />
 </beans>

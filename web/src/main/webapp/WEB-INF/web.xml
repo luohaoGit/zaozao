@@ -29,10 +29,10 @@
     <filter-mapping>  
         <filter-name>encodingFilter</filter-name>  
         <url-pattern>/*</url-pattern>  
-    </filter-mapping>  
-  
-    <!-- Spring监听 -->  
-    <listener>  
+    </filter-mapping>
+
+    <!-- Spring监听 -->
+    <listener>
         <listener-class>com.zaozao.listener.ZaozaoContextLoaderListner</listener-class>
     </listener>
 
