@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(String id) {
+        return userDao.searchById(id);
+    }
+
+    @Override
     public User findByTel(String telephone) {
         User user = userDao.findByTel(telephone);
         if(user == null){

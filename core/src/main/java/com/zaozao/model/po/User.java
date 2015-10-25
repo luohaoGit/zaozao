@@ -1,14 +1,12 @@
 package com.zaozao.model.po;
 
-import com.zaozao.model.BaseModel;
-
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by luohao on 2015/10/15.
  */
-public class User extends BaseModel {
+public class User extends BasePO {
 
     private String username; //用户名
     private String password; //密码

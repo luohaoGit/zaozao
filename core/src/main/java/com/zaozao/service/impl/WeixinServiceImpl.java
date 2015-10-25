@@ -7,6 +7,8 @@ import com.zaozao.service.CarService;
 import com.zaozao.service.WeixinService;
 import com.zaozao.utils.HttpClientUtil;
 import com.zaozao.utils.PropertiesUtil;
+import com.zaozao.weixin.WXMessageService;
+import com.zaozao.weixin.bean.send.WXTemplateMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class WeixinServiceImpl implements WeixinService {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private WXMessageService wxMessageService;
+
     @Override
     public void receive(String xml) {
 
@@ -27,15 +32,15 @@ public class WeixinServiceImpl implements WeixinService {
     //使用微信模板消息
     @Override
     public void pushTemplateMessage(MessageVO messageVO) {
-        User user = carService.getCarOwner(messageVO.getCarNumber());
-        if(user == null || (user!= null && !user.isBundling())){
-            throw new ZaozaoException("车主未绑定微信");
-        }
-        String toUserOpenId = user.getOpenId();
+        String toUserOpenId = messageVO.getOpenid();
         String templateId = "";
-
-        String sendTemplateUrl = PropertiesUtil.get("send_template_message_url") + "?access_token=" + PropertiesUtil.getAccessToken();
-        String results = HttpClientUtil.httpPost(sendTemplateUrl, null);
+        String url = "";
+        WXTemplateMessage wxTemplateMessage = new WXTemplateMessage();
+        wxTemplateMessage.setToUser(toUserOpenId);
+        wxTemplateMessage.setTemplateId(templateId);
+        wxTemplateMessage.setUrl(url);
+        wxTemplateMessage.addData("first", "有人请求移车", "#173177");
+        wxMessageService.sendTemplateMessage(wxTemplateMessage);
     }
 
 }

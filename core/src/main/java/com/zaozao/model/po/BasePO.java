@@ -1,4 +1,4 @@
-package com.zaozao.model;
+package com.zaozao.model.po;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * Created by luohao on 2015/10/14.
  */
-public class BaseModel implements Serializable{
+public class BasePO implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private String id = UUID.randomUUID().toString();

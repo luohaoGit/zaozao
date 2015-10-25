@@ -1,11 +1,11 @@
-package com.zaozao.model.po;
+package com.zaozao.model.vo;
 
 import java.util.Date;
 
 /**
  * Created by luohao on 2015/10/14.
  */
-public class StuckRecord extends BasePO {
+public class StuckRecordVO extends BaseVO {
     private String stuckUser; //车主
     private String beStuckUser; //苦主
     private String stuckCarNumber; //车主车牌

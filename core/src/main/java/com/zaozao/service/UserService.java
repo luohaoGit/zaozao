@@ -10,6 +10,8 @@ public interface UserService {
 
     User findByUsername(String username);
 
+    User findById(String id);
+
     User findByTel(String telephone);
 
     void bindWx(UserVO userVO);

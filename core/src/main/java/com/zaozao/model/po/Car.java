@@ -1,13 +1,11 @@
 package com.zaozao.model.po;
 
-import com.zaozao.model.BaseModel;
-
 import java.util.Date;
 
 /**
  * Created by luohao on 2015/10/14.
  */
-public class Car extends BaseModel {
+public class Car extends BasePO {
 
     private String carNumber; //车牌号
     private String brand; //品牌
