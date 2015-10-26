@@ -58,10 +58,10 @@ public class WeixinController {
     @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
     public String handleWeixinMessage(ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException{
         WXAutoReplyMessage message = new WXAutoReplyMessage();
-        message.setFromUserName("<![CDATA[luohao]]>");
-        message.setToUserName("<![CDATA[mayun]]>");
-        message.setMsgType("<![CDATA[text]]>");
-        message.setContent("<![CDATA[hello world]]>");
+        message.setFromUserName("luohao");
+        message.setToUserName("mayun");
+        message.setMsgType("text");
+        message.setContent("hello world");
         message.setCreateTime((new Date()).getTime() + "");
         model.addAttribute("model", message);
         //XStream xStream = XMLUtil.toXStream();
