@@ -4,13 +4,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
 
-    <bean class="com.zaozao.weixin.bean.WXContext">
+    <bean id="wxConfig" class="me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage">
         <property name="appId" value="${AppID}"/>
         <property name="secret" value="${AppSecret}"/>
-        <property name="token" value=""/>
-        <property name="redirectUri" value=""/>
-        <property name="partnerId" value=""/>
-        <property name="partnerKey" value=""/>
+        <property name="token" value="${Token}"/>
+        <property name="aesKey" value="${AesKey}"/>
+    </bean>
+
+    <bean class="com.zaozao.service.impl.ZaozaoWxMpServiceImpl">
+        <property name="wxMpConfigStorage" ref="wxConfig"/>
     </bean>
 
 

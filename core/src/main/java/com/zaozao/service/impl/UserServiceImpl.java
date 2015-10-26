@@ -20,17 +20,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Override
     public User findByUsername(String username) {
         return null;
     }
 
-    @Override
     public User findById(String id) {
         return userDao.searchById(id);
     }
 
-    @Override
     public User findByTel(String telephone) {
         User user = userDao.findByTel(telephone);
         if(user == null){
@@ -39,7 +36,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
     public void bindWx(UserVO userVO) {
         User user = userDao.searchById(userVO.getId());
         if(user == null){
@@ -49,7 +45,6 @@ public class UserServiceImpl implements UserService {
         userDao.bindWx(user);
     }
 
-    @Override
     public void register(UserVO userVO) {
         boolean telExits = checkByTel(userVO.getTelephone());
         if(telExits){
@@ -64,7 +59,6 @@ public class UserServiceImpl implements UserService {
         userDao.insert(user);
     }
 
-    @Override
     public void login(UserVO userVO) {
         User user = findByTel(userVO.getTelephone());
         if(user == null){
@@ -76,7 +70,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
     public boolean checkByTel(String telephone) {
         int count = userDao.checkByTel(telephone);
         return count == 0 ? false : true;

@@ -17,7 +17,6 @@ public class StuckRecordServiceImpl implements StuckRecordService {
     @Autowired
     private StuckRecordDao stuckRecordDao;
 
-    @Override
     public void addRecord(StuckRecordVO stuckRecordVO) {
         StuckRecord stuckRecord = new StuckRecord();
         BeanUtils.copyProperties(stuckRecordVO, stuckRecord);

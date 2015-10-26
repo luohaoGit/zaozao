@@ -3,11 +3,7 @@ package com.zaozao.action;
 import com.thoughtworks.xstream.XStream;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
-import com.zaozao.weixin.WXAccessTokenService;
-import com.zaozao.weixin.bean.WXContext;
-import com.zaozao.weixin.bean.back.WXAccessToken;
-import com.zaozao.weixin.bean.send.WXAutoReplyMessage;
-import com.zaozao.weixin.kit.xml.XMLUtil;
+import me.chanjar.weixin.mp.api.WxMpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +32,13 @@ public class WeixinController {
     protected static Logger logger = LoggerFactory.getLogger(WeixinController.class);
 
     @Autowired
-    private WXContext wxContext;
-
-    @Autowired
-    private WXAccessTokenService wxAccessTokenService;
+    private WxMpService wxMpService;
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test(ModelMap model){
-        wxAccessTokenService.getAccessToken(true);
-        logger.info("**************" + wxContext.getAccessToken().getAccessToken());
-        model.put("model", wxContext.getAccessToken());
+        //wxAccessTokenService.getAccessToken(true);
+        //logger.info("**************" + wxContext.getAccessToken().getAccessToken());
+        //model.put("model", wxContext.getAccessToken());
         return null;
     }
 
@@ -57,15 +50,7 @@ public class WeixinController {
 
     @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
     public String handleWeixinMessage(ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException{
-        WXAutoReplyMessage message = new WXAutoReplyMessage();
-        message.setFromUserName(wxContext.getAppId());
-        message.setToUserName("mayun");
-        message.setMsgType("text");
-        message.setContent("hello world");
-        message.setCreateTime((new Date()).getTime() + "");
-        model.addAttribute("model", message);
-        XStream xStream = XMLUtil.toXStream();
-        model.addAttribute("xml", xStream.toXML(message));
+
         //response.getWriter().write(xStream.toXML(xStream));
         return "";
     }

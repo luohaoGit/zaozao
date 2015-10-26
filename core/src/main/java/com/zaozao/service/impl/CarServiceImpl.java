@@ -16,7 +16,6 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarDao carDao;
 
-    @Override
     public User getCarOwner(String carNumber) {
         Car car = carDao.serchByCarNumber(carNumber);
         return car == null ? null : car.getUser();
