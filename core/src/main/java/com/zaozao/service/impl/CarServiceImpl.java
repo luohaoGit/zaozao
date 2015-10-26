@@ -5,10 +5,12 @@ import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by luohao on 2015/10/23.
  */
+@Service
 public class CarServiceImpl implements CarService {
 
     @Autowired

@@ -6,10 +6,12 @@ import com.zaozao.model.vo.StuckRecordVO;
 import com.zaozao.service.StuckRecordService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by luohao on 2015/10/25.
  */
+@Service
 public class StuckRecordServiceImpl implements StuckRecordService {
 
     @Autowired
