@@ -1,10 +1,13 @@
 package com.zaozao.action;
 
+import com.thoughtworks.xstream.XStream;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.weixin.WXAccessTokenService;
 import com.zaozao.weixin.bean.WXContext;
 import com.zaozao.weixin.bean.back.WXAccessToken;
+import com.zaozao.weixin.bean.send.WXAutoReplyMessage;
+import com.zaozao.weixin.kit.xml.XMLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -52,9 +56,16 @@ public class WeixinController {
     }
 
     @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
-    public String handleWeixinMessage(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException{
-
-        response.getWriter().write("");
-        return null;
+    public String handleWeixinMessage(ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        WXAutoReplyMessage message = new WXAutoReplyMessage();
+        message.setFromUserName("<![CDATA[luohao]]>");
+        message.setToUserName("<![CDATA[mayun]]>");
+        message.setMsgType("<![CDATA[text]]>");
+        message.setContent("<![CDATA[hello world]]>");
+        message.setCreateTime((new Date()).getTime() + "");
+        model.addAttribute("model", message);
+        //XStream xStream = XMLUtil.toXStream();
+        //response.getWriter().write(xStream.toXML(xStream));
+        return "";
     }
 }
