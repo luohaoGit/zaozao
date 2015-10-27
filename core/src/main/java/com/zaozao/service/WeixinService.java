@@ -1,9 +1,11 @@
 package com.zaozao.service;
 
 import com.zaozao.model.vo.MessageVO;
-import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -12,10 +14,11 @@ import java.io.InputStream;
 public interface WeixinService extends WxMpService{
 
 
-    String receive(InputStream is);
+    void receive(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     void sendCustomMessage(MessageVO messageVO);
 
     void pushTemplateMessage(MessageVO messageVO);
 
+    boolean isEnableCrypt();
 }

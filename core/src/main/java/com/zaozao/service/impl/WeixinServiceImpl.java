@@ -11,12 +11,16 @@ import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.util.xml.XStreamTransformer;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -29,19 +33,55 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     @Autowired
     private CarService carService;
 
+    @Value("${EnableCrypt}")
+    private boolean enableCrypt;
+
     @Autowired
     private WxMpMessageRouter wxMpMessageRouter;
 
-    public String receive(InputStream is) {
-        WxMpXmlMessage wxMpXmlMessage = XStreamTransformer.fromXml(WxMpXmlMessage.class, is);
+    public void receive(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(this.isEnableCrypt()){
+            String signature = request.getParameter("signature");
+            String nonce = request.getParameter("nonce");
+            String timestamp = request.getParameter("timestamp");
+
+            response.setContentType("text/html;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            if (!this.checkSignature(timestamp, nonce, signature)) {
+                // 消息签名不正确，说明不是公众平台发过来的消息
+                response.getWriter().println("非法请求");
+                return;
+            }
+
+            String echostr = request.getParameter("echostr");
+            if (StringUtils.isNotBlank(echostr)) {
+                // 说明是一个仅仅用来验证的请求，回显echostr
+                response.getWriter().println(echostr);
+                return;
+            }
+        }
+
+        //以下加密还没有处理
+        InputStream is = request.getInputStream();
+
+        WxMpXmlMessage wxMpXmlMessage = WxMpXmlMessage.fromXml(is);
         WxMpXmlOutMessage wxMpXmlOutMessage = wxMpMessageRouter.route(wxMpXmlMessage);
         if (wxMpXmlOutMessage != null) {
             // 说明是同步回复的消息
             // 将xml写入HttpServletResponse
-            return wxMpXmlOutMessage.toXml();
+            response.getWriter().write(wxMpXmlOutMessage.toXml());
         } else {
             // 说明是异步回复的消息，直接将空字符串写入HttpServletResponse
-            return "";
+            response.getWriter().write("");
+        }
+
+    }
+
+    private void preReceive(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(!this.isEnableCrypt()){
+            //不需要加密解密
+            return;
         }
 
     }
@@ -85,4 +125,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         logger.info("accessToken:" + this.getAccessToken());
     }
 
+    public boolean isEnableCrypt() {
+        return enableCrypt;
+    }
 }

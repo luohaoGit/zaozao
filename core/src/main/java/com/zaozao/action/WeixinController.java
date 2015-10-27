@@ -57,8 +57,8 @@ public class WeixinController {
     }
 
     @RequestMapping(value="/message/hendler", method = RequestMethod.POST, consumes = {"application/xml"})
-    public String handleWeixinMessage(HttpServletRequest request, ModelMap model) throws IOException {
-        weixinService.receive(request.getInputStream());
+    public String handleWeixinMessage(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
+        weixinService.receive(request, response);
         //response.getWriter().write(xStream.toXML(xStream));
         return "";
     }
