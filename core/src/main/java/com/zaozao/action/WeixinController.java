@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,16 +43,23 @@ public class WeixinController {
         return null;
     }
 
+    @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
+    public String handleWeixinMessage(@RequestBody MessageVO messageVO, ModelMap model) {
+
+        //response.getWriter().write(xStream.toXML(xStream));
+        return "";
+    }
+
     @RequestMapping(value="/message/template", method = RequestMethod.POST)
     public String informUser(@RequestBody MessageVO messageVO){
 
         return null;
     }
 
-    @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
-    public String handleWeixinMessage(ModelMap model, HttpServletRequest request, HttpServletResponse response) throws IOException{
-
-        //response.getWriter().write(xStream.toXML(xStream));
+    //{"openid":"oz57qsld4yxFo1F1D2ZrCL2AQjqs", "content":"hello"}
+    @RequestMapping(value="/message/custom", method = RequestMethod.POST, consumes = {"application/x-www-form-urlencoded"})
+    public String sendCustomMessage(@ModelAttribute MessageVO messageVO, ModelMap model) {
+        weixinService.sendCustomMessage(messageVO);
         return "";
     }
 }

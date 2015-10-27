@@ -12,6 +12,8 @@ public interface WeixinService extends WxMpService{
 
     void receive(String xml);
 
-    void pushTemplateMessage(MessageVO messageVO) throws WxErrorException;
+    void sendCustomMessage(MessageVO messageVO);
+
+    void pushTemplateMessage(MessageVO messageVO);
 
 }

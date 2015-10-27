@@ -1,10 +1,12 @@
 package com.zaozao.service.impl;
 
+import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
+import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +27,22 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     }
 
+    public void sendCustomMessage(MessageVO messageVO) {
+        WxMpCustomMessage message = WxMpCustomMessage
+                .TEXT()
+                .toUser(messageVO.getOpenid())
+                .content(messageVO.getContent())
+                .build();
+        try {
+            this.customMessageSend(message);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+            throw new ZaozaoException(e.getMessage());
+        }
+    }
+
     //使用微信模板消息
-    public void pushTemplateMessage(MessageVO messageVO) throws WxErrorException {
+    public void pushTemplateMessage(MessageVO messageVO) {
         String toUserOpenId = messageVO.getOpenid();
         String templateId = "";
         String url = "";
@@ -37,7 +53,12 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         templateMessage.setUrl(url);
         //templateMessage.getDatas().add(new WxMpTemplateData(name1, value1, color2));
 
-        this.templateSend(templateMessage);
+        try {
+            this.templateSend(templateMessage);
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+            throw new ZaozaoException(e.getMessage());
+        }
     }
 
     public void afterPropertiesSet() throws Exception {

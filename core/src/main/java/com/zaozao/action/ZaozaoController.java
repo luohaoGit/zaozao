@@ -84,7 +84,7 @@ public class ZaozaoController {
 	}
 
 
-	//8L-FvrZbLCo2lnTW6-i60N5HpVFpafHqIlu4C8qxqsZOhIZzCHRvvH3wzNrle0DcB7hM_tV5u15ygrFjkQLKigwoXSq9xhLSVZcFrkIoeSI
+	//oz57qsld4yxFo1F1D2ZrCL2AQjqs
 	//{"total":5,"count":5,"data":{"openid":["oz57qsh3ybplzbIiTV8NRU5xLQYk","oz57qspwRnpmnmnmeeI06fMfFO8Q","oz57qsld4yxFo1F1D2ZrCL2AQjqs","oz57qsllrwwTaUEpbjSBrE_uUrPo","oz57qsqVTBFCCinSxODrr6BsnH9o"]},"next_openid":"oz57qsqVTBFCCinSxODrr6BsnH9o"}
 	@RequestMapping(value="{brand}", method = RequestMethod.GET)
 	public String getFruit(@PathVariable String brand, ModelMap model) {
