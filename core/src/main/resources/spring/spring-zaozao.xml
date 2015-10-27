@@ -11,7 +11,7 @@
         <property name="aesKey" value="${AesKey}"/>
     </bean>
 
-    <bean class="com.zaozao.service.impl.ZaozaoWxMpServiceImpl">
+    <bean class="com.zaozao.service.impl.WeixinServiceImpl">
         <property name="wxMpConfigStorage" ref="wxConfig"/>
     </bean>
 

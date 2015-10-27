@@ -3,7 +3,7 @@ package com.zaozao.action;
 import com.thoughtworks.xstream.XStream;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
-import me.chanjar.weixin.mp.api.WxMpService;
+import com.zaozao.service.WeixinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class WeixinController {
     protected static Logger logger = LoggerFactory.getLogger(WeixinController.class);
 
     @Autowired
-    private WxMpService wxMpService;
+    private WeixinService weixinService;
 
     @RequestMapping(value="/test", method = RequestMethod.GET)
     public String test(ModelMap model){

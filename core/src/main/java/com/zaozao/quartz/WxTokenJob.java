@@ -1,6 +1,6 @@
 package com.zaozao.quartz;
 
-import com.zaozao.service.ZaozaoWxMpService;
+import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -17,13 +17,13 @@ public class WxTokenJob extends QuartzJobBean {
     protected static Logger logger = LoggerFactory.getLogger(WxTokenJob.class);
 
     @Autowired
-    private ZaozaoWxMpService zaozaoWxMpService;
+    private WeixinService weixinService;
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         try {
-            zaozaoWxMpService.getAccessToken(true);
-            logger.info("accessToken:" + zaozaoWxMpService.getAccessToken());
+            weixinService.getAccessToken(true);
+            logger.info("accessToken:" + weixinService.getAccessToken());
         } catch (WxErrorException e) {
             e.printStackTrace();
             throw new JobExecutionException(e);

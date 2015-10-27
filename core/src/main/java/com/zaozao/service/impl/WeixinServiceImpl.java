@@ -1,29 +1,25 @@
 package com.zaozao.service.impl;
 
-import com.zaozao.exception.ZaozaoException;
-import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
 import com.zaozao.service.WeixinService;
-import com.zaozao.service.ZaozaoWxMpService;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.WxMpTemplateData;
+import me.chanjar.weixin.mp.api.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
- * Created by luohao on 2015/10/22.
+ * Created by luohao on 2015/10/26.
  */
-@Service
-public class WeixinServiceImpl implements WeixinService {
+public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService, InitializingBean {
+
+    protected static Logger logger = LoggerFactory.getLogger(WeixinServiceImpl.class);
 
     @Autowired
     private CarService carService;
-
-    @Autowired
-    private ZaozaoWxMpService zaozaoWxMpService;
 
     public void receive(String xml) {
 
@@ -41,7 +37,12 @@ public class WeixinServiceImpl implements WeixinService {
         templateMessage.setUrl(url);
         //templateMessage.getDatas().add(new WxMpTemplateData(name1, value1, color2));
 
-        zaozaoWxMpService.templateSend(templateMessage);
+        this.templateSend(templateMessage);
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        this.getAccessToken(true);
+        logger.info("accessToken:" + this.getAccessToken());
     }
 
 }
