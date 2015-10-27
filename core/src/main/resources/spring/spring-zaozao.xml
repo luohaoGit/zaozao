@@ -11,8 +11,16 @@
         <property name="aesKey" value="${AesKey}"/>
     </bean>
 
-    <bean class="com.zaozao.service.impl.WeixinServiceImpl">
+    <bean id="wxMpService" class="com.zaozao.service.impl.WeixinServiceImpl">
         <property name="wxMpConfigStorage" ref="wxConfig"/>
+    </bean>
+
+    <bean id="wxMpMessageRouter" class="me.chanjar.weixin.mp.api.WxMpMessageRouter">
+        <constructor-arg name="wxMpService" ref="wxMpService" />
+    </bean>
+
+    <bean class="com.zaozao.weixin.router.InitRouterConfig">
+        <property name="wxMpMessageRouter" ref="wxMpMessageRouter"/>
     </bean>
 
 

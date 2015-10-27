@@ -43,13 +43,6 @@ public class WeixinController {
         return null;
     }
 
-    @RequestMapping(value="/message/autoreply", method = RequestMethod.POST)
-    public String handleWeixinMessage(@RequestBody MessageVO messageVO, ModelMap model) {
-
-        //response.getWriter().write(xStream.toXML(xStream));
-        return "";
-    }
-
     @RequestMapping(value="/message/template", method = RequestMethod.POST)
     public String informUser(@RequestBody MessageVO messageVO){
 
@@ -62,4 +55,12 @@ public class WeixinController {
         weixinService.sendCustomMessage(messageVO);
         return "";
     }
+
+    @RequestMapping(value="/message/hendler", method = RequestMethod.POST, consumes = {"application/xml"})
+    public String handleWeixinMessage(HttpServletRequest request, ModelMap model) throws IOException {
+        weixinService.receive(request.getInputStream());
+        //response.getWriter().write(xStream.toXML(xStream));
+        return "";
+    }
+
 }
