@@ -1,10 +1,12 @@
 package com.zaozao.service;
 
+import com.zaozao.model.vo.SMSVO;
+
 /**
  * Created by luohao on 2015/10/22.
  */
 public interface SMSService {
 
-    void sendSMSMessage(String telephone, String content);
+    void sendSMSMessage(SMSVO smsvo);
 
 }

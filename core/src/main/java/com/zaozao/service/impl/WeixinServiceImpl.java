@@ -97,14 +97,6 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     }
 
-    private void preReceive(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(!this.isEnableCrypt()){
-            //不需要加密解密
-            return;
-        }
-
-    }
-
     public void sendCustomMessage(MessageVO messageVO) {
         WxMpCustomMessage message = WxMpCustomMessage
                 .TEXT()
@@ -142,6 +134,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     public void afterPropertiesSet() throws Exception {
         this.getAccessToken(true);
         logger.info("accessToken:" + this.getAccessToken());
+        logger.info("enableCrypt:" + this.enableCrypt);
     }
 
     public boolean isEnableCrypt() {
