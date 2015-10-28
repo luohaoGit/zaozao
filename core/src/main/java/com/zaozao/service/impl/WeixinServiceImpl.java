@@ -71,11 +71,11 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
         if ("raw".equals(encryptType)) {
             // 明文传输的消息
-            inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
+            inMessage = WxMpXmlMessage.fromXml(is);
         } else if ("aes".equals(encryptType)) {
             // 是aes加密的消息
             String msgSignature = request.getParameter("msg_signature");
-            inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), wxMpConfigStorage, timestamp, nonce, msgSignature);
+            inMessage = WxMpXmlMessage.fromEncryptedXml(is, wxMpConfigStorage, timestamp, nonce, msgSignature);
         } else {
             response.getWriter().println("不可识别的加密类型");
             return;

@@ -22,18 +22,21 @@ public class SMSServiceImpl implements SMSService {
     @Value("${sms_send_username}")
     private String smsSendUsername;
 
-    @Value("${sms_send_url}")
+    @Value("${sms_send_password}")
     private String smsSendPassword;
+
+    @Value("${sms_send_product_id}")
+    private String smsSendProductId;
 
     public void sendSMSMessage(SMSVO smsvo) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("account", smsSendUsername);
         param.put("pswd", smsSendPassword);
-        param.put("mobile", "");
-        param.put("msg", "");
-        param.put("needstatus", "false");
-        param.put("product", "");
-        param.put("extno", "");
+        param.put("mobile", smsvo.getMobile());
+        param.put("msg", "【早早】" + smsvo.getContent());
+        param.put("needstatus", "true");
+        param.put("product", smsSendProductId);
+        //param.put("extno", "");
         String[] res = HttpClientUtil.httpPost(smsSendUrl, param).split("\n");
         String respstatus = res[0].split(",")[1];
         if("0".equals(respstatus)){
