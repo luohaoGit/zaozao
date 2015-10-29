@@ -2,8 +2,8 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 	<contextName>RESTful</contextName>
 	<property scope="context" name="CHARSET" value="utf-8" />
-	<property scope="context" name="appName" value="RESTful"/>
-	<property scope="context" name="LOG_HOME" value="/RESTfulLog" />
+	<property scope="context" name="appName" value="zaozao"/>
+	<property scope="context" name="LOG_HOME" value="/logs" />
 	<property scope="context" name="APP_LOG_HOME" value="${LOG_HOME}/${appName}/app" />
 	<property scope="context" name="ERR_LOG_HOME" value="${LOG_HOME}/${appName}/err" />
 
@@ -23,12 +23,12 @@
 	</appender>
 
 	<!-- hostname以【lin-】或者【rac(65.11物理机)】开头的机器日志打印到文件 -->
-	<if condition='property("HOSTNAME").contains("lin-") || property("HOSTNAME").contains("rac")'>
+	<if condition='property("HOSTNAME").contains("lin-") || property("HOSTNAME").equals("iZ25vo5217tZ")'>
 		<then>
 			<appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+<!--				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 					<level>WARN</level>
-				</filter>
+				</filter>-->
 				<file>${APP_LOG_HOME}/${HOSTNAME}.app.ing</file>
 				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 					<!--日志文件输出的文件名，按天生成文件名 -->
@@ -59,7 +59,7 @@
 			</appender>
 
 			<!-- 线上环境 -->
-			<root level="APP">
+			<root level="INFO">
 				<appender-ref ref="APP_FILE" />
 			</root>
 			<logger name="ERROR" level="INFO">

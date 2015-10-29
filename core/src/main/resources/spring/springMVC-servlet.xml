@@ -21,7 +21,8 @@
 
     <!-- 静态资源 -->
     <!--<mvc:resources mapping="" location="" />-->
-    <context:property-placeholder location="classpath:config/*.properties"/>
+    <context:property-placeholder location="classpath:config/*.properties,file:/zaozaoconfig/private.properties"/>
+    <!--<context:property-placeholder location="classpath:config/*.properties"/>-->
 
     <!-- 对静态资源文件的访问 不支持访问WEB-INF目录 -->
     <mvc:default-servlet-handler />
