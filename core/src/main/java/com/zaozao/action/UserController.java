@@ -8,6 +8,7 @@ import com.zaozao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,11 +34,16 @@ public class UserController {
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String loginView(){
 
-		return "";
+		return "user/login";
 	}
 
-	@RequestMapping(value="/login", method = RequestMethod.POST)
-	public String login(@Valid @RequestBody UserVO userVO, HttpServletRequest request){
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+	public String login(@ModelAttribute UserVO userVO, ModelMap model, HttpServletRequest request){
+		return null;
+	}
+
+	@RequestMapping(value="/test", method = RequestMethod.POST)
+	public String test(@RequestBody UserVO userVO, HttpServletRequest request){
 		HttpSession session = request.getSession();
 		String code = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		if(!userVO.getIdentifyId().equals(code)){

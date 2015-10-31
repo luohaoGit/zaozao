@@ -21,6 +21,8 @@ public class UserVO extends BaseVO {
     @NotNull(message = "{user.identify.NotEmpty.message}")
     private String identifyId;
 
+    private String username;
+
     @NotNull
     private String id;
 
@@ -65,5 +67,13 @@ public class UserVO extends BaseVO {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

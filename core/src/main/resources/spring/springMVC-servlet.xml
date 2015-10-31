@@ -31,13 +31,21 @@
      <mvc:resources location="/img/" mapping="/img/**" />
      <mvc:resources location="/fonts/" mapping="/fonts/**" />
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*"/>
+            <mvc:exclude-mapping path="/admin/login" />
+            <bean class="com.zaozao.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <import resource="spring-mybatis.xml"/>
     <import resource="spring-quarts.xml"/>
     <import resource="spring-zaozao.xml"/>
 
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="useJaf" value="false" />
-        <property name="defaultContentType" value="application/json" />
+        <property name="defaultContentType" value="application/html" />
 
         <property name="ignoreAcceptHeader" value="true" />
         <property name="favorPathExtension" value="true" />
