@@ -59,39 +59,12 @@
                   <!-- The user image in the navbar-->
                   <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">${user.username}</span>
                 </a>
-                <ul class="dropdown-menu">
-                  <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                    <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
-                </ul>
+                <ul class="dropdown-menu"></ul>
+              </li>
+              <li>
+                <a href="#" data-toggle="modal" data-target="#exitModal"><i class="fa fa-power-off"></i></a>
               </li>
             </ul>
           </div>
@@ -104,15 +77,15 @@
         <section class="sidebar">
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <li class="header">菜单</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
+            <li><a href="#"><i class="fa fa-link"></i> <span>模版管理</span></a></li>
             <li class="treeview">
-              <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa fa-link"></i> <span>系统设置</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
-                <li><a href="#">Link in level 2</a></li>
-                <li><a href="#">Link in level 2</a></li>
+                <li><a href="#">设置1</a></li>
+                <li><a href="#">设置2</a></li>
               </ul>
             </li>
           </ul><!-- /.sidebar-menu -->
@@ -124,12 +97,8 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-          <h1>
-            Page Header
-            <small>Optional description</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+          <ol class="breadcrumb" style="left:10px">
+            <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li class="active">Here</li>
           </ol>
         </section>
@@ -152,18 +121,36 @@
         <strong>Copyright &copy; 2015 <a href="#">zaozao</a>.</strong> All rights reserved.
       </footer>
 
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-      </aside><!-- /.control-sidebar -->
       <!-- Add the sidebar's background. This div must be placed
            immediately after the control sidebar -->
       <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
+      <!-- 模态框（Modal） -->
+      <div class="modal fade" id="exitModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" class="close" 
+                     data-dismiss="modal" aria-hidden="true">
+                        &times;
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel">
+                     确认退出
+                  </h4>
+               </div>
+               <div class="modal-body">
+                  您确定退出吗？
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-default" 
+                     data-dismiss="modal">关闭
+                  </button>
+                  <button type="button" class="btn btn-primary exit">
+                     退出
+                  </button>
+               </div>
+            </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
 
     <!-- REQUIRED JS SCRIPTS -->
 
@@ -174,9 +161,12 @@
     <!-- AdminLTE App -->
     <script src="/js/app.min.js"></script>
 
-    <!-- Optionally, you can add Slimscroll and FastClick plugins.
-         Both of these plugins are recommended to enhance the
-         user experience. Slimscroll is required when using the
-         fixed layout. -->
+    <script>
+      $(function () {
+        $('.exit').click(function(){
+          location.href = "/admin/logout";
+        });
+      });
+    </script>
   </body>
 </html>

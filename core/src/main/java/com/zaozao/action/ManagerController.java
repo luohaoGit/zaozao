@@ -31,15 +31,14 @@ public class ManagerController {
         return "admin/login";
     }
 
-    @RequestMapping(value="/main", method = RequestMethod.GET)
-    public String loginVqew(){
-
-        return "admin/main";
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session){
+        session.removeAttribute("user");
+        return "admin/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public String login(@ModelAttribute UserVO userVO, ModelMap model, HttpServletRequest request){
-        HttpSession session = request.getSession();
+    public String login(@ModelAttribute UserVO userVO, ModelMap model, HttpSession session){
         User user = (User)session.getAttribute("user");
         model.addAttribute("user", user);
         if(user != null){
