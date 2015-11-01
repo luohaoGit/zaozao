@@ -35,7 +35,7 @@
         openid, bundling
     </sql>
     
-    <select id="count" resultType="int">
+    <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*) FROM t_user;
     </select>
     
@@ -85,15 +85,20 @@
         WHERE u.id=c.userid and u.id = #{id};
     </select>
 
-    <select id="checkByTel" resultMap="int" parameterType="String">
+    <select id="checkByTel" resultType="java.lang.Integer" parameterType="String">
         SELECT count(*)
         from t_user u
         WHERE u.telephone = #{telephone};
     </select>
 
-    <select id="findByTel" resultMap="User" parameterType="String">
+    <select id="findByTel" resultMap="userResultMap" parameterType="String">
         SELECT <include refid="userColumn" />
         from t_user u
         WHERE u.telephone = #{telephone};
+    </select>
+
+    <select id="getPage" resultMap="userResultMap">
+        SELECT <include refid="userColumn" />
+        from t_user u order by registertime desc limit #{start}, #{size}
     </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.zaozao.service.impl;
 import com.zaozao.dao.UserDao;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.User;
+import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by luohao on 2015/10/18.
@@ -73,5 +75,15 @@ public class UserServiceImpl implements UserService {
     public boolean checkByTel(String telephone) {
         int count = userDao.checkByTel(telephone);
         return count == 0 ? false : true;
+    }
+
+    public PageVO<User> getUserPage(PageVO<User> pageVO) {
+        int pageSize = pageVO.getPageSize();
+        long count = userDao.count();
+        long start = pageVO.getPageNumber() * pageVO.getPageSize();
+        List<User> userList = userDao.getPage(start, pageSize);
+        pageVO.setRowCout(count);
+        pageVO.setData(userList);
+        return pageVO;
     }
 }

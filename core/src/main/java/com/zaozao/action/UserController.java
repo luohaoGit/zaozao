@@ -31,27 +31,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String loginView(){
-
-		return "user/login";
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-	public String login(@ModelAttribute UserVO userVO, ModelMap model, HttpServletRequest request){
-		return null;
-	}
-
-	@RequestMapping(value="/test", method = RequestMethod.POST)
-	public String test(@RequestBody UserVO userVO, HttpServletRequest request){
-		HttpSession session = request.getSession();
-		String code = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-		if(!userVO.getIdentifyId().equals(code)){
-			throw new ZaozaoException("验证码不正确");
-		}
-		userService.login(userVO);
-		return "";
-	}
 
 	@RequestMapping(value="/registration", method = RequestMethod.POST)
 	public String register(@Valid @RequestBody UserVO userVO, ModelMap model) {
@@ -87,5 +66,30 @@ public class UserController {
 			out.close();
 		}
 		return null;
+	}
+
+
+
+
+	@RequestMapping(value="/login", method = RequestMethod.GET)
+	public String loginView(){
+
+		return "user/login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+	public String login(@ModelAttribute UserVO userVO, ModelMap model, HttpServletRequest request){
+		return null;
+	}
+
+	@RequestMapping(value="/test", method = RequestMethod.POST)
+	public String test(@RequestBody UserVO userVO, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		String code = (String)session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+		if(!userVO.getIdentifyId().equals(code)){
+			throw new ZaozaoException("验证码不正确");
+		}
+		userService.login(userVO);
+		return "";
 	}
 }

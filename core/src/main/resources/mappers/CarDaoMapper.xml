@@ -32,7 +32,7 @@
         id, userid, carnumber, brand, model, style, displacement, transmission, fueltype, framenumber, color, registertime, deleted
     </sql>
     
-    <select id="count" resultType="int">
+    <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*) FROM t_car;
     </select>
     

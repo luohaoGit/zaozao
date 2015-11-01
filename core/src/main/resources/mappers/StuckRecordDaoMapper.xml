@@ -24,7 +24,7 @@
         phonesource, succeed, createtime, address
     </sql>
     
-    <select id="count" resultType="int">
+    <select id="count" resultType="java.lang.Long">
         SELECT COUNT(*) FROM t_stuck_record;
     </select>
     

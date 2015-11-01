@@ -1,6 +1,7 @@
 package com.zaozao.service;
 
 import com.zaozao.model.po.User;
+import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 
 /**
@@ -22,4 +23,5 @@ public interface UserService {
 
     boolean checkByTel(String telephone);
 
+    PageVO<User> getUserPage(PageVO<User> pageVO);
 }

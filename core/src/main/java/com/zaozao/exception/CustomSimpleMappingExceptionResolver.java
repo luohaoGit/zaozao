@@ -19,18 +19,19 @@ public class CustomSimpleMappingExceptionResolver extends SimpleMappingException
         //expose ModalAndView for chosen error view
         String viewName = determineViewName(ex, request);
         if(viewName != null){//for jsp
-            if((request.getHeader("accept").indexOf("application/json") > -1 ||
+            if((request.getHeader("accept").indexOf("text/html") > -1 ||
                     (request.getHeader("X-Requested-With") != null && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))){
                 Integer statusCode = determineStatusCode(request, viewName);
                 if(statusCode != null){
                     applyStatusCodeIfPossible(request, response, statusCode);
                 }
+                request.setAttribute("errorMsg", ex.getMessage());
                 return getModelAndView(viewName, ex, request);
             }else{//ajax
                 try{
                     response.setContentType("application/json");
                     PrintWriter writer = response.getWriter();
-                    writer.write("{\"errormsg\":\"" + ex.getCause() + "\"}");
+                    writer.write("{\"errormsg\":\"" + ex.getMessage() + "\"}");
                     writer.flush();
                 }catch (IOException e){
                     e.printStackTrace();
