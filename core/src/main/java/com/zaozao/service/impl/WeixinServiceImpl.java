@@ -36,6 +36,9 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
 
+    @Value("${ZaozaoToken}")
+    private String token;
+
     @Autowired
     private WxMpMessageRouter wxMpMessageRouter;
 
@@ -134,7 +137,6 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     public void afterPropertiesSet() throws Exception {
         this.getAccessToken(true);
         logger.info("accessToken:" + this.getAccessToken());
-        logger.info("enableCrypt:" + this.enableCrypt);
     }
 
     public boolean isEnableCrypt() {

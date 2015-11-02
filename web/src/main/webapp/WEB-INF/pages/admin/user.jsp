@@ -480,7 +480,10 @@
     <!-- page script -->
     <script>
       $(function () {
-        $('#example1').DataTable();
+        $('#example1').DataTable({
+          "searching": false,
+          "lengthChange": false
+        });
       });
     </script>
   </body>

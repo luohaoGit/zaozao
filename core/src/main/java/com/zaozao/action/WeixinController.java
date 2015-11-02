@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.WeixinService;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,11 +57,12 @@ public class WeixinController {
         return "";
     }
 
-    @RequestMapping(value="/message/hendler", method = RequestMethod.POST, consumes = {"application/xml"})
+    @RequestMapping(value="/message/handler")
     public String handleWeixinMessage(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
+        logger.info("received weixin xml:" + IOUtils.toString(request.getInputStream(), "UTF-8"));
         weixinService.receive(request, response);
         //response.getWriter().write(xStream.toXML(xStream));
-        return "";
+        return null;
     }
 
 }
