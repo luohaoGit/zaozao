@@ -1,6 +1,7 @@
 package com.zaozao.action;
 
 import com.thoughtworks.xstream.XStream;
+import com.zaozao.exception.ZaozaoException;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.WeixinService;
@@ -58,11 +59,19 @@ public class WeixinController {
     }
 
     @RequestMapping(value="/message/handler")
-    public String handleWeixinMessage(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
-        logger.info("received weixin xml:" + IOUtils.toString(request.getInputStream(), "UTF-8"));
-        weixinService.receive(request, response);
+    public String handleWeixinMessage(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        try {
+            logger.info("received weixin xml:");
+            weixinService.receive(request, response);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ZaozaoException(e.getMessage());
+        }
         //response.getWriter().write(xStream.toXML(xStream));
         return null;
     }
+
+
 
 }

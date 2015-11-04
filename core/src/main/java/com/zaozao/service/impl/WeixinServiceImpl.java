@@ -36,9 +36,6 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
 
-    @Value("${ZaozaoToken}")
-    private String token;
-
     @Autowired
     private WxMpMessageRouter wxMpMessageRouter;
 
@@ -50,10 +47,9 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        InputStream is = request.getInputStream();
-
         if(this.isEnableCrypt()){
             if (!this.checkSignature(timestamp, nonce, signature)) {
+                logger.info("response to weixin: " + "非法请求");
                 // 消息签名不正确，说明不是公众平台发过来的消息
                 response.getWriter().println("非法请求");
                 return;
@@ -61,6 +57,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
             String echostr = request.getParameter("echostr");
             if (StringUtils.isNotBlank(echostr)) {
+                logger.info("echostr to weixin: " + "echostr");
                 // 说明是一个仅仅用来验证的请求，回显echostr
                 response.getWriter().println(echostr);
                 return;
@@ -72,14 +69,17 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
                 request.getParameter("encrypt_type");
         WxMpXmlMessage inMessage = null;
 
+        logger.info("encrypt_type is:" + encryptType);
+
         if ("raw".equals(encryptType)) {
             // 明文传输的消息
-            inMessage = WxMpXmlMessage.fromXml(is);
+            inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
         } else if ("aes".equals(encryptType)) {
             // 是aes加密的消息
             String msgSignature = request.getParameter("msg_signature");
-            inMessage = WxMpXmlMessage.fromEncryptedXml(is, wxMpConfigStorage, timestamp, nonce, msgSignature);
+            inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), wxMpConfigStorage, timestamp, nonce, msgSignature);
         } else {
+            logger.info("response to weixin: " + "不可识别的加密类型");
             response.getWriter().println("不可识别的加密类型");
             return;
         }
@@ -89,11 +89,14 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
             // 说明是同步回复的消息
             // 将xml写入HttpServletResponse
             if ("raw".equals(encryptType)) {
+                logger.info("response to weixin: " + outMessage.toXml());
                 response.getWriter().write(outMessage.toXml());
             } else if ("aes".equals(encryptType)) {
+                logger.info("response to weixin: " + outMessage.toEncryptedXml(wxMpConfigStorage));
                 response.getWriter().write(outMessage.toEncryptedXml(wxMpConfigStorage));
             }
         } else {
+            logger.info("response to weixin: \"\"");
             // 说明是异步回复的消息，直接将空字符串写入HttpServletResponse
             response.getWriter().write("");
         }

@@ -7,3 +7,11 @@
 <script src="/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/app.min.js"></script>
+
+<script>
+    $(function () {
+        $('.exit').click(function(){
+            location.href = "/admin/logout";
+        });
+    });
+</script>
