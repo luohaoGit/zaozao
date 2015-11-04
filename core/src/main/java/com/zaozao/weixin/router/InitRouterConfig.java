@@ -1,6 +1,7 @@
 package com.zaozao.weixin.router;
 
 import com.zaozao.weixin.handler.AutoReplyTextMessageHandler;
+import com.zaozao.weixin.handler.DefaultMessageHandler;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import org.slf4j.Logger;
@@ -24,6 +25,10 @@ public class InitRouterConfig implements InitializingBean {
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT).content("移车")
                 .handler(new AutoReplyTextMessageHandler())
+                .end()
+
+                .rule()
+                .handler(new DefaultMessageHandler())
                 .end();
     }
 

@@ -11,6 +11,6 @@
     <title></title>
 </head>
 <body>
-你好${brand}
+你好${brand},网站建设中。。。
 </body>
 </html>

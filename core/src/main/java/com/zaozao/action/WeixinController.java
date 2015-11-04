@@ -5,6 +5,7 @@ import com.zaozao.exception.ZaozaoException;
 import com.zaozao.listener.ZaozaoContextLoaderListner;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.bean.WxMenu;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +38,10 @@ public class WeixinController {
     @Autowired
     private WeixinService weixinService;
 
-    @RequestMapping(value="/test", method = RequestMethod.GET)
+    @RequestMapping(value="/test")
     public String test(ModelMap model){
-        //wxAccessTokenService.getAccessToken(true);
-        //logger.info("**************" + wxContext.getAccessToken().getAccessToken());
-        //model.put("model", wxContext.getAccessToken());
-        return null;
+
+        return "index";
     }
 
     @RequestMapping(value="/message/template", method = RequestMethod.POST)
@@ -61,7 +60,6 @@ public class WeixinController {
     @RequestMapping(value="/message/handler")
     public String handleWeixinMessage(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         try {
-            logger.info("received weixin xml:");
             weixinService.receive(request, response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,6 +70,17 @@ public class WeixinController {
         return null;
     }
 
-
+    @RequestMapping(value="/menu",  method = RequestMethod.POST, consumes = {"application/json"})
+    public String createMenu(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        try {
+            WxMenu menu = WxMenu.fromJson(request.getInputStream());
+            weixinService.menuCreate(menu);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ZaozaoException(e.getMessage());
+        }
+        return null;
+    }
 
 }
