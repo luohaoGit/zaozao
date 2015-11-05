@@ -28,6 +28,7 @@ public class InitRouterConfig implements InitializingBean {
                 .end()
 
                 .rule()
+                .async(false)
                 .handler(new DefaultMessageHandler())
                 .end();
     }

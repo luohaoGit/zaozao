@@ -18,12 +18,12 @@ public class AutoReplyTextMessageHandler implements WxMpMessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(AutoReplyTextMessageHandler.class);
 
-    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        logger.info("recieve weixin message:" + wxMpXmlMessage.toString());
+    public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+        logger.info("recieve weixin message:" + message.toString());
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                 .content("请回复车牌号码")
-                .fromUser("")
-                .toUser(wxMpXmlMessage.getFromUserName())
+                .fromUser(message.getToUserName())
+                .toUser(message.getFromUserName())
                 .build();
         return wxMpXmlOutMessage;
     }

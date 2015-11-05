@@ -70,17 +70,4 @@ public class WeixinController {
         return null;
     }
 
-    @RequestMapping(value="/menu",  method = RequestMethod.POST, consumes = {"application/json"})
-    public String createMenu(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        try {
-            WxMenu menu = WxMenu.fromJson(request.getInputStream());
-            weixinService.menuCreate(menu);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            throw new ZaozaoException(e.getMessage());
-        }
-        return null;
-    }
-
 }

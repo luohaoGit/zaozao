@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class DefaultMessageHandler implements WxMpMessageHandler {
 
-    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+    public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("content")
-                .fromUser("from")
-                .toUser("to")
+                .content("请回复“移车”")
+                .fromUser(message.getToUserName())
+                .toUser(message.getFromUserName())
                 .build();
         return wxMpXmlOutMessage;
     }

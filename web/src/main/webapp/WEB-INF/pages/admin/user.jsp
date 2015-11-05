@@ -19,7 +19,17 @@
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
 
-        <%@ include file="../common/contentHeader.jsp"%>
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            用户管理
+            <small></small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="/admin/main"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active"><a href="/admin/users">用户管理</a></li>
+          </ol>
+        </section>
 
         <!-- Main content -->
         <section class="content">
@@ -480,6 +490,7 @@
     <!-- page script -->
     <script>
       $(function () {
+        $('#user-li').addClass("active");
         $('#example1').DataTable({
           "searching": false,
           "lengthChange": false
