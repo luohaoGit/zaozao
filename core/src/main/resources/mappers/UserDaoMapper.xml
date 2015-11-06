@@ -68,9 +68,9 @@
         WHERE id = #{id};
     </update>
 
-    <update id="bindWx" parameterType="User">
+    <update id="bindTel" parameterType="User">
         UPDATE t_user SET
-        openid = #{openId},
+        telephone = #{telephone},
         bundling = 1
         WHERE id = #{id};
     </update>
@@ -83,6 +83,12 @@
         SELECT u.*, c.id cid, c.brand, c.model, c.color
         from t_user u, t_car c
         WHERE u.id=c.userid and u.id = #{id};
+    </select>
+
+    <select id="checkByWx" resultType="java.lang.Integer" parameterType="String">
+        SELECT count(*)
+        from t_user u
+        WHERE u.openid = #{openId};
     </select>
 
     <select id="checkByTel" resultType="java.lang.Integer" parameterType="String">

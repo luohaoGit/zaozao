@@ -15,9 +15,11 @@ public interface UserService {
 
     User findByTel(String telephone);
 
-    void bindWx(UserVO userVO);
+    void bindTel(UserVO userVO);
 
     void register(UserVO userVO);
+
+    void autoRegister(UserVO userVO);
 
     void login(UserVO userVO);
 

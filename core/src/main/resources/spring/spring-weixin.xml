@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="wxConfig" class="me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage">
+        <property name="appId" value="${AppID}"/>
+        <property name="secret" value="${AppSecret}"/>
+        <property name="token" value="${Token}"/>
+        <property name="aesKey" value="${AesKey}"/>
+    </bean>
+
+    <bean id="wxMpService" class="com.zaozao.service.impl.WeixinServiceImpl">
+        <property name="wxMpConfigStorage" ref="wxConfig"/>
+    </bean>
+
+    <bean id="wxMpMessageRouter" class="me.chanjar.weixin.mp.api.WxMpMessageRouter">
+        <constructor-arg name="wxMpService" ref="wxMpService" />
+    </bean>
+
+    <bean class="com.zaozao.weixin.router.InitRouterConfig">
+        <property name="wxMpMessageRouter" ref="wxMpMessageRouter"/>
+    </bean>
+
+</beans>

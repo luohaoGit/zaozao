@@ -38,9 +38,9 @@ public class UserController {
 		return "index";
 	}
 
-	@RequestMapping(value="/wx/bind", method = RequestMethod.POST)
+	@RequestMapping(value="/tel/bind", method = RequestMethod.POST)
 	public String bindWX(@Valid @RequestBody UserVO userVO){
-		userService.bindWx(userVO);
+		userService.bindTel(userVO);
 		return null;
 	}
 

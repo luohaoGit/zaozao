@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao extends BaseDao<User> {
 
-    void bindWx(User user);
+    void bindTel(User user);
 
     int checkByTel(String telephone);
+
+    int checkByWx(String openid);
 
     User findByTel(String telephone);
 }

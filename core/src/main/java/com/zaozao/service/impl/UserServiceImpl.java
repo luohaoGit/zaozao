@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public void bindWx(UserVO userVO) {
+    public void bindTel(UserVO userVO) {
         User user = userDao.searchById(userVO.getId());
         if(user == null){
             throw new ZaozaoException("用户不存在");
         }
-        user.setOpenId(userVO.getOpenId());
-        userDao.bindWx(user);
+        user.setTelephone(userVO.getTelephone());
+        userDao.bindTel(user);
     }
 
     public void register(UserVO userVO) {
@@ -59,6 +59,23 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userVO.getPassword());
         user.setRegisterTime(new Date());
         userDao.insert(user);
+    }
+
+    public void autoRegister(UserVO userVO) {
+        if(userVO.getOpenId() == null){
+            throw new ZaozaoException("openid 不能为空");
+        }
+        int count = userDao.checkByWx(userVO.getOpenId());
+        //没有关注的人，新增
+        if(count == 0){
+            User user = new User();
+            user.setTelephone("未绑定");
+            user.setUsername(userVO.getOpenId());
+            user.setPassword("000000");
+            user.setRegisterTime(new Date());
+            user.setOpenId(userVO.getOpenId());
+            userDao.insert(user);
+        }
     }
 
     public void login(UserVO userVO) {

@@ -6,13 +6,15 @@ import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 /**
  * Created by luohao on 2015/10/27.
  */
-public class DefaultMessageHandler implements WxMpMessageHandler {
+@Component
+public class DefaultHandler implements WxMpMessageHandler {
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
