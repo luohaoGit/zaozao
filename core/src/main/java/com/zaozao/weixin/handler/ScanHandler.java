@@ -1,5 +1,7 @@
 package com.zaozao.weixin.handler;
 
+import com.zaozao.model.vo.MessageVO;
+import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -9,6 +11,7 @@ import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -21,14 +24,17 @@ public class ScanHandler implements WxMpMessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(ScanHandler.class);
 
+    @Autowired
+    private WeixinService weixinService;
+
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        logger.info("recieve weixin scan_push message:" + message.toString());
-        logger.info(ToStringBuilder.reflectionToString(message.getScanCodeInfo()));
-        WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("您的扫码结果为：" + message.getScanCodeInfo().getScanResult())
-                .fromUser(message.getToUserName())
-                .toUser(message.getFromUserName())
-                .build();
-        return wxMpXmlOutMessage;
+        logger.info("您的扫码结果为：" + message.getScanCodeInfo().getScanResult());
+
+        MessageVO messageVO = new MessageVO();
+        messageVO.setOpenid(message.getFromUserName());
+        messageVO.setContent("您的扫码结果为：" + message.getScanCodeInfo().getScanResult());
+        weixinService.sendCustomMessage(messageVO);
+
+        return null;
     }
 }
