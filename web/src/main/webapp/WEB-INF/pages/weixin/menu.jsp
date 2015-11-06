@@ -43,7 +43,7 @@
                   </div>
                   <div class="box-footer">
                     <button type="button" class="btn btn-primary" id="update">修改菜单</button>
-                    <button type="button" class="btn btn-primary" id="delete">清空菜单</button>
+                    <%--<button type="button" class="btn btn-primary" id="delete">清空菜单</button>--%>
                   </div>
                 </div>
               </div><!-- /.box -->
@@ -85,7 +85,7 @@
           });
         });
 
-        $("#update").click(function(){
+        $("#delete").click(function(){
           $.ajax({
             url: '/admin/settings/wx/menu',
             type: 'DELETE',

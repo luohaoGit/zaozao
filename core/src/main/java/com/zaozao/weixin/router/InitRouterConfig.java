@@ -1,9 +1,6 @@
 package com.zaozao.weixin.router;
 
-import com.zaozao.weixin.handler.SubscribeHandler;
-import com.zaozao.weixin.handler.TextHandler;
-import com.zaozao.weixin.handler.DefaultHandler;
-import com.zaozao.weixin.handler.UnsubscribeHandler;
+import com.zaozao.weixin.handler.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import org.slf4j.Logger;
@@ -29,6 +26,9 @@ public class InitRouterConfig implements InitializingBean {
     private TextHandler textHandler;
 
     @Autowired
+    private ScanHandler scanHandler;
+
+    @Autowired
     private DefaultHandler defaultHandler;
 
     public void afterPropertiesSet() throws Exception {
@@ -44,7 +44,7 @@ public class InitRouterConfig implements InitializingBean {
                 .handler(subscribeHandler)
                 .end()
 
-                        //用户取消关注
+                //用户取消关注
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_EVENT)
@@ -52,7 +52,15 @@ public class InitRouterConfig implements InitializingBean {
                 .handler(unsubscribeHandler)
                 .end()
 
-                        //用户输入：移车
+                //扫一扫
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_SCANCODE_PUSH)
+                .handler(scanHandler)
+                .end()
+
+                //用户输入：移车
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT).content("移车")
