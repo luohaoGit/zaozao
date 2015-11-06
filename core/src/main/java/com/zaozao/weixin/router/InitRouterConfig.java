@@ -41,18 +41,18 @@ public class InitRouterConfig implements InitializingBean {
                 .async(false)
                 .msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_SUBSCRIBE)
-                .handler(unsubscribeHandler)
+                .handler(subscribeHandler)
                 .end()
 
-                //用户取消关注
+                        //用户取消关注
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_UNSUBSCRIBE)
-                .handler(subscribeHandler)
+                .handler(unsubscribeHandler)
                 .end()
 
-                //用户输入：移车
+                        //用户输入：移车
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT).content("移车")
