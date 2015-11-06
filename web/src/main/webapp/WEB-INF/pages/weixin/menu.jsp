@@ -33,118 +33,19 @@
             <div class="col-xs-12">
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">修改菜单</h3>
+                  <h3 class="box-title">修改菜单(当前只支持json修改)</h3>
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form">
-                  <div class="box-body">
-
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0" placeholder="第一个菜单名称">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="box-body">
-                    <div class="row">
-                      <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0-button0" placeholder="第一个菜单名称">
-                      </div>
-                      <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0-button1" placeholder="第二个菜单名称">
-                      </div>
-                      <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0-button2" placeholder="第三个菜单名称">
-                      </div>
-                      <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0-button3" placeholder="第四个菜单名称">
-                      </div>
-                      <div class="col-xs-2">
-                        <input type="text" class="form-control" id="menu0-button4" placeholder="第五个菜单名称">
-                      </div>
-                    </div>
+                <div class="box-body">
+                  <div class="form-group">
+                    <label>菜单JSON</label>
+                    <textarea class="form-control" rows="20" id="menu"></textarea>
                   </div>
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                          <select class="form-control button-type"></select>
-                        </div>
-                        <div class="col-xs-2">
-                          <select class="form-control button-type"></select>
-                        </div>
-                        <div class="col-xs-2">
-                          <select class="form-control button-type"></select>
-                        </div>
-                        <div class="col-xs-2">
-                          <select class="form-control button-type"></select>
-                        </div>
-                        <div class="col-xs-2">
-                          <select class="form-control button-type"></select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1" placeholder="第二个菜单名称">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1-button0" placeholder="第一个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1-button1" placeholder="第二个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1-button2" placeholder="第三个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1-button3" placeholder="第四个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu1-button4" placeholder="第五个菜单名称">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2" placeholder="第三个菜单名称">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="box-body">
-                      <div class="row">
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2-button0" placeholder="第一个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2-button1" placeholder="第二个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2-button2" placeholder="第三个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2-button3" placeholder="第四个菜单名称">
-                        </div>
-                        <div class="col-xs-2">
-                          <input type="text" class="form-control" id="menu2-button4" placeholder="第五个菜单名称">
-                        </div>
-                      </div>
-                    </div>
-
-                  </div><!-- /.box-body -->
-
                   <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" id="update">修改菜单</button>
+                    <button type="button" class="btn btn-primary" id="delete">清空菜单</button>
                   </div>
-                </form>
+                </div>
               </div><!-- /.box -->
             </div>
           </div>
@@ -160,25 +61,43 @@
 
     <script>
       $(function () {
-        var menu = ${menu};
-        console.log(menu);
+        var menu = '${menu}';
 
-        var options = "<option value='click'>点击推事件</option>" +
-                      "<option value='view'>跳转URL</option>" +
-                      "<option value='scancode_push'>扫码推事件</option>";
-        $(".button-type").append(options);
-
-        var buttons = menu.button;
-        for(var i=0; i<buttons.length; i++){
-          var button = buttons[i];
-          $("#menu" + i).val(button.name);
-
-          var subbuttons = button.sub_button;
-          for(var j=0; j<subbuttons.length; j++){
-            var subbutton = subbuttons[j];
-            $("#menu" + i + "-button" + j).val(subbutton.name);
-          }
+        if(menu != ''){
+          menu = JSON.parse('${menu}');
+          $("#menu").val(JSON.stringify(menu, null, "\t"));
         }
+
+        $("#update").click(function(){
+          var data = '{"menu":' + $("#menu").val() + '}';
+          $.ajax({
+            url: '/admin/settings/wx/menu',
+            type: 'POST',
+            contentType: 'application/json',
+            data: data,
+            success: function(response) {
+              alert("成功");
+            },
+            error: function(response){
+              console.log(response)
+              alert("失败");
+            }
+          });
+        });
+
+        $("#update").click(function(){
+          $.ajax({
+            url: '/admin/settings/wx/menu',
+            type: 'DELETE',
+            success: function(response) {
+              alert("成功");
+            },
+            error: function(response){
+              console.log(response)
+              alert("失败");
+            }
+          });
+        });
 
         $('#wx-li').addClass("active");
         $('#wx-li-menu').addClass("active");
