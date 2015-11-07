@@ -1,5 +1,6 @@
 package com.zaozao.weixin.handler;
 
+import com.zaozao.service.UserService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -8,6 +9,7 @@ import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -20,9 +22,13 @@ public class UnsubscribeHandler implements WxMpMessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(UnsubscribeHandler.class);
 
+    @Autowired
+    private UserService userService;
+
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         //用户取消关注相关操作
-        logger.info("用户取消关注");
+        logger.info("用户取消关注:" + message.getFromUserName());
+        userService.unsubcribe(message.getFromUserName());
         return null;
     }
 }

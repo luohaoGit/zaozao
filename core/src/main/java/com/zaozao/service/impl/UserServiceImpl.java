@@ -6,6 +6,11 @@ import com.zaozao.model.po.User;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
+import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,8 +24,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    protected static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private WeixinService weixinService;
 
     public User findByUsername(String username) {
         return null;
@@ -62,20 +72,42 @@ public class UserServiceImpl implements UserService {
     }
 
     public void autoRegister(UserVO userVO) {
-        if(userVO.getOpenId() == null){
-            throw new ZaozaoException("openid 不能为空");
+        if(userVO == null || userVO.getOpenId() == null){
+            throw new ZaozaoException("openid 或 id 不能为空");
         }
         int count = userDao.checkByWx(userVO.getOpenId());
         //没有关注的人，新增
         if(count == 0){
             User user = new User();
+            generatorQrCode(user);
+            user.setId(userVO.getId());
             user.setTelephone("未绑定");
             user.setUsername(userVO.getOpenId());
             user.setPassword("000000");
             user.setRegisterTime(new Date());
             user.setOpenId(userVO.getOpenId());
+            user.setSubcribe(true);
             userDao.insert(user);
+        }else{
+            User user = userDao.findByWx(userVO.getOpenId());
+            if(StringUtils.isEmpty(user.getQrTicket())){
+                generatorQrCode(user);
+                userDao.updateQr(user);
+            }
+            userDao.subcribe(userVO.getOpenId());
         }
+    }
+
+    private User generatorQrCode(User user){
+        try {
+            WxMpQrCodeTicket ticket = weixinService.qrCodeCreateLastTicket(user.getId());
+            user.setQrTicket(ticket.getTicket());
+            user.setQrUrl(ticket.getUrl());
+        } catch (WxErrorException e) {
+            logger.error(e.getMessage());
+            throw new ZaozaoException(e.getMessage());
+        }
+        return user;
     }
 
     public void login(UserVO userVO) {
@@ -102,5 +134,13 @@ public class UserServiceImpl implements UserService {
         pageVO.setRowCout(count);
         pageVO.setData(userList);
         return pageVO;
+    }
+
+    public void unsubcribe(String openid) {
+        userDao.unsubcribe(openid);
+    }
+
+    public void subcribe(String openid) {
+        userDao.subcribe(openid);
     }
 }

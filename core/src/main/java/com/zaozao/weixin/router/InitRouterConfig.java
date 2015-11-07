@@ -26,6 +26,9 @@ public class InitRouterConfig implements InitializingBean {
     private TextHandler textHandler;
 
     @Autowired
+    private ScanPushHandler scanPushHandler;
+
+    @Autowired
     private ScanHandler scanHandler;
 
     @Autowired
@@ -36,42 +39,50 @@ public class InitRouterConfig implements InitializingBean {
         //set route
         wxMpMessageRouter
 
-                //用户订阅
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_EVENT)
-                .event(WxConsts.EVT_SUBSCRIBE)
-                .handler(subscribeHandler)
-                .end()
+            //用户订阅
+            .rule()
+            .async(false)
+            .msgType(WxConsts.XML_MSG_EVENT)
+            .event(WxConsts.EVT_SUBSCRIBE)
+            .handler(subscribeHandler)
+            .end()
 
-                //用户取消关注
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_EVENT)
-                .event(WxConsts.EVT_UNSUBSCRIBE)
-                .handler(unsubscribeHandler)
-                .end()
+            //用户取消关注
+            .rule()
+            .async(false)
+            .msgType(WxConsts.XML_MSG_EVENT)
+            .event(WxConsts.EVT_UNSUBSCRIBE)
+            .handler(unsubscribeHandler)
+            .end()
 
-                //扫一扫
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_EVENT)
-                .event(WxConsts.EVT_SCANCODE_PUSH)
-                .handler(scanHandler)
-                .end()
+            //带参数的扫一扫,event为SCAN
+            .rule()
+            .async(false)
+            .msgType(WxConsts.XML_MSG_EVENT)
+            .event(WxConsts.EVT_SCAN)
+            .handler(scanHandler)
+            .end()
 
-                //用户输入：移车
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_TEXT).content("移车")
-                .handler(textHandler)
-                .end()
+            //扫一扫
+/*            .rule()
+            .async(false)
+            .msgType(WxConsts.XML_MSG_EVENT)
+            .event(WxConsts.EVT_SCANCODE_PUSH)
+            .handler(scanPushHandler)
+            .end()*/
 
-                //默认路由
-                .rule()
-                .async(false)
-                .handler(defaultHandler)
-                .end();
+            //用户输入：移车
+            .rule()
+            .async(false)
+            .msgType(WxConsts.XML_MSG_TEXT).content("移车")
+            .handler(textHandler)
+            .end()
+
+            //默认路由
+            .rule()
+            .async(false)
+            .handler(defaultHandler)
+            .end();
     }
 
     public void setWxMpMessageRouter(WxMpMessageRouter wxMpMessageRouter) {

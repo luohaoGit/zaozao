@@ -8,6 +8,9 @@ import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,15 +22,19 @@ import java.util.Map;
 @Component
 public class SubscribeHandler implements WxMpMessageHandler {
 
+    protected static Logger logger = LoggerFactory.getLogger(SubscribeHandler.class);
+
     @Autowired
     private UserService userService;
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+        logger.info("收到关注消息：" + ToStringBuilder.reflectionToString(message));
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("嗨~欢迎加入“早早移车”，回复“移车”")
+                .content("嗨~欢迎加入“早早移车”，回复“移车”" + message.getEventKey())
                 .fromUser(message.getToUserName())
                 .toUser(message.getFromUserName())
                 .build();
+
         UserVO userVO = new UserVO();
         userVO.setOpenId(message.getFromUserName());
         userService.autoRegister(userVO);

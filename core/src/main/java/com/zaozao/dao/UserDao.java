@@ -11,9 +11,17 @@ public interface UserDao extends BaseDao<User> {
 
     void bindTel(User user);
 
+    void updateQr(User user);
+
     int checkByTel(String telephone);
 
     int checkByWx(String openid);
 
+    User findByWx(String openid);
+
     User findByTel(String telephone);
+
+    void unsubcribe(String openid);
+
+    void subcribe(String openid);
 }

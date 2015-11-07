@@ -25,66 +25,8 @@ public class ZaozaoController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value="industry/set_industry/{industry_id1}/{industry_id}")
-	public String setIndustry(@PathVariable String industry_id1, @PathVariable String industry_id2) {
-
-		String url = "https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token=" + PropertiesUtil.getAccessToken();
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("industry_id1", industry_id1);
-		param.put("industry_id2", industry_id2);
-		String result = HttpClientUtil.httpPost(url, param);
-		logger.info("微信接口调用:修改行业id=" + url);
-		return null;
-	}
-
-	@RequestMapping(value="industry/add_template/{template_id_short}")
-	public String getTemplateId(@PathVariable String template_id_short) {
-
-		String url = "https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=" + PropertiesUtil.getAccessToken();
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("template_id_short", template_id_short);
-		String result = HttpClientUtil.httpPost(url, param);
-		logger.info("微信接口调用:获取模版id=" + url);
-		return null;
-	}
-
-	@RequestMapping(value="industry/send_message/{template_id}")
-	public String sendTemplteMessage(@PathVariable String template_id) {
-
-		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + PropertiesUtil.getAccessToken();
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("touser", template_id);
-		param.put("template_id", template_id);
-		param.put("url", "http://weixin.qq.com/download");
-		param.put("data", "{\n" +
-				"                   \"first\": {\n" +
-				"                       \"value\":\"恭喜你购买成功！\",\n" +
-				"                       \"color\":\"#173177\"\n" +
-				"                   },\n" +
-				"                   \"keynote1\":{\n" +
-				"                       \"value\":\"巧克力\",\n" +
-				"                       \"color\":\"#173177\"\n" +
-				"                   },\n" +
-				"                   \"keynote2\": {\n" +
-				"                       \"value\":\"39.8元\",\n" +
-				"                       \"color\":\"#173177\"\n" +
-				"                   },\n" +
-				"                   \"keynote3\": {\n" +
-				"                       \"value\":\"2014年9月22日\",\n" +
-				"                       \"color\":\"#173177\"\n" +
-				"                   },\n" +
-				"                   \"remark\":{\n" +
-				"                       \"value\":\"欢迎再次购买！\",\n" +
-				"                       \"color\":\"#173177\"\n" +
-				"                   }\n" +
-				"           }");
-		String result = HttpClientUtil.httpPost(url, param);
-		logger.info("微信接口调用:获取模版id=" + url);
-		return null;
-	}
-
-
 	//oz57qsld4yxFo1F1D2ZrCL2AQjqs
+	//0b7bb19d-90e7-4ca7-bed5-a66128039fb3
 	//{"total":5,"count":5,"data":{"openid":["oz57qsh3ybplzbIiTV8NRU5xLQYk","oz57qspwRnpmnmnmeeI06fMfFO8Q","oz57qsld4yxFo1F1D2ZrCL2AQjqs","oz57qsllrwwTaUEpbjSBrE_uUrPo","oz57qsqVTBFCCinSxODrr6BsnH9o"]},"next_openid":"oz57qsqVTBFCCinSxODrr6BsnH9o"}
 	@RequestMapping(value="{brand}", method = RequestMethod.GET)
 	public String getFruit(@PathVariable String brand, ModelMap model) {

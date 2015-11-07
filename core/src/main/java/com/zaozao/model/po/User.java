@@ -21,10 +21,13 @@ public class User extends BasePO {
     private String idNumber; //身份证号码
     private String portrait; //头像
     private String qrCode; //二维码
+    private String qrTicket;
+    private String qrUrl;
     private boolean locked; //锁定
     private String salt; //盐值
     private String openId; //关注者id
     private boolean bundling; //是否绑定账号
+    private boolean subcribe;
 
     private List<Car> cars;
 
@@ -170,5 +173,29 @@ public class User extends BasePO {
 
     public void setBundling(boolean bundling) {
         this.bundling = bundling;
+    }
+
+    public String getQrTicket() {
+        return qrTicket;
+    }
+
+    public void setQrTicket(String qrTicket) {
+        this.qrTicket = qrTicket;
+    }
+
+    public String getQrUrl() {
+        return qrUrl;
+    }
+
+    public void setQrUrl(String qrUrl) {
+        this.qrUrl = qrUrl;
+    }
+
+    public boolean isSubcribe() {
+        return subcribe;
+    }
+
+    public void setSubcribe(boolean subcribe) {
+        this.subcribe = subcribe;
     }
 }

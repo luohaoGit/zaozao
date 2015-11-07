@@ -26,4 +26,8 @@ public interface UserService {
     boolean checkByTel(String telephone);
 
     PageVO<User> getUserPage(PageVO<User> pageVO);
+
+    void unsubcribe(String openid);
+
+    void subcribe(String openid);
 }

@@ -8,7 +8,6 @@ import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +19,19 @@ import java.util.Map;
  * Created by luohao on 2015/10/27.
  */
 @Component
-public class ScanHandler implements WxMpMessageHandler {
+public class ScanPushHandler implements WxMpMessageHandler {
 
-    protected static Logger logger = LoggerFactory.getLogger(ScanHandler.class);
+    protected static Logger logger = LoggerFactory.getLogger(ScanPushHandler.class);
 
     @Autowired
     private WeixinService weixinService;
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        logger.info("您扫码结果为：" + ToStringBuilder.reflectionToString(message));
+        logger.info("您的扫码结果为：" + message.getScanCodeInfo().getScanResult());
 
         MessageVO messageVO = new MessageVO();
         messageVO.setOpenid(message.getFromUserName());
-        messageVO.setContent("ID为：" + message.getEventKey());
+        messageVO.setContent("您的扫码结果为：" + message.getScanCodeInfo().getScanResult());
         weixinService.sendCustomMessage(messageVO);
 
         return null;

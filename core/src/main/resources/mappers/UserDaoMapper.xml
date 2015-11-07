@@ -32,7 +32,7 @@
             
     <sql id="userColumn">
         id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait, qrcode,
-        openid, bundling
+        openid, bundling, qrurl, qrticket, subcribe
     </sql>
     
     <select id="count" resultType="java.lang.Long">
@@ -44,7 +44,7 @@
         <include refid="userColumn" />
         ) VALUES
         (#{id}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
-        #{registerTime}, #{deleted}, #{portrait}, #{qrCode}, #{openId}, #{bundling});
+        #{registerTime}, #{deleted}, #{portrait}, #{qrCode}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe});
     </insert>
 
     <update id="update" parameterType="User">
@@ -64,7 +64,10 @@
         portrait = #{portrait},
         qrcode = #{qrCode},
         openid = #{openId},
-        bundling = #{bundling}
+        bundling = #{bundling},
+        qrurl = #{qrUrl},
+        qrticket = #{qrTicket},
+        subcribe = #{subcribe}
         WHERE id = #{id};
     </update>
 
@@ -73,6 +76,14 @@
         telephone = #{telephone},
         bundling = 1
         WHERE id = #{id};
+    </update>
+
+    <update id="updateQr" parameterType="User">
+        UPDATE t_user SET
+        qrcode = #{qrCode},
+        qrurl = #{qrUrl},
+        qrticket = #{qrTicket}
+        WHERE openid = #{openId};
     </update>
 
     <delete id="delete" parameterType="String">
@@ -87,6 +98,12 @@
 
     <select id="checkByWx" resultType="java.lang.Integer" parameterType="String">
         SELECT count(*)
+        from t_user u
+        WHERE u.openid = #{openId};
+    </select>
+
+    <select id="findByWx" resultMap="userResultMap" parameterType="String">
+        SELECT <include refid="userColumn" />
         from t_user u
         WHERE u.openid = #{openId};
     </select>
@@ -107,4 +124,16 @@
         SELECT <include refid="userColumn" />
         from t_user u order by registertime desc limit #{start}, #{size}
     </select>
+
+    <update id="unsubcribe" parameterType="String">
+        UPDATE t_user SET
+        subcribe = 0
+        WHERE openid = #{openid};
+    </update>
+
+    <update id="subcribe" parameterType="String">
+        UPDATE t_user SET
+        subcribe = 1
+        WHERE openid = #{openid};
+    </update>
 </mapper>

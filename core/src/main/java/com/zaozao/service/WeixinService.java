@@ -5,6 +5,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,12 +14,13 @@ import java.io.InputStream;
  */
 public interface WeixinService extends WxMpService{
 
-
     void receive(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     void sendCustomMessage(MessageVO messageVO);
 
     void pushTemplateMessage(MessageVO messageVO);
+
+    File getQr(String id);
 
     boolean isEnableCrypt();
 }
