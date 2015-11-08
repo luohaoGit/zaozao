@@ -11,6 +11,9 @@ public class MessageVO extends BaseVO {
 
     private String openid;
 
+    private String url;
+    private String templateId;
+
     public String getContent() {
         return content;
     }
@@ -33,5 +36,21 @@ public class MessageVO extends BaseVO {
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 }

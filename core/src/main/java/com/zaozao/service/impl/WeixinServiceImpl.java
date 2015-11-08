@@ -121,8 +121,8 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     //使用微信模板消息
     public void pushTemplateMessage(MessageVO messageVO) {
         String toUserOpenId = messageVO.getOpenid();
-        String templateId = "";
-        String url = "";
+        String templateId = messageVO.getTemplateId();
+        String url = messageVO.getUrl();
 
         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
         templateMessage.setToUser(toUserOpenId);

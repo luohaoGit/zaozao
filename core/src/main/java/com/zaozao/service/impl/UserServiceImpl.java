@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     private User generatorQrCode(User user){
         try {
-            WxMpQrCodeTicket ticket = weixinService.qrCodeCreateLastTicket(user.getId());
+            WxMpQrCodeTicket ticket = weixinService.qrCodeCreateLastTicket("zzqr" + user.getId());
             user.setQrTicket(ticket.getTicket());
             user.setQrUrl(ticket.getUrl());
         } catch (WxErrorException e) {
