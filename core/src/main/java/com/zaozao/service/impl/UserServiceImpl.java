@@ -80,13 +80,13 @@ public class UserServiceImpl implements UserService {
         if(count == 0){
             User user = new User();
             generatorQrCode(user);
-            user.setId(userVO.getId());
             user.setTelephone("未绑定");
             user.setUsername(userVO.getOpenId());
             user.setPassword("000000");
             user.setRegisterTime(new Date());
             user.setOpenId(userVO.getOpenId());
             user.setSubcribe(true);
+            logger.info("保存用户：" + user.toString());
             userDao.insert(user);
         }else{
             User user = userDao.findByWx(userVO.getOpenId());
