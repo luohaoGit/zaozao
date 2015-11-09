@@ -22,6 +22,9 @@
         <result property="qrCode" column="qrcode" javaType="String" />
         <result property="openId" column="openid" javaType="String" />
         <result property="bundling" column="bundling" javaType="boolean" />
+        <result property="qrUrl" column="qrurl" javaType="String" />
+        <result property="qrTicket" column="qrticket" javaType="String" />
+        <result property="subcribe" column="subcribe" javaType="boolean" />
         <collection property="cars" ofType="com.zaozao.model.po.Car" column="userid">
             <id column="cid" property="id"/>
             <result column="brand" property="brand"/>
@@ -92,8 +95,8 @@
 
     <select id="searchById" resultMap="userResultMap" parameterType="String">
         SELECT u.*, c.id cid, c.brand, c.model, c.color
-        from t_user u, t_car c
-        WHERE u.id=c.userid and u.id = #{id};
+        from t_user u left join t_car c on u.id=c.userid
+        WHERE u.id = #{id};
     </select>
 
     <select id="getQRById" resultType="java.lang.String" parameterType="String">

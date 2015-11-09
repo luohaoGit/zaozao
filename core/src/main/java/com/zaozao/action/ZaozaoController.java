@@ -26,6 +26,7 @@ public class ZaozaoController {
 	private UserService userService;
 
 	//oz57qsld4yxFo1F1D2ZrCL2AQjqs
+	//oz57qslTKiP-Gw8FQAEPuA3x8aN0
 	//06c85a5f-82b4-4bd0-baa0-30631efa1d08
 	//{"total":5,"count":5,"data":{"openid":["oz57qsh3ybplzbIiTV8NRU5xLQYk","oz57qspwRnpmnmnmeeI06fMfFO8Q","oz57qsld4yxFo1F1D2ZrCL2AQjqs","oz57qsllrwwTaUEpbjSBrE_uUrPo","oz57qsqVTBFCCinSxODrr6BsnH9o"]},"next_openid":"oz57qsqVTBFCCinSxODrr6BsnH9o"}
 	@RequestMapping(value="{brand}", method = RequestMethod.GET)

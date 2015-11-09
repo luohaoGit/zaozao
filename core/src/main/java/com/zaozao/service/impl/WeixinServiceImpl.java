@@ -115,7 +115,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         try {
             this.customMessageSend(message);
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
     }
