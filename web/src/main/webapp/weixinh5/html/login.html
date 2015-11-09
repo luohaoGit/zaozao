@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>登录</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/login.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../js/angular-resource.min.js"></script>
+	</head>
+	<body>
+		<div ng-app="login" ng-controller="login">
+			<ion-content class="container">
+				<input type="text" ng-show="false" ng-model="message" />
+				<div class="message" ng-bind="message"></div>
+				<input class="width-full margin-position" type="text" ng-model="phone" placeholder="手机号" />
+				<input class="width-full margin-position" type="password" ng-model="password" placeholder="密码" />
+				<div class="clearfix padding-bottom1">
+					<a ng-href="#"  class="forget-password">忘记密码?</a>
+				</div>
+				<div class="button button-calm width-full" ng-click="login()">注册</div>
+				<div class="weChat-container">
+					<img class="weChat" src="../img/test.png" />
+					<div class="weChat-text">微信登录</div>
+				</div>
+			</ion-content>
+		</div>
+	</body>
+	<script>
+		var login = angular.module('login',['ionic']);
+		login.controller('login',['$scope',function($scope){
+			$scope.login = function(){
+				$scope.message = '手机号或密码错误。';
+			};
+		}]);
+	</script>
+</html>

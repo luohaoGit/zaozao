@@ -1,0 +1,51 @@
+@charset "utf-8";
+
+body{
+	background-color: #FAFAFA;
+}
+.border-radius{
+	border-radius: 5px;
+}
+.list-container{
+	height: 3.25rem;
+	line-height: 3.25rem;
+}
+.head{
+	width: 2rem;
+	height: 2rem;
+	position: absolute;
+	top: 0.625rem;
+	left: 1rem;
+	border-radius: 50%;
+}
+.name{
+	width: 40%;
+	height: 3.25rem;
+	line-height: 3.25rem;
+	position: absolute;
+	top: 0;
+	left: 3.375rem;
+	color: #888888;
+}
+.noname{
+	width: 40%;
+	height: 3.25rem;
+	line-height: 3.25rem;
+	position: absolute;
+	top: 0;
+	left: 1rem;
+}
+.content{
+	width: 40%;
+	height: 3.25rem;
+	line-height: 3.25rem;
+	text-align: end;
+	position: absolute;
+	top: 0;
+	right: 2.25rem;
+	color: #888888;
+}
+.icon-color{
+	font-size: 1rem!important;
+	color: #888888;
+}

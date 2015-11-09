@@ -1,0 +1,26 @@
+@charset "utf-8";
+body{background-color: #FAFAFA;}
+.owner-palte{
+	width: 100%;
+	margin: 2rem 0;
+	text-align: center;
+	font-size: 1rem;
+}
+.button-container{
+	padding: 0 1rem;
+}
+.button{
+	width: 100%;
+	margin-bottom: 1rem;
+	border: hidden;
+	color: #F8F8F8;
+}
+.button:active{
+	background-color: #4B8BF4;
+}
+.weChat{
+	background-color: #387EF5;
+}
+.phone{
+	background-color: #33CD5F;
+}

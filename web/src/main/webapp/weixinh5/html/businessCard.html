@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>我的移车名片</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/businessCard.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../js/angular-resource.min.js"></script>
+	</head>
+	<body>
+		<div ng-app="businessCard" ng-controller="businessCard">
+			<ion-content class="container">
+				<div class="business-card-container">
+					<div class="card-title">
+						<img class="logo" src="../img/logo.jpg" />
+						<div class="ad">您的挪车好帮手</div>
+					</div>
+					<div class="code-container">
+						<div class="code-left">
+							<div><img class="code" src="../img/code0.png" /></div>
+							<div>第一步</div>
+						</div>
+						<div class="code-middle">
+							<div>扫一扫</div>
+							<div class="ion-arrow-right-a right"></div>
+						</div>
+						<div class="code-right">
+							<div><img class="code" src="../img/code0.png" /></div>
+							<div>第二步</div>
+						</div>
+					</div>
+					<div class="card-connection">
+						<div class="connection-left">服务号：{{serviceId}}</div>
+						<div class="connection-middle">早早号：{{userId}}</div>
+						<div ng-if="!flag" class="connection-right">手机号：{{phone}}</div>
+					</div>
+				</div>
+				<div class="item item-checkbox checkbox-container">
+					<label class="checkbox">
+						<input type="checkbox" ng-model="flag">
+					</label>
+					不显示手机号
+				</div>
+				<div class="button button-balanced width-full" ng-click="downLoad()">下载我的移车名片</div>
+			</ion-content>
+		</div>
+	</body>
+	<script>
+		var businessCard = angular.module('businessCard',['ionic']);
+		businessCard.controller('businessCard',['$scope',function($scope){
+			$scope.serviceId = '952-152-110';
+			$scope.userId = '23254123';
+			$scope.phone = '15850761726';
+		}]);
+	</script>
+</html>

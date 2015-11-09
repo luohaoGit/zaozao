@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>评论</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/comment.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../js/angular-resource.min.js"></script>
+	</head>
+	<body>
+		<div ng-app="commentApp" ng-controller="commentController">
+			<ion-content class="container">
+				<div class="list margin-position" ng-repeat="x in lists">
+					<div class="item item-avatar">
+						<img ng-src="{{x.headSrc}}">
+						<h2 class="position">{{x.name}}&nbsp;:&nbsp;</h2>
+						<p class="position">{{x.content}}</p>
+					</div>
+					<hr />
+				</div>
+			</ion-content>
+			<div class="bar bar-footer margin-footer">
+				<input class="comment-input" type="text" placeholder="写点什么..." ng-model="comment" />
+				<button class="button button-clear send" ng-click="send()">发送</button>
+			</div>
+		</div>
+	</body>
+	<script>
+		var commentApp = angular.module('commentApp', ['ionic']);
+		commentApp.controller('commentController', ['$scope', function($scope){
+			$scope.lists = [
+				{name:'Venkman',headSrc:'../img/test.png',content:'Back off, man. I\'m a scientist.'},
+				{name:'Venkman',headSrc:'../img/test.png',content:'Back off, man. I\'m a scientist.'},
+				{name:'Venkman',headSrc:'../img/test.png',content:'Back off, man. I\'m a scientist.'},
+				{name:'Venkman',headSrc:'../img/test.png',content:'Back off, man. I\'m a scientist.'}
+			];
+			$scope.send = function(){
+				console.log($scope.comment);
+			}
+		}]);
+	</script>
+</html>

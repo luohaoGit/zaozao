@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>早早移车</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/informationRichScan.css">
+		<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../js/angular-resource.min.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.11.1.js" ></script>
+	</head>
+	<body>
+		<div ng-app="plate" ng-controller="queryPlate">
+			<ion-content>
+				<div class="owner-palte">车主车牌号：{{ ownerPlate }}</div>
+				<div class="button-container">
+					<div class="button weChat" ng-click="weChat()">启动微信聊天</div>				
+				</div>
+				<div class="button-container">
+					<div class="button phone" ng-click="phone()">拨打车主电话</div>
+				</div>
+			</ion-content>
+		</div>
+	</body>
+	<script>
+		var plate = angular.module('plate', ['ionic']);
+		plate.controller('queryPlate', ['$scope', function($scope){
+			$scope.ownerPlate = "苏A L634P";
+			$scope.weChat = function(){
+				$('.button').css('color','#F8F8F8');
+				alert('weChat!');
+			};
+			$scope.phone = function(){
+				$('.button').css('color','#F8F8F8');
+				alert('phone!');
+			};
+		}]);
+	</script>
+</html>

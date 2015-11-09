@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>绑定手机</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/bindingPhone.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="../js/angular-resource.min.js"></script>
+	</head>
+<style>
+
+</style>
+	<body>
+		<div ng-app="bindingPhone" ng-controller="bindingPhone">
+			<ion-content class="container">
+				<input type="text" ng-show="false" ng-model="message" />
+				<div class="message" ng-bind="message"></div>
+				<input class="width-full margin-position" type="text" ng-model="phone" placeholder="手机号" />
+				<div class="width-full margin-position position-relative">
+					<input class="width-full margin-position" type="text" ng-model="securitycode" placeholder="验证码" />
+					<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">验证码</div>
+					<div class="security text-color" ng-hide="timeFlag">{{time}}</div>
+				</div>
+				<div class="button button-calm width-full" ng-click="next()">下一步</div>
+			</ion-content>
+		</div>
+	</body>
+	<script>
+		var bindingPhone = angular.module('bindingPhone',['ionic']);
+		bindingPhone.controller('bindingPhone',['$scope',function($scope){
+			$scope.sendFlag = false;
+			$scope.timeFlag = true;
+			$scope.sendSecurityCode = function(){
+				//60s 倒计时 start
+				$scope.time = 60;
+				$scope.sendFlag = true;
+				$scope.timeFlag = false;
+				var myTime = setInterval(function() {
+                    if(--$scope.time==0){
+                    	clearInterval(myTime);
+                    	$scope.sendFlag = false;
+						$scope.timeFlag = true;
+                    }
+                    $scope.$digest();
+                }, 1000);
+                //60s 倒计时  end
+			};
+			$scope.next = function(){
+				console.log($scope.phone);
+				$scope.message = '手机号是必须的。';
+			};
+		}]);
+	</script>
+</html>

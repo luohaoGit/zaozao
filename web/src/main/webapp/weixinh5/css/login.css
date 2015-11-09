@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+body{
+	background-color: #FAFAFA;
+}
+.container{
+	margin: 0 0.5rem;
+}
+.message {
+	line-height: 2rem;
+	width: 100%;
+	min-height: 2rem;
+	color: red;
+	margin: 1rem 0;
+	text-align: center;
+}
+.width-full{
+	width: 100%;
+}
+.margin-position{
+	margin: 1rem 0;
+	line-height: 3rem!important;
+    height: 3rem!important;
+}
+input{
+	padding: 0 1rem!important;
+	border-radius: 5px;
+}
+.security{
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: center;
+	line-height: 2rem;
+	height: 2rem;
+	min-height: 2rem;
+	min-width: 6rem;
+	margin: 0.5rem 0;
+	padding: 0 1rem;
+	border-left: solid 1px #B2B2B2!important;
+}
+.position-relative{
+	position: relative;
+}
+.text-color{
+	color: rgb(178, 178, 178);
+}
+.padding-bottom1{
+	padding-bottom: 1rem;
+}
+.forget-password{
+	float: right;
+	color: #007AFF;
+	line-height: 2rem;
+	height: 2rem;
+	text-align: center;
+	margin-right: 1rem;
+	text-decoration: none 
+}
+.weChat-container{
+	margin-top: 1rem;
+	width: 3rem;
+}
+.weChat{
+	width: 3rem;
+	height: 3rem;
+	border-radius: 5px;
+}
+.weChat-text{
+	text-align: center;
+	font-size: 0.75rem;
+	color: #B2B2B2;
+}
