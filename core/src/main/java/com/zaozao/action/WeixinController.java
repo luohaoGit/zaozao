@@ -1,7 +1,9 @@
 package com.zaozao.action;
 
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
+import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,9 @@ public class WeixinController {
     @Autowired
     private WeixinService weixinService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value="/test")
     public String test(ModelMap model){
 
@@ -54,7 +59,6 @@ public class WeixinController {
         try {
             weixinService.receive(request, response);
         } catch (IOException e) {
-            e.printStackTrace();
             logger.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
@@ -63,44 +67,10 @@ public class WeixinController {
     }
 
     @RequestMapping(value="/qrcode", method = RequestMethod.GET)
-    public String test(HttpServletRequest request, HttpServletResponse response) {
+    public String test(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         String id = request.getParameter("id");
-        File qr = weixinService.getQr(id);
-        FileInputStream inputStream = null;
-        ServletOutputStream out = null;
-        try {
-            inputStream = new FileInputStream(qr);
-            out = response.getOutputStream();
-            int b = 0;
-            byte[] buffer = new byte[1024];
-            while (b != -1){
-                b = inputStream.read(buffer);
-                //4.写到输出流(out)中
-                out.write(buffer,0,b);
-            }
-            inputStream.close();
-            out.close();
-            out.flush();
-        } catch (FileNotFoundException e) {
-            logger.error(e.getMessage());
-        } catch (IOException e){
-            logger.error(e.getMessage());
-        } finally {
-            if(inputStream != null){
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(out != null){
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
+        String qrcode = userService.getQrCode(id);
+        model.put("qrcode", qrcode);
+        return "index";
     }
 }

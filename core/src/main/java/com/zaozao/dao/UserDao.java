@@ -24,4 +24,6 @@ public interface UserDao extends BaseDao<User> {
     void unsubcribe(String openid);
 
     void subcribe(String openid);
+
+    String getQRById(String id);
 }

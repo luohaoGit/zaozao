@@ -9,12 +9,16 @@ import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -103,7 +107,17 @@ public class UserServiceImpl implements UserService {
             WxMpQrCodeTicket ticket = weixinService.qrCodeCreateLastTicket("zzqr" + user.getId());
             user.setQrTicket(ticket.getTicket());
             user.setQrUrl(ticket.getUrl());
+            File file = weixinService.qrCodePicture(ticket);
+            FileInputStream inputFile = new FileInputStream(file);
+            byte[] buffer = new byte[(int) file.length()];
+            inputFile.read(buffer);
+            inputFile.close();
+            String qrcode = Base64.encodeBase64String(buffer);
+            user.setQrCode(qrcode);
         } catch (WxErrorException e) {
+            logger.error(e.getMessage());
+            throw new ZaozaoException(e.getMessage());
+        } catch (IOException e){
             logger.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
@@ -142,5 +156,10 @@ public class UserServiceImpl implements UserService {
 
     public void subcribe(String openid) {
         userDao.subcribe(openid);
+    }
+
+    public String getQrCode(String id) {
+        String qrcode = userDao.getQRById(id);
+        return qrcode;
     }
 }

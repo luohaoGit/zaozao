@@ -96,6 +96,12 @@
         WHERE u.id=c.userid and u.id = #{id};
     </select>
 
+    <select id="getQRById" resultType="java.lang.String" parameterType="String">
+        SELECT qrcode
+        from t_user
+        WHERE id = #{id}
+    </select>
+
     <select id="checkByWx" resultType="java.lang.Integer" parameterType="String">
         SELECT count(*)
         from t_user u

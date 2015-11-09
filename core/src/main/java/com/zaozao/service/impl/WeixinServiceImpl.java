@@ -3,6 +3,7 @@ package com.zaozao.service.impl;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
+import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -11,7 +12,6 @@ import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -33,6 +32,9 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
@@ -136,19 +138,6 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
             e.printStackTrace();
             throw new ZaozaoException(e.getMessage());
         }
-    }
-
-    public File getQr(String id) {
-        WxMpQrCodeTicket ticket = null;
-        File qr = null;
-        try {
-            ticket = qrCodeCreateLastTicket(id);
-            qr = qrCodePicture(ticket);
-        } catch (WxErrorException e) {
-            logger.error(e.getMessage());
-            throw new ZaozaoException(e.getMessage());
-        }
-        return qr;
     }
 
     public void afterPropertiesSet() throws Exception {

@@ -20,7 +20,5 @@ public interface WeixinService extends WxMpService{
 
     void pushTemplateMessage(MessageVO messageVO);
 
-    File getQr(String id);
-
     boolean isEnableCrypt();
 }

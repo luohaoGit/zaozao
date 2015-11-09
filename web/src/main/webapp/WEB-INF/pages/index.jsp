@@ -12,5 +12,6 @@
 </head>
 <body>
 你好${brand},网站建设中。。。
+<img src="data:image/png;base64,${qrcode}"/>
 </body>
 </html>

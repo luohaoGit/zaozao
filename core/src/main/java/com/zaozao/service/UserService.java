@@ -30,4 +30,6 @@ public interface UserService {
     void unsubcribe(String openid);
 
     void subcribe(String openid);
+
+    String getQrCode(String id);
 }
