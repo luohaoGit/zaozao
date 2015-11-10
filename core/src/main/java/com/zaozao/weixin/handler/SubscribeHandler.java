@@ -30,7 +30,7 @@ public class SubscribeHandler implements WxMpMessageHandler {
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         logger.info("收到关注消息：" + ToStringBuilder.reflectionToString(message));
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("嗨~欢迎加入“早早移车”，回复“移车”" + message.getEventKey())
+                .content("嗨~欢迎加入“早早移车”")
                 .fromUser(message.getToUserName())
                 .toUser(message.getFromUserName())
                 .build();

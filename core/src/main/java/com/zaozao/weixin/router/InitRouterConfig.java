@@ -1,6 +1,8 @@
 package com.zaozao.weixin.router;
 
 import com.zaozao.weixin.handler.*;
+import com.zaozao.weixin.interceptor.CreateRouteInterceptor;
+import com.zaozao.weixin.interceptor.TextRouteInterceptor;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import org.slf4j.Logger;
@@ -34,55 +36,56 @@ public class InitRouterConfig implements InitializingBean {
     @Autowired
     private DefaultHandler defaultHandler;
 
+    @Autowired
+    private CreateRouteInterceptor createRouteInterceptor;
+
+    @Autowired
+    private TextRouteInterceptor textRouteInterceptor;
+
     public void afterPropertiesSet() throws Exception {
         logger.info("**************************set route");
         //set route
         wxMpMessageRouter
 
-            //用户订阅
-            .rule()
-            .async(false)
-            .msgType(WxConsts.XML_MSG_EVENT)
-            .event(WxConsts.EVT_SUBSCRIBE)
-            .handler(subscribeHandler)
-            .end()
+                //用户取消关注
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_UNSUBSCRIBE)
+                .handler(unsubscribeHandler)
+                .end()
 
-            //用户取消关注
-            .rule()
-            .async(false)
-            .msgType(WxConsts.XML_MSG_EVENT)
-            .event(WxConsts.EVT_UNSUBSCRIBE)
-            .handler(unsubscribeHandler)
-            .end()
+                //用户订阅
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_SUBSCRIBE)
+                .interceptor(createRouteInterceptor)
+                .handler(subscribeHandler)
+                .end()
 
-            //带参数的扫一扫,event为SCAN
-            .rule()
-            .async(false)
-            .msgType(WxConsts.XML_MSG_EVENT)
-            .event(WxConsts.EVT_SCAN)
-            .handler(scanHandler)
-            .end()
+                //带参数的扫一扫,event为SCAN
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_EVENT)
+                .event(WxConsts.EVT_SCAN)
+                .interceptor(createRouteInterceptor)
+                .handler(scanHandler)
+                .end()
 
-            //扫一扫
-/*            .rule()
-            .async(false)
-            .msgType(WxConsts.XML_MSG_EVENT)
-            .event(WxConsts.EVT_SCANCODE_PUSH)
-            .handler(scanPushHandler)
-            .end()*/
+                //用户输入
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_TEXT)
+                .interceptor(textRouteInterceptor)
+                .handler(textHandler)
+                .end()
 
-            //用户输入：移车
-            .rule()
-            .async(false)
-            .msgType(WxConsts.XML_MSG_TEXT).content("移车")
-            .handler(textHandler)
-            .end()
-
-            //默认路由
-            .rule()
-            .async(false)
-            .handler(defaultHandler)
-            .end();
+                //默认路由
+                .rule()
+                .async(false)
+                .handler(defaultHandler)
+                .end();
     }
 
     public void setWxMpMessageRouter(WxMpMessageRouter wxMpMessageRouter) {

@@ -23,7 +23,7 @@ public class TextHandler implements WxMpMessageHandler {
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         logger.info("recieve weixin message:" + message.toString());
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("请回复车牌号码")
+                .content("早早移车")
                 .fromUser(message.getToUserName())
                 .toUser(message.getFromUserName())
                 .build();
