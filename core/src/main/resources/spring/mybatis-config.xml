@@ -8,6 +8,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias alias="Car" type="com.zaozao.model.po.Car"/>
         <typeAlias alias="User" type="com.zaozao.model.po.User"/>
         <typeAlias alias="StuckRecord" type="com.zaozao.model.po.StuckRecord"/>
+        <typeAlias alias="Board" type="com.zaozao.model.po.Board"/>
+        <typeAlias alias="Post" type="com.zaozao.model.po.Post"/>
+        <typeAlias alias="Thump" type="com.zaozao.model.po.Thump"/>
+        <typeAlias alias="Comments" type="com.zaozao.model.po.Comments"/>
     </typeAliases>
 
 </configuration>

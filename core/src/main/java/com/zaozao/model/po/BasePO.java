@@ -3,6 +3,7 @@ package com.zaozao.model.po;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -13,6 +14,7 @@ public class BasePO implements Serializable{
 
     private String id = UUID.randomUUID().toString();
     private boolean deleted = false;
+    private Date createTime;
 
     public String getId() {
         return id;
@@ -28,6 +30,18 @@ public class BasePO implements Serializable{
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override

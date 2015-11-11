@@ -1,6 +1,5 @@
 package com.zaozao.model.po;
 
-import java.util.Date;
 
 /**
  * Created by luohao on 2015/10/14.
@@ -12,7 +11,6 @@ public class StuckRecord extends BasePO {
     private String beStuckCarNumber; //苦主车牌
     private String stuckUserPhone; //车主电话
     private String beStuckUserPhone; //苦主电话
-    private Date createTime; //创建时间
     private String phoneSource; //电话查询来源
     private boolean succeed; //帮助是否成功
     private String address; //移车地址
@@ -63,14 +61,6 @@ public class StuckRecord extends BasePO {
 
     public void setBeStuckUserPhone(String beStuckUserPhone) {
         this.beStuckUserPhone = beStuckUserPhone;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public String getPhoneSource() {
