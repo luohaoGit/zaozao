@@ -11,7 +11,7 @@
         <result property="title" column="title" javaType="string" />
         <result property="content" column="content" javaType="string" />
         <result property="boardId" column="boardid" javaType="string" />
-        <result property="createTime" column="createtime" javaType="java.sql.Date" />
+        <result property="createTime" column="createtime" javaType="java.sql.Timestamp" />
     </resultMap>
             
     <sql id="postColumn">

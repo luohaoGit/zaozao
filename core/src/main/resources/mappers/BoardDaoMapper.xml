@@ -10,7 +10,7 @@
         <result property="managerId" column="managerid" javaType="string" />
         <result property="name" column="name" javaType="string" />
         <result property="description" column="description" javaType="string" />
-        <result property="createTime" column="createTime" javaType="java.sql.Date" />
+        <result property="createTime" column="createTime" javaType="java.sql.Timestamp" />
     </resultMap>
             
     <sql id="boardColumn">
@@ -23,7 +23,7 @@
     
     <insert id="insert" parameterType="Board">
         INSERT INTO t_board(
-        <include refid="BoardColumn" />
+        <include refid="boardColumn" />
         ) VALUES
         (#{id}, #{deleted}, #{managerId}, #{name}, #{description}, #{createTime});
     </insert>

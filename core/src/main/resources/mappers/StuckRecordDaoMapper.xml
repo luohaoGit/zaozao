@@ -16,7 +16,7 @@
         <result property="phoneSource" column="phonesource" javaType="string" />
         <result property="address" column="address" javaType="string" />
         <result property="succeed" column="succeed" javaType="boolean" />
-        <result property="createTime" column="createtime" javaType="java.sql.Date" />
+        <result property="createTime" column="createtime" javaType="java.sql.Timestamp" />
     </resultMap>
             
     <sql id="stuckColumn">

@@ -15,7 +15,7 @@
         <result property="fueltype" column="fueltype" javaType="string" />
         <result property="frameNumber" column="framenumber" javaType="string" />
         <result property="color" column="color" javaType="string" />
-        <result property="registerTime" column="registertime" javaType="java.sql.Date" />
+        <result property="registerTime" column="registertime" javaType="java.sql.Timestamp" />
         <result property="deleted" column="deleted" javaType="boolean" />
         <association property="user" javaType="com.zaozao.model.po.User"><!-- resultMap=命名空间.id -->
             <id column="uid" property="id"/>

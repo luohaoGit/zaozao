@@ -16,7 +16,7 @@
         <result property="wxNumber" column="wxnumber" javaType="string" />
         <result property="address" column="address" javaType="string" />
         <result property="idNumber" column="idnumber" javaType="string" />
-        <result property="registerTime" column="registertime" javaType="java.sql.Date" />
+        <result property="registerTime" column="registertime" javaType="java.sql.Timestamp" />
         <result property="deleted" column="deleted" javaType="boolean" />
         <result property="portrait" column="portrait" javaType="String" />
         <result property="qrCode" column="qrcode" javaType="String" />
@@ -34,7 +34,7 @@
     </resultMap>
             
     <sql id="userColumn">
-        id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait, qrcode,
+        id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait,
         openid, bundling, qrurl, qrticket, subcribe
     </sql>
     
@@ -47,7 +47,7 @@
         <include refid="userColumn" />
         ) VALUES
         (#{id}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
-        #{registerTime}, #{deleted}, #{portrait}, #{qrCode}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe});
+        #{registerTime}, #{deleted}, #{portrait}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe});
     </insert>
 
     <update id="update" parameterType="User">

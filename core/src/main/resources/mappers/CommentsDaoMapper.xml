@@ -7,7 +7,7 @@
     <resultMap id="commentsResultMap" type="Comments">
         <id property="id" column="id" javaType="string" />
         <result property="deleted" column="deleted" javaType="boolean" />
-        <result property="createTime" column="createtime" javaType="java.sql.Date" />
+        <result property="createTime" column="createtime" javaType="java.sql.Timestamp" />
         <result property="userId" column="userid" javaType="string" />
         <result property="postId" column="postid" javaType="string" />
         <result property="content" column="content" javaType="string" />
