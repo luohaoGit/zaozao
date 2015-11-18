@@ -30,6 +30,7 @@
             <result column="brand" property="brand"/>
             <result column="model" property="model"/>
             <result column="color" property="color"/>
+            <result column="carnumber" property="carNumber"/>
         </collection>
     </resultMap>
             
@@ -94,13 +95,13 @@
     </delete>
 
     <select id="searchById" resultMap="userResultMap" parameterType="String">
-        SELECT u.*, c.id cid, c.brand, c.model, c.color
+        SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
         from t_user u left join t_car c on u.id=c.userid
         WHERE u.id = #{id};
     </select>
 
     <select id="searchByCarNumber" resultMap="userResultMap" parameterType="String">
-        SELECT u.*, c.id cid, c.brand, c.model, c.color
+        SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
         from t_user u left join t_car c on u.id=c.userid
         WHERE c.carnumber = #{carNumber};
     </select>

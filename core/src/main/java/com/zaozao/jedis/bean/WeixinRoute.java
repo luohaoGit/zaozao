@@ -15,6 +15,15 @@ public class WeixinRoute implements Serializable{
     private boolean kuOrChe; //true为苦主,false为车主
     private boolean active;
 
+    public WeixinRoute(){}
+
+    public WeixinRoute(String userName, String toUserName, boolean kuOrChe, boolean active) {
+        this.userName = userName;
+        this.toUserName = toUserName;
+        this.kuOrChe = kuOrChe;
+        this.active = active;
+    }
+
     public String getToUserName() {
         return toUserName;
     }

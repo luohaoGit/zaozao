@@ -1,6 +1,7 @@
 package com.zaozao.action;
 
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.UserService;
@@ -37,7 +38,7 @@ public class WeixinController {
 
     @RequestMapping(value="/test")
     public String test(ModelMap model){
-
+        weixinService.saveRoute(new WeixinRoute("luohao", "haha", true, true));
         return "index";
     }
 
