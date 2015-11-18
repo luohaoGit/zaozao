@@ -99,6 +99,18 @@
         WHERE u.id = #{id};
     </select>
 
+    <select id="searchByCarNumber" resultMap="userResultMap" parameterType="String">
+        SELECT u.*, c.id cid, c.brand, c.model, c.color
+        from t_user u left join t_car c on u.id=c.userid
+        WHERE c.carnumber = #{carNumber};
+    </select>
+
+    <select id="searchByUsername" resultMap="userResultMap" parameterType="String">
+        SELECT <include refid="userColumn" />
+        from t_user
+        WHERE username = #{username};
+    </select>
+
     <select id="getQRById" resultType="java.lang.String" parameterType="String">
         SELECT qrcode
         from t_user

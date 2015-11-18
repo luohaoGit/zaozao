@@ -37,7 +37,11 @@ public class UserServiceImpl implements UserService {
     private WeixinService weixinService;
 
     public User findByUsername(String username) {
-        return null;
+        return userDao.searchByUsername(username);
+    }
+
+    public User findByCarNumber(String carNumber) {
+        return userDao.searchByCarNumber(carNumber);
     }
 
     public User findById(String id) {
@@ -116,10 +120,10 @@ public class UserServiceImpl implements UserService {
             user.setQrCode(qrcode);
         } catch (WxErrorException e) {
             logger.error(e.getMessage());
-            throw new ZaozaoException(e.getMessage());
+            //throw new ZaozaoException(e.getMessage());
         } catch (IOException e){
             logger.error(e.getMessage());
-            throw new ZaozaoException(e.getMessage());
+            //throw new ZaozaoException(e.getMessage());
         }
         return user;
     }

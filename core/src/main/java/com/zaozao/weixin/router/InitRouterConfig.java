@@ -60,24 +60,30 @@ public class InitRouterConfig implements InitializingBean {
                 .async(false)
                 .msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_SUBSCRIBE)
-                .interceptor(createRouteInterceptor)
+                //.interceptor(createRouteInterceptor)
                 .handler(subscribeHandler)
                 .end()
 
                 //带参数的扫一扫,event为SCAN
-                .rule()
+/*                .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_EVENT)
                 .event(WxConsts.EVT_SCAN)
                 .interceptor(createRouteInterceptor)
                 .handler(scanHandler)
-                .end()
+                .end()*/
 
-                //用户输入
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT)
-                .interceptor(textRouteInterceptor)
+                .content("1") //用户回复1
+                .handler(textHandler)
+                .end()
+
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_TEXT)
+                .content("2") //用户回复2
                 .handler(textHandler)
                 .end()
 

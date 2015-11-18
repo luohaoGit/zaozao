@@ -21,4 +21,5 @@ public class CarServiceImpl implements CarService {
         return car == null ? null : car.getUser();
     }
 
+    //增加车辆时注意车牌号转为大写
 }

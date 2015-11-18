@@ -19,6 +19,10 @@ public interface UserDao extends BaseDao<User> {
 
     User findByWx(String openid);
 
+    User searchByCarNumber(String carNumber);
+
+    User searchByUsername(String username);
+
     User findByTel(String telephone);
 
     void unsubcribe(String openid);

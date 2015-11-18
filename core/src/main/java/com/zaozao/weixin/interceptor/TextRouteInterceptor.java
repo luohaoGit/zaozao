@@ -30,21 +30,7 @@ public class TextRouteInterceptor implements WxMpMessageInterceptor {
 
     public boolean intercept(WxMpXmlMessage message, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
         logger.info("收到消息：" + ToStringBuilder.reflectionToString(message));
-        try{
-            WxSession session = sessionManager.getSession(message.getFromUserName());
-            String toUserName = (String)session.getAttribute("toUserName");
-            if(!StringUtils.isEmpty(toUserName)){
-                MessageVO messageVO = new MessageVO();
-                messageVO.setOpenid(toUserName);
-                messageVO.setContent(message.getContent());
-                weixinService.sendCustomMessage(messageVO);
-                return false;
-            }else{
-                return true;
-            }
-        }catch (Exception e){
-            logger.error(e.getMessage());
-        }
+
         return true;
     }
 

@@ -1,6 +1,9 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.jedis.RedisClientTemplate;
+import com.zaozao.jedis.bean.WeixinRoute;
+import com.zaozao.jedis.dao.WeixinRouteDao;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
 import com.zaozao.service.UserService;
@@ -8,10 +11,7 @@ import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
-import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
-import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
-import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
-import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +35,9 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WeixinRouteDao weixinRouteDao;
 
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
@@ -121,17 +124,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     }
 
     //使用微信模板消息
-    public void pushTemplateMessage(MessageVO messageVO) {
-        String toUserOpenId = messageVO.getOpenid();
-        String templateId = messageVO.getTemplateId();
-        String url = messageVO.getUrl();
-
-        WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
-        templateMessage.setToUser(toUserOpenId);
-        templateMessage.setTemplateId(templateId);
-        templateMessage.setUrl(url);
-        //templateMessage.getDatas().add(new WxMpTemplateData(name1, value1, color2));
-
+    public void pushTemplateMessage(WxMpTemplateMessage templateMessage) {
         try {
             this.templateSend(templateMessage);
         } catch (WxErrorException e) {
@@ -140,6 +133,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         }
     }
 
+
     public void afterPropertiesSet() throws Exception {
         this.getAccessToken(true);
         logger.info("accessToken:" + this.getAccessToken());
@@ -147,5 +141,13 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     public boolean isEnableCrypt() {
         return enableCrypt;
+    }
+
+    public WeixinRoute getRoute(String username) {
+        return weixinRouteDao.getRoute(username);
+    }
+
+    public void saveRoute(WeixinRoute route) {
+        weixinRouteDao.saveRoute(route);
     }
 }

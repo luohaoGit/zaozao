@@ -50,11 +50,11 @@ public class CreateRouteInterceptor implements WxMpMessageInterceptor {
                     //为车主建立临时路由
                     toUserSession.setAttribute("toUserName", message.getFromUserName());
                     // TODO 发送模板消息给车主
-                    MessageVO templateMsg = new MessageVO();
+/*                    MessageVO templateMsg = new MessageVO();
                     templateMsg.setOpenid(toUser.getOpenId());
                     templateMsg.setTemplateId("o8dYLPDep3Zn7NJyK2rGprm0xnD6gJSU2uzQOWUsDp0");
                     templateMsg.setUrl("http://weixin.qq.com/download");
-                    weixinService.pushTemplateMessage(templateMsg);
+                    weixinService.pushTemplateMessage(templateMsg);*/
 
                     MessageVO messageVO = new MessageVO();
                     messageVO.setOpenid(message.getFromUserName());
