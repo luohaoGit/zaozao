@@ -9,6 +9,7 @@ import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public User findByOpenid(String openid) {
+        return userDao.findByWx(openid);
+    }
+
     public void bindTel(UserVO userVO) {
         User user = userDao.searchById(userVO.getId());
         if(user == null){
@@ -81,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     public void autoRegister(UserVO userVO) {
         if(userVO == null || userVO.getOpenId() == null){
-            throw new ZaozaoException("openid 或 id 不能为空");
+            throw new ZaozaoException("openid不能为空");
         }
         int count = userDao.checkByWx(userVO.getOpenId());
         //没有关注的人，新增
@@ -94,6 +99,7 @@ public class UserServiceImpl implements UserService {
             user.setRegisterTime(new Date());
             user.setOpenId(userVO.getOpenId());
             user.setSubcribe(true);
+            getWxInfo(user, userVO);
             logger.info("保存用户：" + user.toString());
             userDao.insert(user);
         }else{
@@ -103,6 +109,29 @@ public class UserServiceImpl implements UserService {
                 userDao.updateQr(user);
             }
             userDao.subcribe(userVO.getOpenId());
+        }
+    }
+
+    private User getWxInfo(User user, UserVO userVO){
+        try {
+            WxMpUser wxMpUser = weixinService.oauth2getUserInfo(userVO.getWxMpOAuth2AccessToken(), null);
+            if(wxMpUser != null){
+                user.setWxnickname(wxMpUser.getNickname());
+                user.setSex(wxMpUser.getSex());
+                user.setLanguage(wxMpUser.getLanguage());
+                user.setCity(wxMpUser.getCity());
+                user.setProvince(wxMpUser.getProvince());
+                user.setCountry(wxMpUser.getCountry());
+                user.setHeadImgUrl(wxMpUser.getHeadImgUrl());
+                user.setSubscribeTime(wxMpUser.getSubscribeTime());
+                user.setUnionId(wxMpUser.getUnionId());
+                user.setRemark(wxMpUser.getRemark());
+                user.setGroupId(wxMpUser.getGroupId());
+            }
+        } catch (WxErrorException e) {
+            logger.error(e.getMessage());
+        } finally {
+            return user;
         }
     }
 
@@ -124,8 +153,9 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e){
             logger.error(e.getMessage());
             //throw new ZaozaoException(e.getMessage());
+        }finally {
+            return user;
         }
-        return user;
     }
 
     public void login(UserVO userVO) {

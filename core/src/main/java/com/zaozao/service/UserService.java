@@ -17,6 +17,8 @@ public interface UserService {
 
     User findByTel(String telephone);
 
+    User findByOpenid(String openid);
+
     void bindTel(UserVO userVO);
 
     void register(UserVO userVO);

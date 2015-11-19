@@ -25,6 +25,19 @@
         <result property="qrUrl" column="qrurl" javaType="String" />
         <result property="qrTicket" column="qrticket" javaType="String" />
         <result property="subcribe" column="subcribe" javaType="boolean" />
+
+        <result property="wxnickname" column="wxnickname" javaType="String" />
+        <result property="sex" column="sex" javaType="String" />
+        <result property="language" column="wxlanguage" javaType="String" />
+        <result property="city" column="city" javaType="String" />
+        <result property="province" column="province" javaType="String" />
+        <result property="country" column="country" javaType="String" />
+        <result property="headImgUrl" column="headImgUrl" javaType="String" />
+        <result property="subscribeTime" column="subscribeTime" javaType="long" />
+        <result property="unionId" column="unionId" javaType="String" />
+        <result property="remark" column="remark" javaType="String" />
+        <result property="groupId" column="groupId" javaType="int" />
+
         <collection property="cars" ofType="com.zaozao.model.po.Car" column="userid">
             <id column="cid" property="id"/>
             <result column="brand" property="brand"/>
@@ -36,7 +49,8 @@
             
     <sql id="userColumn">
         id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait,
-        openid, bundling, qrurl, qrticket, subcribe
+        openid, bundling, qrurl, qrticket, subcribe,
+        wxnickname, sex, wxlanguage, city, province, country, headImgUrl, subscribeTime, unionId, remark, groupId
     </sql>
     
     <select id="count" resultType="java.lang.Long">
@@ -48,7 +62,9 @@
         <include refid="userColumn" />
         ) VALUES
         (#{id}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
-        #{registerTime}, #{deleted}, #{portrait}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe});
+        #{registerTime}, #{deleted}, #{portrait}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe},
+        #{wxnickname}, #{sex}, #{language}, #{city}, #{province}, #{country}, #{headImgUrl}, #{subscribeTime},
+        #{unionId}, #{remark}, #{groupId});
     </insert>
 
     <update id="update" parameterType="User">
@@ -70,8 +86,7 @@
         openid = #{openId},
         bundling = #{bundling},
         qrurl = #{qrUrl},
-        qrticket = #{qrTicket},
-        subcribe = #{subcribe}
+        qrticket = #{qrTicket}
         WHERE id = #{id};
     </update>
 

@@ -1,15 +1,26 @@
 package com.zaozao.action;
 
+import com.zaozao.exception.ZaozaoException;
+import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.Car;
+import com.zaozao.model.po.User;
+import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
+import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/weixin")
@@ -20,9 +31,25 @@ public class Weixinh5Controller {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value="/h5/person/information", method = RequestMethod.GET)
-	public String personalInformation(ModelMap model) {
+	@Autowired
+	private WeixinService weixinService;
 
+	@RequestMapping(value="/h5/person/information")
+	public String personalInformation(ModelMap model, HttpServletRequest request) {
+		logger.info("***************************code" + request.getParameter("code"));
+		String code = request.getParameter("code");
+		UserVO userVO = new UserVO();
+		try {
+			WxMpOAuth2AccessToken auth2AccessToken = weixinService.oauth2getAccessToken(code);
+			String openid = auth2AccessToken.getOpenId();
+			userVO.setWxMpOAuth2AccessToken(auth2AccessToken);
+			userVO.setOpenId(openid);
+		} catch (WxErrorException e) {
+			logger.error(e.getMessage());
+			throw new ZaozaoException(e.getMessage());
+		} finally {
+			userService.autoRegister(userVO);
+		}
 		return "weixinh5/personalInformation";
 	}
 

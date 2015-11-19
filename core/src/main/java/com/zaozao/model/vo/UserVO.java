@@ -1,5 +1,7 @@
 package com.zaozao.model.vo;
 
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -28,6 +30,8 @@ public class UserVO extends BaseVO {
 
     @NotNull
     private String openId;
+
+    private WxMpOAuth2AccessToken wxMpOAuth2AccessToken;
 
     public String getTelephone() {
         return telephone;
@@ -75,5 +79,13 @@ public class UserVO extends BaseVO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public WxMpOAuth2AccessToken getWxMpOAuth2AccessToken() {
+        return wxMpOAuth2AccessToken;
+    }
+
+    public void setWxMpOAuth2AccessToken(WxMpOAuth2AccessToken wxMpOAuth2AccessToken) {
+        this.wxMpOAuth2AccessToken = wxMpOAuth2AccessToken;
     }
 }

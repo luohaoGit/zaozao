@@ -45,6 +45,53 @@
 			</ion-content>
 		</div>
 	</body>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script type="text/javascript">
+		var json=JSON.parse('${json}');
+		wx.config({
+			debug:true,
+			appId:json.appId,
+			timestamp: json.timestamp,
+			nonceStr:json.nonceStr,
+			signature:json.signature,
+			jsApiList: [
+				'checkJsApi',
+				'onMenuShareTimeline',
+				'onMenuShareAppMessage',
+				'onMenuShareQQ',
+				'onMenuShareWeibo',
+				'hideMenuItems',
+				'showMenuItems',
+				'hideAllNonBaseMenuItem',
+				'showAllNonBaseMenuItem',
+				'translateVoice',
+				'startRecord',
+				'stopRecord',
+				'onRecordEnd',
+				'playVoice',
+				'pauseVoice',
+				'stopVoice',
+				'uploadVoice',
+				'downloadVoice',
+				'chooseImage',
+				'previewImage',
+				'uploadImage',
+				'downloadImage',
+				'getNetworkType',
+				'openLocation',
+				'getLocation',
+				'hideOptionMenu',
+				'showOptionMenu',
+				'closeWindow',
+				'scanQRCode',
+				'chooseWXPay',
+				'openProductSpecificView',
+				'addCard',
+				'chooseCard',
+				'openCard'
+			]
+		});
+	</script>
 	<script>
 		var personalInformation = angular.module('personalInformation',['ionic']);
 		personalInformation.controller('personalInformation',['$scope','$ionicActionSheet',function($scope,$ionicActionSheet){

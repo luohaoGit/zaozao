@@ -34,6 +34,9 @@ public class InitRouterConfig implements InitializingBean {
     private ScanHandler scanHandler;
 
     @Autowired
+    private RouteHandler routeHandler;
+
+    @Autowired
     private DefaultHandler defaultHandler;
 
     @Autowired
@@ -85,6 +88,12 @@ public class InitRouterConfig implements InitializingBean {
                 .msgType(WxConsts.XML_MSG_TEXT)
                 .content("2") //用户回复2
                 .handler(textHandler)
+                .end()
+
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_TEXT)
+                .handler(routeHandler)
                 .end()
 
                 //默认路由
