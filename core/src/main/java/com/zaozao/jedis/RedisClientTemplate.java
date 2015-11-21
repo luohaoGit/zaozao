@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
 
 @Repository("redisClientTemplate")
 public class RedisClientTemplate {
@@ -201,4 +202,10 @@ public class RedisClientTemplate {
         }
     }
 
+    public void psubscribe(JedisPubSub jedisPubSub, String... pattern){
+        Jedis jedis = redisDataSource.getRedisClient();
+        if(jedis != null){
+            jedis.psubscribe(jedisPubSub, pattern);
+        }
+    }
 }

@@ -2,9 +2,11 @@ package com.zaozao.service.impl;
 
 import com.zaozao.jedis.RedisClientTemplate;
 import com.zaozao.jedis.bean.WeixinRoute;
+import com.zaozao.jedis.pubsub.WeixinRouteExpireSubscribe;
 import com.zaozao.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,10 +15,9 @@ import org.springframework.util.StringUtils;
  * Created by luohao on 15/11/20.
  */
 @Service
-public class RedisServiceImpl implements RedisService {
+public class RedisServiceImpl implements RedisService, InitializingBean {
 
     protected static Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
-
 
     @Autowired
     private RedisClientTemplate redisClientTemplate;
@@ -88,5 +89,13 @@ public class RedisServiceImpl implements RedisService {
 
     public String getAccessToken() {
         return redisClientTemplate.get(accessTokenKey);
+    }
+
+    @Autowired
+    private WeixinRouteExpireSubscribe weixinRouteExpireSubscribe;
+
+    public void afterPropertiesSet() throws Exception {
+        logger.info("*************ready to init weixinRouteChannel");
+        redisClientTemplate.psubscribe(weixinRouteExpireSubscribe, "__keyevent@*__:expired");
     }
 }
