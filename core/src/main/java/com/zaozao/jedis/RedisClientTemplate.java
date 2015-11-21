@@ -62,7 +62,22 @@ public class RedisClientTemplate {
         }
     }
 
+    public String getSet(String key, String value) {
+        String result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
 
+        try {
+            result = jedis.getSet(key, value);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
 
     /**
      * 获取单个值
@@ -96,6 +111,23 @@ public class RedisClientTemplate {
 
         try {
             result = jedis.exists(key);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public Long del(String key) {
+        Long result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.del(key);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {

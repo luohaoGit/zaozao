@@ -56,7 +56,7 @@ public class WeixinController {
     @RequestMapping(value="/message/custom", method = RequestMethod.POST, consumes = {"application/x-www-form-urlencoded"})
     public String sendCustomMessage(@ModelAttribute MessageVO messageVO, ModelMap model) {
         weixinService.sendCustomMessage(messageVO);
-        return "";
+        return null;
     }
 
     @RequestMapping(value="/message/handler")

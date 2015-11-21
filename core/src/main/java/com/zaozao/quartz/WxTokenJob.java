@@ -1,5 +1,6 @@
 package com.zaozao.quartz;
 
+import com.zaozao.service.RedisService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.quartz.JobExecutionContext;
@@ -19,13 +20,20 @@ public class WxTokenJob extends QuartzJobBean {
     @Autowired
     private WeixinService weixinService;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         try {
-            weixinService.getAccessToken(true);
-            logger.info("accessToken:" + weixinService.getAccessToken());
+            if(redisService.acquireAccessTokenLock()){
+                String accessToken = weixinService.getAccessToken(true);
+                redisService.setAccessToken(accessToken);
+                redisService.releaseAccessTokenLock();
+                logger.info("accessToken:" + accessToken);
+            }
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new JobExecutionException(e);
         }
     }

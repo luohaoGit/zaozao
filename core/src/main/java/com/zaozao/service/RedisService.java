@@ -11,4 +11,14 @@ public interface RedisService {
 
     void saveRoute(WeixinRoute route);
 
+    boolean acquireAccessTokenLock();
+
+    void releaseAccessTokenLock();
+
+    void removeRoute(String key);
+
+    void setAccessToken(String accessToken);
+
+    String getAccessToken();
+
 }

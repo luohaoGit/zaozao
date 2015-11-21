@@ -3,6 +3,7 @@ package com.zaozao.service.impl;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
+import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -10,6 +11,7 @@ import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
 import me.chanjar.weixin.mp.bean.*;
 import org.apache.commons.lang.StringUtils;
+import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -32,6 +34,9 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
@@ -127,10 +132,23 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         }
     }
 
+    /**
+     *  重写getAccessToken, 从redis服务器获得
+     * @return
+     * @throws WxErrorException
+     */
+    @Override
+    public String getAccessToken() throws WxErrorException {
+        return redisService.getAccessToken();
+    }
 
     public void afterPropertiesSet() throws Exception {
-        this.getAccessToken(true);
-        logger.info("accessToken:" + this.getAccessToken());
+        if(redisService.acquireAccessTokenLock()){
+            String accessToken = this.getAccessToken(true);
+            redisService.setAccessToken(accessToken);
+            redisService.releaseAccessTokenLock();
+            logger.info("accessToken:" + accessToken);
+        }
     }
 
     public boolean isEnableCrypt() {

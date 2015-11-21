@@ -1,11 +1,9 @@
 package com.zaozao.quartz;
 
-import com.zaozao.service.RedisService;
 import org.quartz.spi.TriggerFiredBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
@@ -14,8 +12,6 @@ public class AutowiredJobFactory extends SpringBeanJobFactory implements Applica
 
     protected static Logger logger = LoggerFactory.getLogger(AutowiredJobFactory.class);
 
-    @Autowired
-    private RedisService redisService;
 
     private ApplicationContext applicationContext;
 
