@@ -2,7 +2,7 @@ package com.zaozao.jedis.dao.impl;
 
 import com.zaozao.jedis.RedisClientTemplate;
 import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.jedis.dao.WeixinRouteDao;
+import com.zaozao.jedis.dao.WeixinRedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -11,12 +11,12 @@ import org.springframework.util.StringUtils;
  * Created by luohao on 15/11/16.
  */
 @Repository
-public class WeixinRouteDaoImpl implements WeixinRouteDao {
+public class WeixinRedisDaoImpl implements WeixinRedisDao {
 
     @Autowired
     private RedisClientTemplate redisClientTemplate;
 
-    private int expire = 15;
+    private int expire = 15 * 60;
     private String keyPrefix = "user.route.";
 
     public void saveRoute(WeixinRoute route) {
@@ -25,8 +25,8 @@ public class WeixinRouteDaoImpl implements WeixinRouteDao {
         redisClientTemplate.expire(key, expire);
     }
 
-    public WeixinRoute getRoute(final String key) {
-        String result = redisClientTemplate.get(key);
+    public WeixinRoute getRoute(String username) {
+        String result = redisClientTemplate.get(keyPrefix + username);
         if(StringUtils.isEmpty(result)){
             return null;
         }

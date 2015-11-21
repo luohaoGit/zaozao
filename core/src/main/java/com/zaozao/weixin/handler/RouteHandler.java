@@ -2,6 +2,8 @@ package com.zaozao.weixin.handler;
 
 import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.User;
+import com.zaozao.model.vo.MessageVO;
+import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -37,6 +39,9 @@ public class RouteHandler implements WxMpMessageHandler {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisService redisService;
+
     @Value("${inform_template_id}")
     private String informTempId;
 
@@ -47,6 +52,7 @@ public class RouteHandler implements WxMpMessageHandler {
         String result = "感谢您使用早早移车";
         try{
             String content = message.getContent();
+            content = content.replace("移车+", "");
             User user = null; //车主
             if(!StringUtils.isEmpty(content)){
                 if(content.matches(carRegex)){//如果是车牌号
@@ -63,7 +69,7 @@ public class RouteHandler implements WxMpMessageHandler {
                         carNumber = user.getCars().get(0).getCarNumber();
                     }
 
-                    if(content.equals(carNumber)){//用户输入自己的车牌
+                    if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌
                         result = "请勿输入自己的车牌";
                     }else{
                         //为苦主建立与车主的路由
@@ -71,13 +77,13 @@ public class RouteHandler implements WxMpMessageHandler {
                         kuRoute.setKuOrChe(true);
                         kuRoute.setUserName(ku);
                         kuRoute.setToUserName(che);
-                        weixinService.saveRoute(kuRoute);
+                        redisService.saveRoute(kuRoute);
                         //为车主建立与苦主的路由
                         WeixinRoute cheRoute = new WeixinRoute();
                         cheRoute.setKuOrChe(false);
                         cheRoute.setUserName(che);
                         cheRoute.setToUserName(ku);
-                        weixinService.saveRoute(cheRoute);
+                        redisService.saveRoute(cheRoute);
 
                         //通知车主
                         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();

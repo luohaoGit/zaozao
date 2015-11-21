@@ -5,7 +5,7 @@ import com.zaozao.jedis.bean.WeixinRoute;
 /**
  * Created by luohao on 15/11/16.
  */
-public interface WeixinRouteDao {
+public interface WeixinRedisDao {
 
     WeixinRoute getRoute(String key);
 

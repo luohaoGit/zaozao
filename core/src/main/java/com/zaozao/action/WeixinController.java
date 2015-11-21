@@ -4,6 +4,7 @@ import com.zaozao.exception.ZaozaoException;
 import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
+import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import org.slf4j.Logger;
@@ -36,9 +37,12 @@ public class WeixinController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisService redisService;
+
     @RequestMapping(value="/test")
     public String test(ModelMap model){
-        weixinService.saveRoute(new WeixinRoute("luohao", "haha", true, true));
+        redisService.saveRoute(new WeixinRoute("luohao", "haha", true, true));
         return "index";
     }
 

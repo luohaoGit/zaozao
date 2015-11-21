@@ -1,9 +1,6 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.exception.ZaozaoException;
-import com.zaozao.jedis.RedisClientTemplate;
-import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.jedis.dao.WeixinRouteDao;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.CarService;
 import com.zaozao.service.UserService;
@@ -35,9 +32,6 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private WeixinRouteDao weixinRouteDao;
 
     @Value("${EnableCrypt}")
     private boolean enableCrypt;
@@ -143,11 +137,4 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         return enableCrypt;
     }
 
-    public WeixinRoute getRoute(String username) {
-        return weixinRouteDao.getRoute(username);
-    }
-
-    public void saveRoute(WeixinRoute route) {
-        weixinRouteDao.saveRoute(route);
-    }
 }

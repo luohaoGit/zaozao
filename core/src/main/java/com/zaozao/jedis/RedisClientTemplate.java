@@ -40,10 +40,29 @@ public class RedisClientTemplate {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public Long setNX(String key, String value) {
+        Long result = null;
+
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
         }
 
-        return result;
+        try {
+            result = jedis.setnx(key, value);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
     }
+
+
 
     /**
      * 获取单个值
@@ -64,8 +83,8 @@ public class RedisClientTemplate {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
         }
-        return result;
     }
 
     public Boolean exists(String key) {
@@ -81,8 +100,8 @@ public class RedisClientTemplate {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
         }
-        return result;
     }
 
     public String type(String key) {
@@ -98,8 +117,8 @@ public class RedisClientTemplate {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
         }
-        return result;
     }
 
     /**
@@ -118,13 +137,12 @@ public class RedisClientTemplate {
 
         try {
             result = jedis.expire(key, seconds);
-
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
         }
-        return result;
     }
 
     /**
@@ -143,13 +161,12 @@ public class RedisClientTemplate {
 
         try {
             result = jedis.expireAt(key, unixTime);
-
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {
             redisDataSource.returnResource(jedis);
+            return result;
         }
-        return result;
     }
 
 }

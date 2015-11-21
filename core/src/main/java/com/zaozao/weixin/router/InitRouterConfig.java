@@ -2,7 +2,7 @@ package com.zaozao.weixin.router;
 
 import com.zaozao.weixin.handler.*;
 import com.zaozao.weixin.interceptor.CreateRouteInterceptor;
-import com.zaozao.weixin.interceptor.TextRouteInterceptor;
+import com.zaozao.weixin.interceptor.RouteInterceptor;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class InitRouterConfig implements InitializingBean {
     private CreateRouteInterceptor createRouteInterceptor;
 
     @Autowired
-    private TextRouteInterceptor textRouteInterceptor;
+    private RouteInterceptor routeInterceptor;
 
     public void afterPropertiesSet() throws Exception {
         logger.info("**************************set route");
@@ -79,21 +79,15 @@ public class InitRouterConfig implements InitializingBean {
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT)
-                .content("1") //用户回复1
-                .handler(textHandler)
-                .end()
-
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_TEXT)
-                .content("2") //用户回复2
-                .handler(textHandler)
-                .end()
-
-                .rule()
-                .async(false)
-                .msgType(WxConsts.XML_MSG_TEXT)
+                .rContent("^移车\\+.*")
                 .handler(routeHandler)
+                .end()
+
+                .rule()
+                .async(false)
+                .msgType(WxConsts.XML_MSG_TEXT)
+                .interceptor(routeInterceptor)
+                .handler(textHandler)
                 .end()
 
                 //默认路由
