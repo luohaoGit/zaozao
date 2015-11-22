@@ -4,20 +4,42 @@
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-        <property name="jobClass" value="com.zaozao.quartz.Jobs"></property>
+    <bean id="jobs" class="com.zaozao.quartz.Jobs" />
+
+    <bean id="wxTokenJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="jobs" />
+        </property>
+        <property name="targetMethod">
+            <value>refreshWxToken</value>
+        </property>
     </bean>
 
-    <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="jobDetail"></property>
+    <bean id="wxTokenCronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="wxTokenJob"></property>
         <property name="cronExpression" value="0 0 0/1 * * ?"></property>
-        <!--<property name="cronExpression" value="0 0/33 * * * ?"></property>-->
     </bean>
+
+    <bean id="consumeExpireMsgJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="jobs" />
+        </property>
+        <property name="targetMethod">
+            <value>consumeWxExpireMsg</value>
+        </property>
+    </bean>
+
+    <bean id="consumeExpireMsgCronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="consumeExpireMsgJob"></property>
+        <property name="cronExpression" value="0 0/10 * * * ?"></property>
+    </bean>
+
 
     <bean id="trigger" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <ref bean="cronTriggerBean"/>
+                <ref bean="wxTokenCronTriggerBean"/>
+                <ref bean="consumeExpireMsgCronTriggerBean"/>
             </list>
         </property>
         <property name="jobFactory">

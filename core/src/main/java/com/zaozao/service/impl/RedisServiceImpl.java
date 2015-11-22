@@ -25,13 +25,13 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private int routeExpire = 15 * 60;//second
     private String routePrefix = "user.route.";
 
-    private int accessTokenExpire = 3 * 60 * 1000;//millis
+    private int accessTokenLockExpire = 3 * 60 * 1000;//millis
     private String accessTokenLockKey = "sys.accesstoken.lock";
     private String accessTokenKey = "sys.accesstoken";
     private String expireMsgQueueKey = "sys.expiremsgs";
 
     public boolean acquireAccessTokenLock() {
-        long expires = System.currentTimeMillis() + accessTokenExpire + 1;
+        long expires = System.currentTimeMillis() + accessTokenLockExpire + 1;
         String expiresStr = String.valueOf(expires); //锁到期时间
 
         if (redisClientTemplate.setNX(accessTokenLockKey, expiresStr) == 1) {
@@ -92,12 +92,23 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         return redisClientTemplate.get(accessTokenKey);
     }
 
-    public void pushExpireMessage(String key, String... value) {
+    public void pushExpireMessage(String... value) {
         redisClientTemplate.lpush(expireMsgQueueKey, value);
     }
 
-    public WeixinExpireMessage getExpireMessage(String key) {
-        return WeixinExpireMessage.parseJson(redisClientTemplate.rpop(key));
+    public WeixinExpireMessage getExpireMessage() {
+        WeixinExpireMessage weixinExpireMessage = null;
+        String value = redisClientTemplate.rpop(expireMsgQueueKey);
+        if(!StringUtils.isEmpty(value)){
+            weixinExpireMessage = WeixinExpireMessage.parseJson(value);
+            Long createMillis = Long.parseLong(weixinExpireMessage.getCreateMillis());
+            if(System.currentTimeMillis() < createMillis + routeExpire * 1000){
+                //路由未超时,重新push到队列
+                this.pushExpireMessage(value);
+                weixinExpireMessage = null;
+            }
+        }
+        return weixinExpireMessage;
     }
 
 

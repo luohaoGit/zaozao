@@ -22,7 +22,7 @@ public interface RedisService {
 
     String getAccessToken();
 
-    void pushExpireMessage(String key, String... value);
+    void pushExpireMessage(String... value);
 
-    WeixinExpireMessage getExpireMessage(String key);
+    WeixinExpireMessage getExpireMessage();
 }
