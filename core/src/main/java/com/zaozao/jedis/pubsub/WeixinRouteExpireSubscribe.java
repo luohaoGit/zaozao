@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPubSub;
 /**
  * Created by luohao on 15/11/21.
  */
-@Component
+
 public class WeixinRouteExpireSubscribe extends JedisPubSub {
 
     protected static Logger logger = LoggerFactory.getLogger(WeixinRouteExpireSubscribe.class);

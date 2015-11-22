@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-        <property name="jobClass" value="com.zaozao.quartz.WxTokenJob"></property>
+        <property name="jobClass" value="com.zaozao.quartz.Jobs"></property>
     </bean>
 
     <bean id="cronTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">

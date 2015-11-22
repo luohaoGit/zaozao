@@ -1,5 +1,6 @@
 package com.zaozao.weixin.handler;
 
+import com.zaozao.jedis.bean.WeixinExpireMessage;
 import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
@@ -84,6 +85,9 @@ public class RouteHandler implements WxMpMessageHandler {
                         cheRoute.setUserName(che);
                         cheRoute.setToUserName(ku);
                         redisService.saveRoute(cheRoute);
+
+                        WeixinExpireMessage weixinExpireMessage = new WeixinExpireMessage(ku, che);
+                        redisService.pushExpireMessage(weixinExpireMessage.toJson());
 
                         //通知车主
                         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();

@@ -1,5 +1,6 @@
 package com.zaozao.service;
 
+import com.zaozao.jedis.bean.WeixinExpireMessage;
 import com.zaozao.jedis.bean.WeixinRoute;
 
 /**
@@ -21,4 +22,7 @@ public interface RedisService {
 
     String getAccessToken();
 
+    void pushExpireMessage(String key, String... value);
+
+    WeixinExpireMessage getExpireMessage(String key);
 }

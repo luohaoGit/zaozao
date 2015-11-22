@@ -13,9 +13,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * Created by luohao on 2015/10/19.
  */
-public class WxTokenJob extends QuartzJobBean {
+public class Jobs extends QuartzJobBean {
 
-    protected static Logger logger = LoggerFactory.getLogger(WxTokenJob.class);
+    protected static Logger logger = LoggerFactory.getLogger(Jobs.class);
 
     @Autowired
     private WeixinService weixinService;

@@ -137,6 +137,40 @@ public class RedisClientTemplate {
         }
     }
 
+    public Long lpush(String key, String... value) {
+        Long result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.lpush(key, value);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public String rpop(String key) {
+        String result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.rpop(key);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
     public String type(String key) {
         String result = null;
         Jedis jedis = redisDataSource.getRedisClient();

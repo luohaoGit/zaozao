@@ -1,8 +1,8 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.jedis.RedisClientTemplate;
+import com.zaozao.jedis.bean.WeixinExpireMessage;
 import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.jedis.pubsub.WeixinRouteExpireSubscribe;
 import com.zaozao.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,7 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private int accessTokenExpire = 3 * 60 * 1000;//millis
     private String accessTokenLockKey = "sys.accesstoken.lock";
     private String accessTokenKey = "sys.accesstoken";
+    private String expireMsgQueueKey = "sys.expiremsgs";
 
     public boolean acquireAccessTokenLock() {
         long expires = System.currentTimeMillis() + accessTokenExpire + 1;
@@ -91,11 +92,16 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         return redisClientTemplate.get(accessTokenKey);
     }
 
-    @Autowired
-    private WeixinRouteExpireSubscribe weixinRouteExpireSubscribe;
+    public void pushExpireMessage(String key, String... value) {
+        redisClientTemplate.lpush(expireMsgQueueKey, value);
+    }
+
+    public WeixinExpireMessage getExpireMessage(String key) {
+        return WeixinExpireMessage.parseJson(redisClientTemplate.rpop(key));
+    }
+
 
     public void afterPropertiesSet() throws Exception {
-        logger.info("*************ready to init weixinRouteChannel");
-        redisClientTemplate.psubscribe(weixinRouteExpireSubscribe, "__keyevent@*__:expired");
+
     }
 }
