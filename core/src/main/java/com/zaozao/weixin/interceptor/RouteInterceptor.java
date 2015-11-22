@@ -4,6 +4,7 @@ import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageInterceptor;
@@ -51,38 +52,49 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
 
         try{
             String content = message.getContent();
+            String type = message.getMsgType();
+            String mediaId = message.getMediaId();
             WeixinRoute route = redisService.getRoute(message.getFromUserName());
             //WeixinRoute toUserRoute = redisService.getRoute(route.getToUserName());
 
             if(route != null){
                 MessageVO messageVO = new MessageVO();
                 messageVO.setOpenid(route.getToUserName());
-                String msgPrefix = route.isKuOrChe() ? kuPrefix : chePrefix;
-                if("1".equals(content) || "2".equals(content)) {
-                    if (route.isKuOrChe()) {
-                        if ("1".equals(content)) {//我是苦主,回复1
-                            //通知车主
-                            content = kuR1;
-                        } else if ("2".equals(content)) {//我是苦主,回复2
-                            //通知车主
-                            content = kuR2;
-                        }
-                    } else {
-                        //车主回复,激活双方路由
+                messageVO.setType(type);
+
+                if(type.equals(WxConsts.XML_MSG_TEXT)) {
+                    String msgPrefix = route.isKuOrChe() ? kuPrefix : chePrefix;
+                    if ("1".equals(content) || "2".equals(content)) {
+                        if (route.isKuOrChe()) {
+                            if ("1".equals(content)) {//我是苦主,回复1
+                                //通知车主
+                                content = kuR1;
+                            } else if ("2".equals(content)) {//我是苦主,回复2
+                                //通知车主
+                                content = kuR2;
+                            }
+                        } else {
+                            //车主回复,激活双方路由
 /*                        route.setActive(true);
                         redisService.saveRoute(route);
                         toUserRoute.setActive(true);
                         redisService.saveRoute(toUserRoute);*/
-                        if ("1".equals(content)) {//我是车主,回复1
-                            //通知苦主
-                            content = cheR1;
-                        } else if ("2".equals(content)) {//我是车主,回复2
-                            //通知苦主
-                            content = cheR2;
+                            if ("1".equals(content)) {//我是车主,回复1
+                                //通知苦主
+                                content = cheR1;
+                            } else if ("2".equals(content)) {//我是车主,回复2
+                                //通知苦主
+                                content = cheR2;
+                            }
                         }
                     }
+                    messageVO.setContent(msgPrefix + content);
+                }else if(type.equals(WxConsts.XML_MSG_IMAGE)){
+                    messageVO.setMediaId(mediaId);
+                }else if(type.equals(WxConsts.XML_MSG_VOICE)){
+                    messageVO.setMediaId(mediaId);
                 }
-                messageVO.setContent(msgPrefix + content);
+
                 weixinService.sendCustomMessage(messageVO);
                 return false;
             }

@@ -1,5 +1,7 @@
 package com.zaozao.model.vo;
 
+import me.chanjar.weixin.common.api.WxConsts;
+
 /**
  * Created by luohao on 2015/10/23.
 */
@@ -13,7 +15,8 @@ public class MessageVO extends BaseVO {
 
     private String url;
     private String templateId;
-
+    private String mediaId;
+    private String type = WxConsts.XML_MSG_TEXT;
     public String getContent() {
         return content;
     }
@@ -52,5 +55,21 @@ public class MessageVO extends BaseVO {
 
     public void setTemplateId(String templateId) {
         this.templateId = templateId;
+    }
+
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -6,6 +6,7 @@ import com.zaozao.service.CarService;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpServiceImpl;
@@ -108,15 +109,35 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
     }
 
     public void sendCustomMessage(MessageVO messageVO) {
-        WxMpCustomMessage message = WxMpCustomMessage
-                .TEXT()
-                .toUser(messageVO.getOpenid())
-                .content(messageVO.getContent())
-                .build();
+        if(StringUtils.isEmpty(messageVO.getOpenid())){
+            logger.error("customMessage's openid should not be null");
+            return;
+        }
+
+        String type = messageVO.getType();
+        if(StringUtils.isEmpty(type)){
+            type = WxConsts.XML_MSG_TEXT;
+        }
+
+        WxMpCustomMessage message = null;
+
         try {
+            if(type.equals(WxConsts.XML_MSG_IMAGE) || type.equals(WxConsts.XML_MSG_VOICE)){
+                message = WxMpCustomMessage
+                        .IMAGE()
+                        .toUser(messageVO.getOpenid())
+                        .mediaId(messageVO.getMediaId())
+                        .build();
+            }else{
+                message = WxMpCustomMessage
+                        .TEXT()
+                        .toUser(messageVO.getOpenid())
+                        .content(messageVO.getContent())
+                        .build();
+            }
             this.customMessageSend(message);
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }
     }
@@ -126,7 +147,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         try {
             this.templateSend(templateMessage);
         } catch (WxErrorException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }
     }
