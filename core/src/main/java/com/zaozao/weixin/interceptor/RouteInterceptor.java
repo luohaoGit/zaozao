@@ -13,6 +13,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -31,6 +32,20 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
     @Autowired
     private RedisService redisService;
 
+    @Value("${wx.kuPrefix}")
+    private String kuPrefix;
+    @Value("${wx.chePrefix}")
+    private String chePrefix;
+    @Value("${wx.kuR1}")
+    private String kuR1;
+    @Value("${wx.kuR2}")
+    private String kuR2;
+    @Value("${wx.cheR1}")
+    private String cheR1;
+    @Value("${wx.cheR2}")
+    private String cheR2;
+
+
     public boolean intercept(WxMpXmlMessage message, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
         logger.info("收到消息：" + ToStringBuilder.reflectionToString(message));
 
@@ -42,15 +57,15 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
             if(route != null){
                 MessageVO messageVO = new MessageVO();
                 messageVO.setOpenid(route.getToUserName());
-                String msgPrefix = route.isKuOrChe() ? "【求助人】：" : "【车主】：";
+                String msgPrefix = route.isKuOrChe() ? kuPrefix : chePrefix;
                 if("1".equals(content) || "2".equals(content)) {
                     if (route.isKuOrChe()) {
                         if ("1".equals(content)) {//我是苦主,回复1
                             //通知车主
-                            content = "早早移车已通知我，我在等您，谢谢！";
+                            content = kuR1;
                         } else if ("2".equals(content)) {//我是苦主,回复2
                             //通知车主
-                            content = "早早移车已帮我联系到您，您还需要了解什么情况？";
+                            content = kuR2;
                         }
                     } else {
                         //车主回复,激活双方路由
@@ -60,10 +75,10 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
                         redisService.saveRoute(toUserRoute);*/
                         if ("1".equals(content)) {//我是车主,回复1
                             //通知苦主
-                            content = "早早移车已联系上我，我正火速赶来，请耐心等待，谢谢！";
+                            content = cheR1;
                         } else if ("2".equals(content)) {//我是车主,回复2
                             //通知苦主
-                            content = "早早移车已联系上我，请提供具体情况（有事您说话），谢谢！";
+                            content = cheR2;
                         }
                     }
                 }

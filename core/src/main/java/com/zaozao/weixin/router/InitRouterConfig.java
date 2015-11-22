@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * Created by luohao on 2015/10/27.
  */
@@ -45,6 +47,9 @@ public class InitRouterConfig implements InitializingBean {
     @Autowired
     private RouteInterceptor routeInterceptor;
 
+    @Value("${wx.queryPattern}")
+    private String queryPattern;
+
     public void afterPropertiesSet() throws Exception {
         logger.info("**************************set route");
         //set route
@@ -79,7 +84,7 @@ public class InitRouterConfig implements InitializingBean {
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT)
-                .rContent("^移车\\+.*")
+                .rContent(queryPattern)
                 .handler(routeHandler)
                 .end()
 

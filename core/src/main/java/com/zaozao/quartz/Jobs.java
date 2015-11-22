@@ -8,6 +8,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Created by luohao on 2015/10/19.
@@ -21,6 +22,9 @@ public class Jobs {
 
     @Autowired
     private RedisService redisService;
+
+    @Value("${wx.ending}")
+    private String ending;
 
     public void refreshWxToken(){
         logger.info("****************refreshWxToken");
@@ -45,8 +49,7 @@ public class Jobs {
             String che = weixinExpireMessage.getChe();
             String ku = weixinExpireMessage.getKu();
 
-            String content = "早早移车感谢您的支持！成功移车请回复9；\n" +
-                    "其他情况请留言，帮助我们改善，谢谢！赠人玫瑰，手留余香，早早移车期待您的分享！";
+            String content = ending;
 
             MessageVO cheMessageVO = new MessageVO();
             cheMessageVO.setOpenid(che);

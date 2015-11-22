@@ -12,6 +12,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -27,11 +28,13 @@ public class SubscribeHandler implements WxMpMessageHandler {
     @Autowired
     private UserService userService;
 
+    @Value("${wx.welcome}")
+    private String wxWelcome;
+
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         logger.info("收到关注消息：" + ToStringBuilder.reflectionToString(message));
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content("亲！欢迎您关注早早移车，简单、快捷、隐身，输入车牌号即可联系车主。" +
-                        "如果您觉得不错，请帮忙推荐给身边的小伙伴哦，我们深深感谢您的支持！")
+                .content(wxWelcome)
                 .fromUser(message.getToUserName())
                 .toUser(message.getFromUserName())
                 .build();

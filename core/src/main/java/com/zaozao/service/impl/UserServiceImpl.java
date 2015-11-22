@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         //没有关注的人，新增
         if(count == 0){
             User user = new User();
-            generatorQrCode(user);
+            //generatorQrCode(user);
             user.setTelephone("未绑定");
             user.setUsername(userVO.getOpenId());
             user.setPassword("000000");
@@ -103,11 +103,11 @@ public class UserServiceImpl implements UserService {
             logger.info("保存用户：" + user.toString());
             userDao.insert(user);
         }else{
-            User user = userDao.findByWx(userVO.getOpenId());
+/*            User user = userDao.findByWx(userVO.getOpenId());
             if(StringUtils.isEmpty(user.getQrTicket())){
                 generatorQrCode(user);
                 userDao.updateQr(user);
-            }
+            }*/
             userDao.subcribe(userVO.getOpenId());
         }
     }

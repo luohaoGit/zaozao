@@ -11,6 +11,7 @@ import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -28,9 +29,12 @@ public class DefaultHandler implements WxMpMessageHandler {
     @Autowired
     private UserService userService;
 
+    @Value("${wx.default}")
+    private String defaultMsg;
+
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         logger.info("recieve weixin message:" + message.toString());
-        String result = "感谢您使用早早移车";
+        String result = defaultMsg;
 
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                 .content(result)
