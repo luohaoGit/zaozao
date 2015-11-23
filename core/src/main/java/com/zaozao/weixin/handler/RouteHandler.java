@@ -86,6 +86,9 @@ public class RouteHandler implements WxMpMessageHandler {
                     String carNumber = notOwnNO;
                     if(!CollectionUtils.isEmpty(user.getCars())){
                         carNumber = user.getCars().get(0).getCarNumber();
+                        if(carNumber != null){
+                            carNumber = carNumber.toUpperCase();
+                        }
                     }
 
                     if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌

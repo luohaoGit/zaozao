@@ -122,9 +122,15 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         WxMpCustomMessage message = null;
 
         try {
-            if(type.equals(WxConsts.XML_MSG_IMAGE) || type.equals(WxConsts.XML_MSG_VOICE)){
+            if(type.equals(WxConsts.XML_MSG_IMAGE)){
                 message = WxMpCustomMessage
                         .IMAGE()
+                        .toUser(messageVO.getOpenid())
+                        .mediaId(messageVO.getMediaId())
+                        .build();
+            }else if(type.equals(WxConsts.XML_MSG_VOICE)){
+                message = WxMpCustomMessage
+                        .VIDEO()
                         .toUser(messageVO.getOpenid())
                         .mediaId(messageVO.getMediaId())
                         .build();
