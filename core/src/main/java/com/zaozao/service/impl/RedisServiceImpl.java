@@ -30,6 +30,9 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private String accessTokenKey = "sys.accesstoken";
     private String expireMsgQueueKey = "sys.expiremsgs";
 
+    private String voiceTokenPrefix = "sys.voicetoken.";
+    private int voiceTokenExpire = 60;//second
+
     public boolean acquireAccessTokenLock() {
         long expires = System.currentTimeMillis() + accessTokenLockExpire + 1;
         String expiresStr = String.valueOf(expires); //锁到期时间
@@ -109,6 +112,16 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
             }
         }
         return weixinExpireMessage;
+    }
+
+    public void setExpireVoiceToken(String key, String token) {
+        key = voiceTokenPrefix + key;
+        redisClientTemplate.setNX(key, token);
+        redisClientTemplate.expire(key, voiceTokenExpire);
+    }
+
+    public String getVoiceToken(String key) {
+        return redisClientTemplate.get(voiceTokenPrefix + key);
     }
 
 

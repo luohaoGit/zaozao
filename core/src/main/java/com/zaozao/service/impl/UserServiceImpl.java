@@ -37,6 +37,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private WeixinService weixinService;
 
+    private String phoneRegx = "^((13[0-9])|(15[^4,\\\\D])|(18[0,5-9]))\\\\d{8}$";
+
+    public User findUserInternal(String symbol) {
+        if(StringUtils.isEmpty(symbol)){
+            return null;
+        }
+
+        if(symbol.matches(phoneRegx)){
+
+        }else{
+
+        }
+
+        return null;
+    }
+
     public User findByUsername(String username) {
         return userDao.searchByUsername(username);
     }

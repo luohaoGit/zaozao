@@ -4,9 +4,8 @@ import com.zaozao.jedis.bean.WeixinExpireMessage;
 import com.zaozao.jedis.bean.WeixinRoute;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.MessageVO;
-import com.zaozao.service.RedisService;
-import com.zaozao.service.UserService;
-import com.zaozao.service.WeixinService;
+import com.zaozao.model.vo.StuckRecordVO;
+import com.zaozao.service.*;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -43,6 +42,12 @@ public class RouteHandler implements WxMpMessageHandler {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private StuckRecordService stuckRecordService;
+
+    @Autowired
+    private HBService hbService;
+
     @Value("${inform_template_id}")
     private String informTempId;
     @Value("${wx.downloadUrl}")
@@ -76,6 +81,12 @@ public class RouteHandler implements WxMpMessageHandler {
             if(!StringUtils.isEmpty(content)){
                 if(content.matches(carRegex)){//如果是车牌号
                     user = userService.findByCarNumber(content);
+                    if(user == null){//查不到则从车管所查
+                        String phoneNumebr = hbService.getMobile(content);
+                        if(!StringUtils.isEmpty(phoneNumebr)){
+                            user = userService.findByTel(phoneNumebr);
+                        }
+                    }
                 }else{//查询是否为ID
                     user = userService.findByUsername(content);
                 }
@@ -83,7 +94,7 @@ public class RouteHandler implements WxMpMessageHandler {
                 if(user != null && !StringUtils.isEmpty(user.getOpenId())){//查询到用户
                     String ku = message.getFromUserName();
                     String che = user.getOpenId();
-                    String carNumber = notOwnNO;
+                    String carNumber = "";
                     if(!CollectionUtils.isEmpty(user.getCars())){
                         carNumber = user.getCars().get(0).getCarNumber();
                         if(carNumber != null){
@@ -92,7 +103,7 @@ public class RouteHandler implements WxMpMessageHandler {
                     }
 
                     if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌
-                        result = "";
+                        result = notOwnNO;
                     }else{
                         //为苦主建立与车主的路由
                         WeixinRoute kuRoute = new WeixinRoute();
@@ -109,6 +120,13 @@ public class RouteHandler implements WxMpMessageHandler {
 
                         WeixinExpireMessage weixinExpireMessage = new WeixinExpireMessage(ku, che);
                         redisService.pushExpireMessage(weixinExpireMessage.toJson());
+
+/*                        StuckRecordVO stuckRecordVO = new StuckRecordVO();
+                        stuckRecordVO.setCreateTime(new Date());
+                        stuckRecordVO.setBeStuckUser(ku);
+                        stuckRecordVO.setStuckUser(che);
+                        stuckRecordVO.setStuckCarNumber(carNumber);
+                        stuckRecordService.addRecord(stuckRecordVO);*/
 
                         //通知车主
                         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
@@ -131,6 +149,7 @@ public class RouteHandler implements WxMpMessageHandler {
                 }
             }
         }catch (Exception e){
+            result = notFoundNO;
             logger.error(e.getMessage());
         }
 
