@@ -9,8 +9,6 @@ import com.zaozao.model.vo.UserVO;
  */
 public interface UserService {
 
-    User findUserInternal(String symbol);
-
     User findByUsername(String username);
 
     User findByCarNumber(String carNumber);
