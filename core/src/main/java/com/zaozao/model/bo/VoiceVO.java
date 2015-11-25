@@ -5,6 +5,7 @@ package com.zaozao.model.bo;
  */
 public class VoiceVO {
 
+    private boolean succeed = false;
     private String phoneNumber;
     private String token;
     private String msg;
@@ -15,6 +16,14 @@ public class VoiceVO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isSucceed() {
+        return succeed;
+    }
+
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
     }
 
     public String getToken() {

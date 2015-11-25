@@ -1,4 +1,4 @@
-package com.zaozao.model.LO;
+package com.zaozao.model.lo;
 
 import java.io.Serializable;
 import java.util.Date;

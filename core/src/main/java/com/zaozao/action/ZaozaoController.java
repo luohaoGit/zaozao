@@ -45,6 +45,7 @@ public class ZaozaoController {
 				if(succeed){
 					voiceVO.setPhoneNumber("15850761726");
 					voiceVO.setMsg("0");
+					voiceVO.setSucceed(true);
 				}else{
 					voiceVO.setMsg("1");
 				}
@@ -52,8 +53,9 @@ public class ZaozaoController {
 				//车管所查询,这里模拟
 				boolean succeed = new Random().nextBoolean();
 				if(succeed){
-					voiceVO.setPhoneNumber("15850761726");
 					voiceVO.setMsg("0");
+					voiceVO.setPhoneNumber("15850761726");
+					voiceVO.setSucceed(true);
 				}else{
 					voiceVO.setMsg("-1");
 				}

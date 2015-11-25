@@ -25,7 +25,7 @@
 	</appender>
 
 	<!-- hostname以【lin-】或者【rac(65.11物理机)】开头的机器日志打印到文件 -->
-	<if condition='property("HOSTNAME").contains("lin-") || property("HOSTNAME").equals("iZ25vo5217tZ")'>
+	<if condition='property("HOSTNAME").contains("lin-") || property("HOSTNAME").equals("iZ116ff3d79Z")'>
 		<then>
 			<appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 <!--				<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
