@@ -2,11 +2,10 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 	<contextName>RESTful</contextName>
 	<property scope="context" name="CHARSET" value="utf-8" />
-	<property scope="context" name="appName" value="zaozao"/>
-	<property scope="context" name="LOG_HOME" value="/logs" />
-	<property scope="context" name="APP_LOG_HOME" value="${LOG_HOME}/${appName}/app" />
-	<property scope="context" name="DATA_LOG_HOME" value="${LOG_HOME}/${appName}/data" />
-	<property scope="context" name="ERR_LOG_HOME" value="${LOG_HOME}/${appName}/err" />
+	<property scope="context" name="LOG_HOME" value="/usr/local/zaozao/logs" />
+	<property scope="context" name="APP_LOG_HOME" value="${LOG_HOME}/app" />
+	<property scope="context" name="DATA_LOG_HOME" value="${LOG_HOME}/data" />
+	<property scope="context" name="ERR_LOG_HOME" value="${LOG_HOME}/err" />
 
 	<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
 	<!-- 控制台输出格式 -->
