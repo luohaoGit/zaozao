@@ -40,25 +40,23 @@ public class ZaozaoController {
 		String f1 = request.getParameter("f");
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){
-			voiceVO.setMsg("-1");
+			voiceVO.setMsg(0);
 		}else{
 			if(StringUtils.isEmpty(symbol)){
 				//首先查询路由,这里模拟
 				if("1".equals(f1)){
 					voiceVO.setPhoneNumber("15850761726");
-					voiceVO.setMsg("0");
-					voiceVO.setSucceed(true);
+					voiceVO.setMsg(1);
 				}else{
-					voiceVO.setMsg("1");
+					voiceVO.setMsg(2);
 				}
 			}else{
 				//车管所查询,这里模拟
 				if("1".equals(f1)){
-					voiceVO.setMsg("0");
+					voiceVO.setMsg(1);
 					voiceVO.setPhoneNumber("15850761726");
-					voiceVO.setSucceed(true);
 				}else{
-					voiceVO.setMsg("-1");
+					voiceVO.setMsg(0);
 				}
 			}
 		}
