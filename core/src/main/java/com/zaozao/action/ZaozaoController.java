@@ -51,7 +51,7 @@ public class ZaozaoController {
 			if(StringUtils.isEmpty(symbol)){
 				//首先查询路由,这里模拟
 				if("1".equals(f1)){
-					voiceVO.setPhoneNumber(map.get(symbol));
+					voiceVO.setPhoneNumber(map.get(caller));
 					voiceVO.setMsg(1);
 				}else{
 					voiceVO.setMsg(2);
@@ -60,7 +60,7 @@ public class ZaozaoController {
 				//车管所查询,这里模拟
 				if("1".equals(f1)){
 					voiceVO.setMsg(1);
-					voiceVO.setPhoneNumber(map.get(symbol));
+					voiceVO.setPhoneNumber(map.get(caller));
 				}else{
 					voiceVO.setMsg(0);
 				}
