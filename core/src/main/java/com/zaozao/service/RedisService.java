@@ -1,17 +1,16 @@
 package com.zaozao.service;
 
-import com.zaozao.jedis.bean.WeixinExpireMessage;
-import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.model.bo.VoiceVO;
+import com.zaozao.jedis.bean.RouteExpireMessage;
+import com.zaozao.jedis.bean.Route;
 
 /**
  * Created by luohao on 15/11/20.
  */
 public interface RedisService {
 
-    WeixinRoute getRoute(String username);
+    Route getRoute(String username);
 
-    void saveRoute(WeixinRoute route);
+    void saveRoute(Route route);
 
     boolean acquireAccessTokenLock();
 
@@ -25,9 +24,13 @@ public interface RedisService {
 
     void pushExpireMessage(String... value);
 
-    WeixinExpireMessage getExpireMessage();
+    RouteExpireMessage getExpireMessage();
 
     void setExpireVoiceToken(String key, String token);
 
     String getVoiceToken(String key);
+
+    void setCarNPhone(String carNumber, String phone);
+
+    String getPhoneByCar(String carNumber);
 }

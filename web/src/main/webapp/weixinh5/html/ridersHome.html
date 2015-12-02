@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>车友</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="/weixinh5/css/ionic.min.css"> 
+		<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
+		<link rel="stylesheet" href="/weixinh5/css/ridersHome.css" />
+		<script type="text/javascript" src="/weixinh5/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="/weixinh5/js/angular-resource.min.js"></script>
+	</head>
+	<body>
+		<div ng-app="ridersHome" ng-controller="ridersHome">
+			<ion-content>
+				<div class="list card" ng-repeat="x in lists">
+					<div class="item item-avatar">
+						<img ng-src="{{x.portraitSrc}}">
+						<h2 class="promulgator">{{x.name}}</h2>
+						<div class="button attent button-outline button-positive">关注</div>
+					</div>
+					<div class="item item-body">
+						<img class="full-image" ng-src="{{x.contentSrc}}">
+						<p>{{x.content}}</p>
+					</div>
+					<div class="item tabs tabs-secondary tabs-icon-left">
+						<a class="tab-item" href="#">
+							<i class="icon ion-heart heart"></i> {{x.heartNum}}
+						</a>
+						<a class="tab-item" href="#">
+							<i class="icon ion-chatbox"></i> {{x.commentNum}}
+						</a>
+					</div>
+				</div>
+			</ion-content>
+		</div>
+	</body>
+	<script>
+		var ridersHome = angular.module('ridersHome', ['ionic']);
+		ridersHome.controller('ridersHome', ['$scope', function($scope){
+			$scope.lists = [
+				{name:'南京车友',portraitSrc:'/weixinh5/img/test.png',content:'我们的郊游',contentSrc:'/weixinh5/img/test.png',heartNum:1,commentNum:5},
+				{name:'南京车友',portraitSrc:'/weixinh5/img/test.png',content:'我们的郊游',contentSrc:'/weixinh5/img/test.png',heartNum:1,commentNum:5},
+				{name:'南京车友',portraitSrc:'/weixinh5/img/test.png',content:'我们的郊游',contentSrc:'/weixinh5/img/test.png',heartNum:1,commentNum:5},
+				{name:'南京车友',portraitSrc:'/weixinh5/img/test.png',content:'我们的郊游',contentSrc:'/weixinh5/img/test.png',heartNum:1,commentNum:5}
+			];
+		}]);
+	</script>
+</html>

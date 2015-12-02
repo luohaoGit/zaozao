@@ -3,6 +3,7 @@ package com.zaozao.action;
 import com.zaozao.model.bo.VoiceVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
@@ -37,6 +39,10 @@ public class ZaozaoController {
 	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol,
 								 @RequestParam(required=false) String token, HttpServletRequest request, ModelMap model) {
+
+		Map<String, String> map = new HashedMap();
+		map.put("15162499345", "13812700842");
+		map.put("13812700842", "15162499345");
 		String f1 = request.getParameter("f");
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){
@@ -45,7 +51,7 @@ public class ZaozaoController {
 			if(StringUtils.isEmpty(symbol)){
 				//首先查询路由,这里模拟
 				if("1".equals(f1)){
-					voiceVO.setPhoneNumber("15850761726");
+					voiceVO.setPhoneNumber(map.get(symbol));
 					voiceVO.setMsg(1);
 				}else{
 					voiceVO.setMsg(2);
@@ -54,7 +60,7 @@ public class ZaozaoController {
 				//车管所查询,这里模拟
 				if("1".equals(f1)){
 					voiceVO.setMsg(1);
-					voiceVO.setPhoneNumber("15850761726");
+					voiceVO.setPhoneNumber(map.get(symbol));
 				}else{
 					voiceVO.setMsg(0);
 				}

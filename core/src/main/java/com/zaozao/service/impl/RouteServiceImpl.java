@@ -1,8 +1,9 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.exception.ZaozaoException;
-import com.zaozao.jedis.bean.WeixinExpireMessage;
-import com.zaozao.jedis.bean.WeixinRoute;
+import com.zaozao.jedis.bean.RouteExpireMessage;
+import com.zaozao.jedis.bean.Route;
+import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.service.*;
 import me.chanjar.weixin.mp.bean.WxMpTemplateData;
@@ -17,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by luohao on 15/11/25.
@@ -46,7 +48,7 @@ public class RouteServiceImpl implements RouteService{
             symbol = symbol.replace(replacePattern, "");
             User user; //车主
             if(!StringUtils.isEmpty(symbol)){
-                user = this.findUserForRoute(symbol);
+                user = this.findUserForRoute(symbol,false);
 
                 if(user != null && !StringUtils.isEmpty(user.getOpenId())){//查询到用户
                     String ku = openid;
@@ -63,20 +65,14 @@ public class RouteServiceImpl implements RouteService{
                         result = notOwnNO;
                     }else{
                         //为苦主建立与车主的路由
-                        WeixinRoute kuRoute = new WeixinRoute();
-                        kuRoute.setKuOrChe(true);
-                        kuRoute.setUserName(ku);
-                        kuRoute.setToUserName(che);
+                        Route kuRoute = new Route(ku, che, true, 0);
                         redisService.saveRoute(kuRoute);
                         //为车主建立与苦主的路由
-                        WeixinRoute cheRoute = new WeixinRoute();
-                        cheRoute.setKuOrChe(false);
-                        cheRoute.setUserName(che);
-                        cheRoute.setToUserName(ku);
+                        Route cheRoute = new Route(che, ku, false, 0);
                         redisService.saveRoute(cheRoute);
 
-                        WeixinExpireMessage weixinExpireMessage = new WeixinExpireMessage(ku, che);
-                        redisService.pushExpireMessage(weixinExpireMessage.toJson());
+                        RouteExpireMessage routeExpireMessage = new RouteExpireMessage(ku, che, 0);
+                        redisService.pushExpireMessage(routeExpireMessage.toJson());
 
 /*                        StuckRecordVO stuckRecordVO = new StuckRecordVO();
                         stuckRecordVO.setCreateTime(new Date());
@@ -117,13 +113,21 @@ public class RouteServiceImpl implements RouteService{
     public void createVoiceRoute(String openid, String symbol) {
         try{
             User me = userService.findByOpenid(openid);
-            if(me != null && me.isBundling()){
+            String myPhone = me.getTelephone();
+            if(me != null && !StringUtils.isEmpty(myPhone)){
+                User user = this.findUserForRoute(symbol, true);
+                if(user != null && !StringUtils.isEmpty(user.getTelephone())){//查到车主
+                    //为苦主建立与车主的路由
+                    Route kuRoute = new Route(myPhone, user.getTelephone(), true, 1);
+                    redisService.saveRoute(kuRoute);
 
-            }
-            User user = this.findUserForRoute(symbol);
-            if(user != null){//查到用户且绑定手机号码
+                    RouteExpireMessage routeExpireMessage = new RouteExpireMessage(myPhone, user.getTelephone(), 1);
+                    redisService.pushExpireMessage(routeExpireMessage.toJson());
+                }else{
 
+                }
             }else{
+                //强制用户绑定手机号码
 
             }
         }catch (Exception e){
@@ -132,25 +136,50 @@ public class RouteServiceImpl implements RouteService{
         }
     }
 
+    private User findUserForRoute(String symbol, boolean needPhone) throws Exception{
+        User user;
+        if(symbol.matches(carRegex)){//如果是车牌号
+            user = userService.findByCarNumber(symbol);
+            if(user == null){//查不到则从外部查询
+                String phoneNumber = getPhoneFromOthers(symbol);
+                if(!StringUtils.isEmpty(phoneNumber)){
+                    user = userService.findByTel(phoneNumber);
+                }
+            }
+        }else{//查询是否为ID
+            user = userService.findByUsername(symbol);
+        }
+
+        //如果是建立语音路由
+        if(user != null && StringUtils.isEmpty(user.getTelephone()) && needPhone){
+            List<Car> cars = user.getCars();
+            if(!CollectionUtils.isEmpty(cars) && cars.get(0) != null){
+                String carNumber = cars.get(0).getCarNumber();
+                if(!StringUtils.isEmpty(carNumber)){
+                    String phoneNumber = getPhoneFromOthers(carNumber);
+                    user.setTelephone(phoneNumber);
+                }
+            }
+        }
+
+        return user;
+    }
+
+    private String getPhoneFromOthers(String carNumber) throws Exception{
+        String phoneNumber = redisService.getPhoneByCar(carNumber);
+        if(StringUtils.isEmpty(phoneNumber)){
+            phoneNumber = hbService.getMobile(carNumber);
+            if(!StringUtils.isEmpty(phoneNumber)){
+                redisService.setCarNPhone(carNumber, phoneNumber);
+            }
+        }
+        return phoneNumber;
+    }
+
     public String getPhoneFromeRoute(String caller) {
         return null;
     }
 
-    private User findUserForRoute(String symbol) throws Exception{
-        User user;
-        if(symbol.matches(carRegex)){//如果是车牌号
-            user = userService.findByCarNumber(symbol);
-/*            if(user == null){//查不到则从车管所查
-                String phoneNumebr = hbService.getMobile(symbol);
-                if(!StringUtils.isEmpty(phoneNumebr)){
-                    user = userService.findByTel(phoneNumebr);
-                }
-            }*/
-        }else{//查询是否为ID
-            user = userService.findByUsername(symbol);
-        }
-        return user;
-    }
 
     @Value("${inform_template_id}")
     private String informTempId;

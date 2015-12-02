@@ -1,22 +1,16 @@
 package com.zaozao.action;
 
 import com.zaozao.exception.ZaozaoException;
-import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.model.po.Car;
-import com.zaozao.model.po.User;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

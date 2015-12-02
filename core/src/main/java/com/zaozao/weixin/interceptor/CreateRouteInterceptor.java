@@ -35,6 +35,7 @@ public class CreateRouteInterceptor implements WxMpMessageInterceptor {
 
     public boolean intercept(WxMpXmlMessage message, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
         logger.info("您扫码结果为：" + ToStringBuilder.reflectionToString(message));
+/*
         try{
             //这里通过车主id推送模版消息给车主，并与车主建立临时路由
             //通过session来保存临时路由信息，如果集群则需要借助其他手段，比如redis
@@ -50,11 +51,13 @@ public class CreateRouteInterceptor implements WxMpMessageInterceptor {
                     //为车主建立临时路由
                     toUserSession.setAttribute("toUserName", message.getFromUserName());
                     // TODO 发送模板消息给车主
+*/
 /*                    MessageVO templateMsg = new MessageVO();
                     templateMsg.setOpenid(toUser.getOpenId());
                     templateMsg.setTemplateId("o8dYLPDep3Zn7NJyK2rGprm0xnD6gJSU2uzQOWUsDp0");
                     templateMsg.setUrl("http://weixin.qq.com/download");
-                    weixinService.pushTemplateMessage(templateMsg);*/
+                    weixinService.pushTemplateMessage(templateMsg);*//*
+
 
                     MessageVO messageVO = new MessageVO();
                     messageVO.setOpenid(message.getFromUserName());
@@ -71,6 +74,7 @@ public class CreateRouteInterceptor implements WxMpMessageInterceptor {
         }catch (Exception e){
             logger.error(e.getMessage());
         }
+*/
         return true;
     }
 

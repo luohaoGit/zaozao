@@ -10,4 +10,5 @@ public interface RouteService {
     void createVoiceRoute(String openid, String symbol);
 
     String getPhoneFromeRoute(String caller);
+
 }

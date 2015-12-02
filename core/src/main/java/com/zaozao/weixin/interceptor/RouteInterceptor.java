@@ -1,6 +1,6 @@
 package com.zaozao.weixin.interceptor;
 
-import com.zaozao.jedis.bean.WeixinRoute;
+import com.zaozao.jedis.bean.Route;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.WeixinService;
@@ -54,7 +54,7 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
             String content = message.getContent();
             String type = message.getMsgType();
             String mediaId = message.getMediaId();
-            WeixinRoute route = redisService.getRoute(message.getFromUserName());
+            Route route = redisService.getRoute(message.getFromUserName());
             //WeixinRoute toUserRoute = redisService.getRoute(route.getToUserName());
 
             if(route != null){

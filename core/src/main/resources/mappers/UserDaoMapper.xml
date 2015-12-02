@@ -152,8 +152,8 @@
     </select>
 
     <select id="findByTel" resultMap="userResultMap" parameterType="String">
-        SELECT <include refid="userColumn" />
-        from t_user u
+        SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
+        from t_user u left join t_car c on u.id=c.userid
         WHERE u.telephone = #{telephone};
     </select>
 

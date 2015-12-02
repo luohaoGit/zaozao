@@ -1,8 +1,8 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.jedis.RedisClientTemplate;
-import com.zaozao.jedis.bean.WeixinExpireMessage;
-import com.zaozao.jedis.bean.WeixinRoute;
+import com.zaozao.jedis.bean.RouteExpireMessage;
+import com.zaozao.jedis.bean.Route;
 import com.zaozao.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +22,17 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     @Autowired
     private RedisClientTemplate redisClientTemplate;
 
-    private int routeExpire = 15 * 60;//second
     private String routePrefix = "user.route.";
+    private String carNPhoneKey = "user.carNphone.";
 
-    private int accessTokenLockExpire = 3 * 60 * 1000;//millis
     private String accessTokenLockKey = "sys.accesstoken.lock";
     private String accessTokenKey = "sys.accesstoken";
     private String expireMsgQueueKey = "sys.expiremsgs";
-
     private String voiceTokenPrefix = "sys.voicetoken.";
+
+    private int accessTokenLockExpire = 3 * 60 * 1000;//millis
+    private int routeExpire = 15 * 60;//second
+    private int carNPhoneExpire = 5 * 60;//second
     private int voiceTokenExpire = 60;//second
 
     public boolean acquireAccessTokenLock() {
@@ -69,18 +71,18 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         redisClientTemplate.del(accessTokenLockKey);
     }
 
-    public void saveRoute(WeixinRoute route) {
+    public void saveRoute(Route route) {
         String key = routePrefix + route.getUserName();
         redisClientTemplate.set(key, route.toJson());
         redisClientTemplate.expire(key, routeExpire);
     }
 
-    public WeixinRoute getRoute(String username) {
+    public Route getRoute(String username) {
         String result = redisClientTemplate.get(routePrefix + username);
         if(StringUtils.isEmpty(result)){
             return null;
         }
-        return WeixinRoute.parseJson(result);
+        return Route.parseJson(result);
     }
 
     public void removeRoute(final String username) {
@@ -99,19 +101,19 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         redisClientTemplate.lpush(expireMsgQueueKey, value);
     }
 
-    public WeixinExpireMessage getExpireMessage() {
-        WeixinExpireMessage weixinExpireMessage = null;
+    public RouteExpireMessage getExpireMessage() {
+        RouteExpireMessage routeExpireMessage = null;
         String value = redisClientTemplate.rpop(expireMsgQueueKey);
         if(!StringUtils.isEmpty(value)){
-            weixinExpireMessage = WeixinExpireMessage.parseJson(value);
-            Long createMillis = Long.parseLong(weixinExpireMessage.getCreateMillis());
+            routeExpireMessage = RouteExpireMessage.parseJson(value);
+            Long createMillis = Long.parseLong(routeExpireMessage.getCreateMillis());
             if(System.currentTimeMillis() < createMillis + routeExpire * 1000){
                 //路由未超时,重新push到队列
                 this.pushExpireMessage(value);
-                weixinExpireMessage = null;
+                routeExpireMessage = null;
             }
         }
-        return weixinExpireMessage;
+        return routeExpireMessage;
     }
 
     public void setExpireVoiceToken(String key, String token) {
@@ -122,6 +124,23 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
 
     public String getVoiceToken(String key) {
         return redisClientTemplate.get(voiceTokenPrefix + key);
+    }
+
+    /**
+     * 缓存外部查询的电话号码
+     */
+    public void setCarNPhone(String carNumber, String phone) {
+        String key = carNPhoneKey + carNumber;
+        redisClientTemplate.setNX(key, phone);
+        redisClientTemplate.expire(key, carNPhoneExpire);
+    }
+
+    /**
+     * 获取缓存外部查询的电话号码
+     */
+    public String getPhoneByCar(String carNumber) {
+        String key = carNPhoneKey + carNumber;
+        return redisClientTemplate.get(key);
     }
 
 

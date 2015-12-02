@@ -1,8 +1,7 @@
 package com.zaozao.action;
 
 import com.zaozao.exception.ZaozaoException;
-import com.zaozao.jedis.bean.WeixinRoute;
-import com.zaozao.model.po.User;
+import com.zaozao.jedis.bean.Route;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -42,7 +40,7 @@ public class WeixinController {
 
     @RequestMapping(value="/test")
     public String test(ModelMap model){
-        redisService.saveRoute(new WeixinRoute("luohao", "haha", true, true));
+        //redisService.saveRoute(new Route("luohao", "haha", true, true));
         return "index";
     }
 

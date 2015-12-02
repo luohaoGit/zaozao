@@ -1,6 +1,6 @@
 package com.zaozao.quartz;
 
-import com.zaozao.jedis.bean.WeixinExpireMessage;
+import com.zaozao.jedis.bean.RouteExpireMessage;
 import com.zaozao.model.vo.MessageVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.WeixinService;
@@ -42,23 +42,27 @@ public class Jobs {
 
     public void consumeWxExpireMsg(){
         logger.info("****************consumeWxExpireMsg");
-        WeixinExpireMessage weixinExpireMessage = redisService.getExpireMessage();
-        if(weixinExpireMessage != null){
-            logger.info("********************consumeExpireMsg:" + weixinExpireMessage.toJson());
-            //路由超时,通知车主,苦主
-            String che = weixinExpireMessage.getChe();
-            String ku = weixinExpireMessage.getKu();
+        RouteExpireMessage routeExpireMessage = redisService.getExpireMessage();
+        if(routeExpireMessage != null){
+            logger.info("********************consumeExpireMsg:" + routeExpireMessage.toJson());
+            if(routeExpireMessage.getType() == 0) {
+                //路由超时,通知车主,苦主
+                String che = routeExpireMessage.getChe();
+                String ku = routeExpireMessage.getKu();
 
-            String content = ending;
+                String content = ending;
 
-            MessageVO cheMessageVO = new MessageVO();
-            cheMessageVO.setOpenid(che);
-            cheMessageVO.setContent(content);
-            MessageVO kuMessageVO = new MessageVO();
-            kuMessageVO.setOpenid(ku);
-            kuMessageVO.setContent(content);
-            weixinService.sendCustomMessage(cheMessageVO);
-            weixinService.sendCustomMessage(kuMessageVO);
+                MessageVO cheMessageVO = new MessageVO();
+                cheMessageVO.setOpenid(che);
+                cheMessageVO.setContent(content);
+                MessageVO kuMessageVO = new MessageVO();
+                kuMessageVO.setOpenid(ku);
+                kuMessageVO.setContent(content);
+                weixinService.sendCustomMessage(cheMessageVO);
+                weixinService.sendCustomMessage(kuMessageVO);
+            }else if(routeExpireMessage.getType() == 1){
+                //发送短信
+            }
         }
     }
 
