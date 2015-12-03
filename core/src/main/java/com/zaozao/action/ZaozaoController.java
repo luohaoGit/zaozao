@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/zaozao")
@@ -41,8 +42,8 @@ public class ZaozaoController {
 	@RequestMapping(value="/logstash/test", method = RequestMethod.GET)
 	public String logstash(ModelMap model) {
 		VoiceVO voiceVO = new VoiceVO();
-		voiceVO.setPhoneNumber("18205183029");
-		voiceVO.setMsg(26);
+		voiceVO.setPhoneNumber(UUID.randomUUID().toString());
+		voiceVO.setMsg(new Random().nextInt());
 		model.put("model", voiceVO);
 		logstash.info(JSON.toJSONString(voiceVO));
 		return null;

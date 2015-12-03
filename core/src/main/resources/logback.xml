@@ -48,7 +48,7 @@
 			<appender name="DATA_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 				<file>${DATA_LOG_HOME}/${HOSTNAME}.data.ing</file>
 				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-					<fileNamePattern>${DATA_LOG_HOME}/${HOSTNAME}.data.%d{yyyy-MM-dd_HH-mm}.log.%i</fileNamePattern>
+					<fileNamePattern>${DATA_LOG_HOME}/logstash.data.%d{yyyy-MM-dd}.log</fileNamePattern>
 					<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
 						<maxFileSize>30MB</maxFileSize>
 					</timeBasedFileNamingAndTriggeringPolicy>
