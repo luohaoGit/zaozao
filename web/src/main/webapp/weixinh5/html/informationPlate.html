@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -43,26 +42,36 @@
 		queryPlate.controller('queryPlate', ['$scope', function($scope){
 			$scope.flag = true;
 			$scope.moreFlag = true;
-			var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
-					"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"].reverse();
-			var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-				"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"].reverse();
-			$scope.myAreas = [];
-			$scope.myLetters = [];
-
-			angular.forEach(areas, function(data,index,array){
-				$scope.myAreas.push({"label": data});
-			});
-
-			angular.forEach(letters, function(data,index,array){
-				$scope.myLetters.push({"label": data});
-			});
-
+			$scope.myAreas = [{
+					"id": 1,
+            		"label": "Item 1"
+				},
+				{
+					"id": 2,
+            		"label": "Item 2"
+				},
+				{
+					"id": 3,
+            		"label": "Item 3"
+				}
+			];
 			$scope.selectArea = $scope.myAreas[0].id;
 			$scope.selectAreaAction = function(){
 				console.log($('#selectedArea').val());
 			}
-
+			$scope.myLetters = [{
+					"id": 1,
+            		"label": "Item 1"
+				},
+				{
+					"id": 2,
+            		"label": "Item 2"
+				},
+				{
+					"id": 3,
+            		"label": "Item 3"
+				}
+			];
 			$scope.selectLetter = $scope.myLetters[0].id;
 			$scope.selectLetterAction = function(){
 				console.log($('#selectedLetter').val());
