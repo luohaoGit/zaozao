@@ -1,5 +1,6 @@
 package com.zaozao.action;
 
+import com.alibaba.fastjson.JSON;
 import com.zaozao.model.bo.VoiceVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
@@ -26,6 +27,7 @@ import java.util.Random;
 public class ZaozaoController {
 
 	public static final Logger logger = LoggerFactory.getLogger(ZaozaoController.class);
+	public static final Logger logstash = LoggerFactory.getLogger("DATA");
 
 	@Value("${voice_ip}")
 	private String vioceIP;
@@ -35,6 +37,16 @@ public class ZaozaoController {
 
 	@Autowired
 	private RedisService redisService;
+
+	@RequestMapping(value="/logstash/test", method = RequestMethod.GET)
+	public String logstash(ModelMap model) {
+		VoiceVO voiceVO = new VoiceVO();
+		voiceVO.setPhoneNumber("18205183029");
+		voiceVO.setMsg(26);
+		model.put("model", voiceVO);
+		logstash.info(JSON.toJSONString(voiceVO));
+		return null;
+	}
 
 	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol,

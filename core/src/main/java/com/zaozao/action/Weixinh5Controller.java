@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Weixinh5Controller {
 
 	public static final Logger logger = LoggerFactory.getLogger(Weixinh5Controller.class);
+	public static final Logger logstash = LoggerFactory.getLogger("DATA");
 
 	@Autowired
 	private UserService userService;
@@ -59,6 +60,12 @@ public class Weixinh5Controller {
 		return "weixinh5/ridersHome";
 	}
 
+	/**
+	 * ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
+	 * "蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"]
+	 * @param model
+	 * @return
+     */
 	@RequestMapping(value="/h5/car/plate", method = RequestMethod.GET)
 	public String informationPlate(ModelMap model) {
 

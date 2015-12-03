@@ -7,18 +7,20 @@ import java.io.Serializable;
 /**
  * Created by luohao on 15/11/22.
  */
-public class WeixinExpireMessage implements Serializable{
+public class RouteExpireMessage implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private String ku;
     private String che;
+    private int type;
     private String createMillis = String.valueOf(System.currentTimeMillis());
 
-    public WeixinExpireMessage(){}
+    public RouteExpireMessage(){}
 
-    public WeixinExpireMessage(String ku, String che) {
+    public RouteExpireMessage(String ku, String che, int type) {
         this.ku = ku;
         this.che = che;
+        this.type = type;
     }
 
     public String getKu() {
@@ -45,11 +47,19 @@ public class WeixinExpireMessage implements Serializable{
         this.createMillis = createMillis;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String toJson(){
         return JSON.toJSONString(this);
     }
 
-    public static WeixinExpireMessage parseJson(String json){
-        return JSON.parseObject(json, WeixinExpireMessage.class);
+    public static RouteExpireMessage parseJson(String json){
+        return JSON.parseObject(json, RouteExpireMessage.class);
     }
 }

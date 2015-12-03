@@ -55,7 +55,7 @@
 				</rollingPolicy>
 				<encoder>
 					<charset>${CHARSET}</charset>
-					<pattern>${DATA_LOG_HOME}</pattern>
+					<pattern>${DATA_PATTERN}</pattern>
 				</encoder>
 			</appender>
 
