@@ -53,9 +53,6 @@ public class ZaozaoController {
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol,
 								 @RequestParam(required=false) String token, HttpServletRequest request, ModelMap model) {
 
-		Map<String, String> map = new HashedMap();
-		map.put("15162499345", "13812700842");
-		map.put("13812700842", "15162499345");
 		String f1 = request.getParameter("f");
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){
@@ -64,7 +61,7 @@ public class ZaozaoController {
 			if(StringUtils.isEmpty(symbol)){
 				//首先查询路由,这里模拟
 				if("1".equals(f1)){
-					voiceVO.setPhoneNumber(map.get(caller));
+					voiceVO.setPhoneNumber(redisService.getRedisClientTemplate().get(caller));
 					voiceVO.setMsg(1);
 				}else{
 					voiceVO.setMsg(2);
@@ -73,7 +70,7 @@ public class ZaozaoController {
 				//车管所查询,这里模拟
 				if("1".equals(f1)){
 					voiceVO.setMsg(1);
-					voiceVO.setPhoneNumber(map.get(caller));
+					voiceVO.setPhoneNumber(redisService.getRedisClientTemplate().get(caller));
 				}else{
 					voiceVO.setMsg(0);
 				}

@@ -143,6 +143,9 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         return redisClientTemplate.get(key);
     }
 
+    public RedisClientTemplate getRedisClientTemplate() {
+        return redisClientTemplate;
+    }
 
     public void afterPropertiesSet() throws Exception {
 

@@ -1,5 +1,6 @@
 package com.zaozao.service;
 
+import com.zaozao.jedis.RedisClientTemplate;
 import com.zaozao.jedis.bean.RouteExpireMessage;
 import com.zaozao.jedis.bean.Route;
 
@@ -7,6 +8,8 @@ import com.zaozao.jedis.bean.Route;
  * Created by luohao on 15/11/20.
  */
 public interface RedisService {
+
+    RedisClientTemplate getRedisClientTemplate();
 
     Route getRoute(String username);
 
