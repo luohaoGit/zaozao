@@ -11,21 +11,21 @@
         <property name="maxWaitMillis" value="${redis.maxWait}" />
     </bean>
 
-<!--    &lt;!&ndash; redis的连接池pool，不是必选项：timeout/password  &ndash;&gt;
+    <!-- redis的连接池pool，不是必选项：timeout/password  -->
     <bean id = "jedisPool" class="redis.clients.jedis.JedisPool">
         <constructor-arg index="0" ref="jedisPoolConfig"/>
         <constructor-arg index="1" value="${redis.host}"/>
         <constructor-arg index="2" value="${redis.port}" type="int"/>
         <constructor-arg index="3" value="${redis.timeout}" type="int"/>
         <constructor-arg index="4" value="${redis.pass}"/>
-    </bean>-->
+    </bean>
 
-    <bean id = "jedisPool" class="redis.clients.jedis.JedisPool">
+<!--    <bean id = "jedisPool" class="redis.clients.jedis.JedisPool">
         <constructor-arg index="0" ref="jedisPoolConfig"/>
         <constructor-arg index="1" value="${redis.host}"/>
         <constructor-arg index="2" value="${redis.port}" type="int"/>
         <constructor-arg index="3" value="${redis.timeout}" type="int"/>
-    </bean>
+    </bean>-->
 
     <!--    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool"  scope="singleton">
             <constructor-arg index="0" ref="jedisPoolConfig" />
