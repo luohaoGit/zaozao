@@ -14,14 +14,13 @@ body{
 }
 .hint{
 	color: #B2B2B2;
-	font-size: 0.5rem;
+	font-size: 1rem;
 }
-.more-query{
-	float: right;
-	color: #007AFF;
+.more{
+	color: #B2B2B2;
+	font-size: 1rem;
 	line-height: 2rem;
 	height: 2rem;
-	text-align: center;
 }
 .plate-container{
 	position: relative;
