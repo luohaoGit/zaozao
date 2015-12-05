@@ -46,6 +46,7 @@ public class ZaozaoController {
 		voiceVO.setMsg(new Random().nextInt());
 		model.put("model", voiceVO);
 		logstash.info(JSON.toJSONString(voiceVO));
+		logger.info(System.getProperty("catalina.home"));
 		return null;
 	}
 

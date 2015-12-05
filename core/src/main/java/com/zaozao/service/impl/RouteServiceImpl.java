@@ -50,7 +50,7 @@ public class RouteServiceImpl implements RouteService{
             if(!StringUtils.isEmpty(symbol)){
                 user = this.findUserForRoute(symbol,false);
 
-                if(user != null && !StringUtils.isEmpty(user.getOpenId())){//查询到用户
+                if(user != null && !StringUtils.isEmpty(user.getOpenId()) && user.isSubcribe()){//查询到用户
                     String ku = openid;
                     String che = user.getOpenId();
                     String carNumber = "";
