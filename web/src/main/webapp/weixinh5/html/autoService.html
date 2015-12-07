@@ -4,25 +4,15 @@
 		<title>汽车服务</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="stylesheet" href="/weixinh5/css/ionic.min.css"> 
-		<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
-		<link rel="stylesheet" href="/weixinh5/css/autoService.css" />
-		<script type="text/javascript" src="/weixinh5/js/jquery-1.11.1.js"></script>
-		<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
-		<script type="text/javascript" src="/weixinh5/js/angular-resource.min.js"></script>
+		<link rel="stylesheet" href="../css/ionic.min.css"> 
+		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link rel="stylesheet" href="../css/autoService.css" />
 	</head>
 	<body>
 		<div ng-app="autoService" ng-controller="autoService">
 			<ion-content class="container">
 				<ul class="clearfix margin-top">
-					<li class="clearfix item-container" ng-repeat="x in lists" ng-click="skip(this)">
-						<div class="item-img"><img ng-src="{{x.src}}"/></div>
-						<div class="item-name">{{x.name}}</div>
-					</li>
-				</ul>
-				<div class="periphery">周边</div>
-				<ul class="clearfix">
-					<li class="clearfix item-container" ng-repeat="x in perLists" ng-click="skip(this)">
+					<li class="clearfix item-container" ng-repeat="x in lists" ng-click="skip(x.href)">
 						<div class="item-img"><img ng-src="{{x.src}}"/></div>
 						<div class="item-name">{{x.name}}</div>
 					</li>
@@ -30,24 +20,24 @@
 			</ion-content>
 		</div>
 	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+	<script type="text/javascript" src="../js/angular-resource.min.js"></script>
 	<script>
 		var autoService = angular.module('autoService',['ionic']);
 		autoService.controller('autoService', ['$scope', function($scope){
 			$scope.lists = [
-				{name:'配饰车件',src:'/weixinh5/img/test.png'},
-				{name:'洗车',src:'/weixinh5/img/test.png'},
-				{name:'保养',src:'/weixinh5/img/test.png'},
-				{name:'维修',src:'/weixinh5/img/test.png'},
-				{name:'车险',src:'/weixinh5/img/test.png'},
-				{name:'代驾',src:'/weixinh5/img/test.png'}
-			];
-			$scope.perLists = [
-				{name:'4S店',src:'/weixinh5/img/test.png'},
-				{name:'加油站',src:'/weixinh5/img/test.png'},
-				{name:'停车场',src:'/weixinh5/img/test.png'}
+				{name:'加油',src:'../img/poi_gas_station.png',href:''},
+				{name:'洗车',src:'../img/poi_auto_xiche.png',href:'2'},
+				{name:'保养',src:'../img/tools_maintenance.png',href:'3'},
+				{name:'维修',src:'../img/poi_repair_service.png',href:'4'},
+				{name:'停车',src:'../img/poi_parking_lot.png',href:'5'},
+				{name:'代驾',src:'../img/poi_auto_daijia.png',href:'http://h.aidaijia.com'},
+				{name:'车险',src:'../img/poi_buy_insurance.png',href:'7'},
+				{name:'汽车租赁',src:'../img/poi_car_rental.png',href:'8'},
 			];
 			$scope.skip = function(e){
-				console.log(e);
+				location.href = e;
 			};
 		}]);
 	</script>

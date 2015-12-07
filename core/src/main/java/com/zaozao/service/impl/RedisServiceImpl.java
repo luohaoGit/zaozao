@@ -67,8 +67,9 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
             Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
             logger.error(e.getMessage(), e);
+        }finally {
+            redisClientTemplate.del(accessTokenLockKey);
         }
-        redisClientTemplate.del(accessTokenLockKey);
     }
 
     public void saveRoute(Route route) {
