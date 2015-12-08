@@ -44,7 +44,7 @@
                     <table id="table" class="table table-bordered table-striped">
                       <thead>
                       <tr>
-                        <th>ID</th>
+                        <th>早早号</th>
                         <th>OPENID</th>
                         <th>用户名</th>
                         <th>电话</th>
@@ -58,7 +58,7 @@
                       <tbody>
                       <c:forEach var="item" items="${page.data}" varStatus="status">
                       <tr>
-                        <td>${item.id}</td>
+                        <td>${item.userId}</td>
                         <td>${item.openId}</td>
                         <td>${item.username}</td>
                         <td>${item.telephone}</td>

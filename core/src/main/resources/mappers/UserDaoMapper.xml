@@ -5,7 +5,7 @@
 <mapper namespace="com.zaozao.dao.UserDao">
 
     <resultMap id="userResultMap" type="User">
-        <id property="id" column="id" javaType="string" />
+        <id property="userId" column="userid" javaType="long" />
         <result property="name" column="name" javaType="string" />
         <result property="username" column="username" javaType="string" />
         <result property="password" column="password" javaType="string" />
@@ -48,7 +48,7 @@
     </resultMap>
             
     <sql id="userColumn">
-        id, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait,
+        userid, name, username, password, nickname, gender, telephone, birthday, wxnumber, address, idnumber, registertime, deleted, portrait,
         openid, bundling, qrurl, qrticket, subcribe,
         wxnickname, sex, wxlanguage, city, province, country, headImgUrl, subscribeTime, unionId, remark, groupId
     </sql>
@@ -61,7 +61,7 @@
         INSERT INTO t_user(
         <include refid="userColumn" />
         ) VALUES
-        (#{id}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
+        (#{userId}, #{name}, #{username}, #{password}, #{nickName}, #{gender}, #{telephone}, #{birthday}, #{wxNumber}, #{address}, #{idNumber},
         #{registerTime}, #{deleted}, #{portrait}, #{openId}, #{bundling}, #{qrUrl}, #{qrTicket}, #{subcribe},
         #{wxnickname}, #{sex}, #{language}, #{city}, #{province}, #{country}, #{headImgUrl}, #{subscribeTime},
         #{unionId}, #{remark}, #{groupId});
@@ -94,7 +94,7 @@
         UPDATE t_user SET
         telephone = #{telephone},
         bundling = 1
-        WHERE id = #{id};
+        WHERE userid = #{userId};
     </update>
 
     <update id="updateQr" parameterType="User">
@@ -106,18 +106,18 @@
     </update>
 
     <delete id="delete" parameterType="String">
-        DELETE FROM t_user WHERE id = #{id}
+        DELETE FROM t_user WHERE userid = #{userId}
     </delete>
 
     <select id="searchById" resultMap="userResultMap" parameterType="String">
         SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
         from t_user u left join t_car c on u.id=c.userid
-        WHERE u.id = #{id};
+        WHERE u.userid = #{userId};
     </select>
 
     <select id="searchByCarNumber" resultMap="userResultMap" parameterType="String">
         SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
-        from t_user u left join t_car c on u.id=c.userid
+        from t_user u left join t_car c on u.userid=c.userid
         WHERE c.carnumber = #{carNumber};
     </select>
 
@@ -130,7 +130,7 @@
     <select id="getQRById" resultType="java.lang.String" parameterType="String">
         SELECT qrcode
         from t_user
-        WHERE id = #{id}
+        WHERE userid = #{userId}
     </select>
 
     <select id="checkByWx" resultType="java.lang.Integer" parameterType="String">
@@ -153,7 +153,7 @@
 
     <select id="findByTel" resultMap="userResultMap" parameterType="String">
         SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
-        from t_user u left join t_car c on u.id=c.userid
+        from t_user u left join t_car c on u.userid=c.userid
         WHERE u.telephone = #{telephone};
     </select>
 

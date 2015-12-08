@@ -18,7 +18,7 @@
         <result property="registerTime" column="registertime" javaType="java.sql.Timestamp" />
         <result property="deleted" column="deleted" javaType="boolean" />
         <association property="user" javaType="com.zaozao.model.po.User"><!-- resultMap=命名空间.id -->
-            <id column="uid" property="id"/>
+            <id column="uid" property="userId"/>
             <result column="name" property="name"/>
             <result column="wxnumber" property="wxNumber"/>
             <result column="portrait" property="portrait"/>
@@ -75,13 +75,13 @@
         SELECT
         c.*, u.id uid, u.name, u.wxnumber, u.portrait, u.qrcode
         from t_car c, t_user u
-        WHERE c.userid=u.id and u.id = #{id};
+        WHERE c.userid=u.userid and u.userid = #{id};
     </select>
 
     <select id="serchByCarNumber" resultMap="carResultMap" parameterType="String">
         SELECT
         c.*, u.id uid, u.name, u.wxnumber, u.portrait, u.qrcode, u.bundling, u.openid
         from t_car c, t_user u
-        WHERE c.userid=u.id and c.carnumber = #{carNumber};
+        WHERE c.userid=u.userid and c.carnumber = #{carNumber};
     </select>
 </mapper>
