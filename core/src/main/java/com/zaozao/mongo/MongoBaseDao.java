@@ -64,7 +64,7 @@ public abstract class MongoBaseDao<T> {
             Query query = new Query(criteria);
             logger.info("[Mongo Dao ]deleteById:" + query);
             if(null!=query && this.queryOne(query)!=null){
-                //this.delete(query.getQueryObject());
+                this.delete(this.queryOne(query));
             }
         }
     }
