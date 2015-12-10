@@ -54,36 +54,27 @@ public class ZaozaoController {
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol,
 								 HttpServletRequest request, ModelMap model) {
 
-		String f1 = "1";
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){
 			voiceVO.setMsg(0);
 		}else{
 			if(StringUtils.isEmpty(symbol)){
-				//首先查询路由,这里模拟
-				if("1".equals(f1)){
-					voiceVO.setPhoneNumber(redisService.getRedisClientTemplate().get(caller));
-					voiceVO.setMsg(1);
+				String phone = redisService.getRedisClientTemplate().get(caller);
+				//第一次查询
+				if(StringUtils.isEmpty(phone)){
+					voiceVO.setMsg(2);
 				}else{
-					voiceVO.setMsg(2);
-				}
-
-				if("13914001742".equals(caller)){
-					voiceVO.setPhoneNumber(null);
-					voiceVO.setMsg(2);
+					voiceVO.setPhoneNumber(phone);
+					voiceVO.setMsg(1);
 				}
 			}else{
-				//车管所查询,这里模拟
-				if("1".equals(f1)){
+				//车管所查询
+				String phone = "";
+				if("666666".equals(symbol) && "13812700842".equals(caller)){
+					voiceVO.setPhoneNumber("13914001742");
 					voiceVO.setMsg(1);
-					voiceVO.setPhoneNumber(redisService.getRedisClientTemplate().get(caller));
 				}else{
 					voiceVO.setMsg(0);
-				}
-
-				if("666666".equals(symbol)){
-					voiceVO.setPhoneNumber(redisService.getRedisClientTemplate().get(caller));
-					voiceVO.setMsg(1);
 				}
 			}
 		}
