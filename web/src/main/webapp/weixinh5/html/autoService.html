@@ -27,14 +27,14 @@
 		var autoService = angular.module('autoService',['ionic']);
 		autoService.controller('autoService', ['$scope', function($scope){
 			$scope.lists = [
-				{name:'加油',src:'../img/poi_gas_station.png',href:''},
-				{name:'洗车',src:'../img/poi_auto_xiche.png',href:'2'},
+				{name:'加油',src:'../img/poi_gas_station.png',href:'http://m.dianping.com/shoplist/5/search'},
+				{name:'洗车',src:'../img/poi_auto_xiche.png',href:''},
 				{name:'保养',src:'../img/tools_maintenance.png',href:'http://m.dianping.com/shoplist/5/d/1/c/65/s/'},
-				{name:'维修',src:'../img/poi_repair_service.png',href:'4'},
-				{name:'停车',src:'../img/poi_parking_lot.png',href:'5'},
+				{name:'维修',src:'../img/poi_repair_service.png',href:''},
+				{name:'停车',src:'../img/poi_parking_lot.png',href:''},
 				{name:'代驾',src:'../img/poi_auto_daijia.png',href:'http://h.aidaijia.com'},
 				{name:'车险',src:'../img/poi_buy_insurance.png',href:'http://car.qunabao.com'},
-				{name:'汽车租赁',src:'../img/poi_car_rental.png',href:'8'},
+				{name:'汽车租赁',src:'../img/poi_car_rental.png',href:''},
 			];
 			$scope.skip = function(e){
 				location.href = e;
