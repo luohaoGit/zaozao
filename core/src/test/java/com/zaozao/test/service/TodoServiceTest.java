@@ -1,5 +1,6 @@
 package com.zaozao.test.service;
 
+import com.zaozao.model.po.mongo.ClickEvent;
 import com.zaozao.test.base.BaseJunit4Test;
 import com.zaozao.utils.HttpClientUtil;
 import org.junit.Test;
@@ -73,11 +74,14 @@ public class TodoServiceTest {
 
     @Test
     public void getTodoById(){
-
+        System.out.printf(this.getClass().getSimpleName());
     }
 
     @Test
     public void getAllTodos(){
+
+        ClickEvent c = new ClickEvent();
+        System.out.println(c.getCollectionName());
 
     }
 
