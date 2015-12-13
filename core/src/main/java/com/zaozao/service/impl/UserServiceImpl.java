@@ -85,29 +85,33 @@ public class UserServiceImpl implements UserService {
     }
 
     public void autoRegister(UserVO userVO) {
-        if(userVO == null || userVO.getOpenId() == null){
-            throw new ZaozaoException("openid不能为空");
-        }
-        int count = userDao.checkByWx(userVO.getOpenId());
-        //没有关注的人，新增
-        if(count == 0){
-            User user = new User();
-            //generatorQrCode(user);
-            user.setTelephone("未绑定");
-            user.setPassword("000000");
-            user.setRegisterTime(new Date());
-            user.setOpenId(userVO.getOpenId());
-            user.setSubcribe(true);
-            getWxInfo(user, userVO);
-            logger.info("保存用户：" + user.toString());
-            userDao.insert(user);
-        }else{
+        try {
+            if (userVO == null || userVO.getOpenId() == null) {
+                throw new ZaozaoException("openid不能为空");
+            }
+            int count = userDao.checkByWx(userVO.getOpenId());
+            //没有关注的人，新增
+            if (count == 0) {
+                User user = new User();
+                //generatorQrCode(user);
+                user.setTelephone("未绑定");
+                user.setPassword("000000");
+                user.setRegisterTime(new Date());
+                user.setOpenId(userVO.getOpenId());
+                user.setSubcribe(true);
+                getWxInfo(user, userVO);
+                logger.info("保存用户：" + user.toString());
+                userDao.insert(user);
+            } else {
 /*            User user = userDao.findByWx(userVO.getOpenId());
             if(StringUtils.isEmpty(user.getQrTicket())){
                 generatorQrCode(user);
                 userDao.updateQr(user);
             }*/
-            userDao.subcribe(userVO.getOpenId());
+                userDao.subcribe(userVO.getOpenId());
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
         }
     }
 

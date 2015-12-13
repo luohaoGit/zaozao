@@ -83,7 +83,7 @@
 			<logger name="DATA" level="INFO">
 				<appender-ref ref="DATA_FILE" />
 			</logger>
-			<logger name="dao" level="DEBUG"/>
+			<logger name="dao" level="ERROR"/>
 		</then>
 		<else>
 			<!-- 自测环境 -->
