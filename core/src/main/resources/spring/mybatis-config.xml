@@ -3,6 +3,11 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+    <settings>
+        <setting name="logPrefix" value="dao."/>
+    </settings>
+
     <!-- 命名空间 -->
     <typeAliases>
         <typeAlias alias="Car" type="com.zaozao.model.po.Car"/>

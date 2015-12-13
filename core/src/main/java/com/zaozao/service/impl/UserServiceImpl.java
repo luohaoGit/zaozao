@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             //generatorQrCode(user);
             user.setTelephone("未绑定");
-            user.setUsername(userVO.getOpenId());
             user.setPassword("000000");
             user.setRegisterTime(new Date());
             user.setOpenId(userVO.getOpenId());

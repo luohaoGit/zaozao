@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
-        "classpath:spring/applicationContext.xml",
         "classpath:spring/spring-mybatis.xml",
         "classpath:spring/springMVC-servlet.xml"})
 @Transactional
