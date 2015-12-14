@@ -1,5 +1,6 @@
 package com.zaozao.service;
 
+import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 
 /**
@@ -9,4 +10,5 @@ public interface CarService {
 
     User getCarOwner(String carNumber);
 
+    void autoAddCar(Car car);
 }

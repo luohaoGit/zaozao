@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by luohao on 2015/2/3.
@@ -33,8 +34,11 @@ public class UserDaoTest extends BaseJunit4Test {
 
     @Test
     public void test1(){
-        User user = userDao.searchById("1");
-        System.out.print(user.getName());
+        //User user = userDao.searchById("1");
+        for(int i=0;i<10;i++){
+            System.out.println(UUID.randomUUID().toString().replace("-", ""));
+            System.out.println(UUID.randomUUID().toString());
+        }
     }
 
     @Test

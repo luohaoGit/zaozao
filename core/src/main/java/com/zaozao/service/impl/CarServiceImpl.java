@@ -6,6 +6,7 @@ import com.zaozao.model.po.User;
 import com.zaozao.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by luohao on 2015/10/23.
@@ -21,5 +22,11 @@ public class CarServiceImpl implements CarService {
         return car == null ? null : car.getUser();
     }
 
-    //增加车辆时注意车牌号转为大写
+    public void autoAddCar(Car car) {
+        if(!StringUtils.isEmpty(car.getCarNumber())){
+            car.setCarNumber(car.getCarNumber().toUpperCase());
+        }
+        carDao.insert(car);
+    }
+
 }

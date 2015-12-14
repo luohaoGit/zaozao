@@ -12,7 +12,7 @@ import java.util.UUID;
 public class BasePO implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString().replaceAll("-", "");
     private boolean deleted = false;
     private Date createTime;
 

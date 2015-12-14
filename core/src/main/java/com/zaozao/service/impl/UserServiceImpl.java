@@ -2,9 +2,11 @@ package com.zaozao.service.impl;
 
 import com.zaozao.dao.UserDao;
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
+import com.zaozao.service.CarService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -15,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private WeixinService weixinService;
+
+    @Autowired
+    private CarService carService;
 
     public User findByUsername(String username) {
         return userDao.searchByUsername(username);
@@ -84,6 +90,7 @@ public class UserServiceImpl implements UserService {
         userDao.insert(user);
     }
 
+    @Transactional
     public void autoRegister(UserVO userVO) {
         try {
             if (userVO == null || userVO.getOpenId() == null) {
@@ -94,6 +101,7 @@ public class UserServiceImpl implements UserService {
             if (count == 0) {
                 User user = new User();
                 //generatorQrCode(user);
+                user.setId(userVO.getOpenId());
                 user.setTelephone("未绑定");
                 user.setPassword("000000");
                 user.setRegisterTime(new Date());
@@ -102,6 +110,9 @@ public class UserServiceImpl implements UserService {
                 getWxInfo(user, userVO);
                 logger.info("保存用户：" + user.toString());
                 userDao.insert(user);
+                Car car = new Car();
+                car.setUser(user);
+                carService.autoAddCar(car);
             } else {
 /*            User user = userDao.findByWx(userVO.getOpenId());
             if(StringUtils.isEmpty(user.getQrTicket())){
