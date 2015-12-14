@@ -28,7 +28,7 @@
           </h1>
           <ol class="breadcrumb">
             <li><a href="/admin/main"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active"><a href="/zzid">早早号</a></li>
+            <li class="active"><a href="/admin/zzid">早早号</a></li>
           </ol>
         </section>
 
@@ -41,6 +41,9 @@
                   <h3 class="box-title">早早号</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
+                  起始:<input type="text" name="start" id="start"/>
+                  长度:<input type="text" name="len" id="len"/>
+                  <button id="addzzid">增加</button>
                     <table id="table" class="table table-bordered table-striped">
                       <thead>
                       <tr>
@@ -70,7 +73,28 @@
     <%@ include file="../common/js.jsp"%>
     <script>
       $(function () {
-        $('#user-li').addClass("active");
+        $('#zzid-li').addClass("active");
+
+        $('#addzzid').click(function(){
+          var start = $('#start').val();
+          var len = $('#len').val();
+          if(start == '' || len == ''){
+            alert("填写起始和长度");
+            return;
+          }
+          $.ajax({
+            url: '/admin/zzid/' + start + '/' + len,
+            type: 'POST',
+            success: function(response) {
+              alert("成功");
+              location.href = "/admin/zzid";
+            },
+            error: function(response){
+              console.log(response)
+              alert("失败");
+            }
+          });
+        });
       });
     </script>
   </body>

@@ -75,12 +75,12 @@ public class ManagerController {
 
     @RequestMapping(value="/zzid/{start}/{len}", method = RequestMethod.POST)
     public String setZzid(@PathVariable int start, @PathVariable int len, ModelMap modelMap){
-        int stop = start + len;
-        List<String> list = new ArrayList<String>();
-        for(int i = start; i< stop; i++){
-            list.add(i+"");
+        int stop = start + len - 1;
+        String[] list = new String[len];
+        for(int i = len-1; i >= 0; i--){
+            list[i] = (stop-i)+"";
         }
-        redisService.pushZzid((String[])list.toArray());
+        redisService.pushZzid(list);
         return "admin/zzid";
     }
 
