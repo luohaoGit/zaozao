@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
+import java.util.List;
+
 @Repository("redisClientTemplate")
 public class RedisClientTemplate {
 
@@ -154,6 +156,23 @@ public class RedisClientTemplate {
         }
     }
 
+    public Long rpush(String key, String... value) {
+        Long result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.rpush(key, value);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
     public String rpop(String key) {
         String result = null;
         Jedis jedis = redisDataSource.getRedisClient();
@@ -163,6 +182,57 @@ public class RedisClientTemplate {
 
         try {
             result = jedis.rpop(key);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public Long llen(String key) {
+        Long result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.llen(key);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public String lindex(String key, long index) {
+        String result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.lindex(key, index);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            redisDataSource.returnResource(jedis);
+            return result;
+        }
+    }
+
+    public List<String> lrange(String key, long start, long stop) {
+        List<String> result = null;
+        Jedis jedis = redisDataSource.getRedisClient();
+        if (jedis == null) {
+            return result;
+        }
+
+        try {
+            result = jedis.lrange(key, start, stop);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         } finally {

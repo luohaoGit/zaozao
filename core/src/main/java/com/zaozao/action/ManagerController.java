@@ -3,17 +3,18 @@ package com.zaozao.action;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
+import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,9 @@ public class ManagerController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisService redisService;
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String loginView(){
@@ -67,5 +71,24 @@ public class ManagerController {
         pageVO = userService.getUserPage(pageVO);
         modelMap.put("page", pageVO);
         return "admin/user";
+    }
+
+    @RequestMapping(value="/zzid/{start}/{len}", method = RequestMethod.POST)
+    public String setZzid(@PathVariable int start, @PathVariable int len, ModelMap modelMap){
+        int stop = start + len;
+        List<String> list = new ArrayList<String>();
+        for(int i = start; i< stop; i++){
+            list.add(i+"");
+        }
+        redisService.pushZzid((String[])list.toArray());
+        return "admin/zzid";
+    }
+
+    @RequestMapping(value="/zzid", method = RequestMethod.GET)
+    public String getZzid(ModelMap modelMap){
+        long len = redisService.lenZzidList();
+        List<String> list = redisService.getZzid(0, len-1);
+        modelMap.put("list", list);
+        return "admin/zzid";
     }
 }

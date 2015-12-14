@@ -10,6 +10,7 @@
       <!-- Optionally, you can add icons to the links -->
       <li id="user-li"><a href="/admin/users"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
       <li><a href="#"><i class="fa fa-link"></i> <span>移车记录</span></a></li>
+      <li id="zzid-li"><a href="/zzid"><i class="fa fa-link"></i> <span>早早号</span></a></li>
       <li><a href="#"><i class="fa fa-link"></i> <span>模版管理</span></a></li>
       <li><a href="#"><i class="fa fa-link"></i> <span>系统设置</span></a></li>
       <li class="treeview" id="wx-li">

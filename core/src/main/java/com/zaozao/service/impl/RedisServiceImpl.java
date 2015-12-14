@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Created by luohao on 15/11/20.
  */
@@ -29,6 +31,7 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private String accessTokenKey = "sys.accesstoken";
     private String expireMsgQueueKey = "sys.expiremsgs";
     private String voiceTokenPrefix = "sys.voicetoken.";
+    private String zzidQueueKey = "sys.zzidqueue";
 
     private int accessTokenLockExpire = 3 * 60 * 1000;//millis
     private int routeExpire = 15 * 60;//second
@@ -115,6 +118,26 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
             }
         }
         return routeExpireMessage;
+    }
+
+    public void pushZzid(String... value) {
+        redisClientTemplate.lpush(zzidQueueKey, value);
+    }
+
+    public String getZzid() {
+        return redisClientTemplate.rpop(zzidQueueKey);
+    }
+
+    public List<String> getZzid(long start, long len) {
+        return redisClientTemplate.lrange(zzidQueueKey, start, len);
+    }
+
+    public Long lenZzidList() {
+        return redisClientTemplate.llen(zzidQueueKey);
+    }
+
+    public void pushBackZzid(String... value) {
+        redisClientTemplate.rpush(zzidQueueKey, value);
     }
 
     public void setExpireVoiceToken(String key, String token) {

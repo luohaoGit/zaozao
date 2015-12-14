@@ -4,6 +4,8 @@ import com.zaozao.jedis.RedisClientTemplate;
 import com.zaozao.jedis.bean.RouteExpireMessage;
 import com.zaozao.jedis.bean.Route;
 
+import java.util.List;
+
 /**
  * Created by luohao on 15/11/20.
  */
@@ -28,6 +30,16 @@ public interface RedisService {
     void pushExpireMessage(String... value);
 
     RouteExpireMessage getExpireMessage();
+
+    void pushZzid(String... value);
+
+    String getZzid();
+
+    List<String> getZzid(long start, long len);
+
+    Long lenZzidList();
+
+    void pushBackZzid(String... value);
 
     void setExpireVoiceToken(String key, String token);
 
