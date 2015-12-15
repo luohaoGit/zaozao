@@ -1,5 +1,7 @@
 package com.zaozao.model.po;
 
+import com.zaozao.utils.EmojiFilterUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -221,7 +223,7 @@ public class User extends BasePO {
     }
 
     public String getWxnickname() {
-        return wxnickname;
+        return EmojiFilterUtils.filterEmoji(wxnickname);
     }
 
     public void setWxnickname(String wxnickname) {
