@@ -5,6 +5,7 @@ import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
+import com.zaozao.utils.GoodNumbersFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,11 +77,15 @@ public class ManagerController {
     @RequestMapping(value="/zzid/{start}/{len}", method = RequestMethod.POST)
     public String setZzid(@PathVariable int start, @PathVariable int len, ModelMap modelMap){
         int stop = start + len - 1;
-        String[] list = new String[len];
+        List<String> list = new ArrayList<String>();
         for(int i = len-1; i >= 0; i--){
-            list[i] = (stop-i)+"";
+            String s = (stop-i)+"";
+            if(GoodNumbersFilter.isAllow(s)){
+                list.add(s);
+            }
         }
-        redisService.pushZzid(list);
+        final int size =  list.size();
+        redisService.pushZzid((String[])list.toArray(new String[size]));
         return "admin/zzid";
     }
 

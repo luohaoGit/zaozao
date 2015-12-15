@@ -58,7 +58,7 @@
                       <tbody>
                       <c:forEach var="item" items="${page.data}" varStatus="status">
                       <tr>
-                        <td>${item.userId}</td>
+                        <td>${item.zzid}</td>
                         <td>${item.openId}</td>
                         <td>${item.username}</td>
                         <td>${item.telephone}</td>

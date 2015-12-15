@@ -7,6 +7,7 @@ import com.zaozao.model.po.User;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.CarService;
+import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -39,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private WeixinService weixinService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Autowired
     private CarService carService;
@@ -92,6 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void autoRegister(UserVO userVO) {
+        String zzid = "";
         try {
             if (userVO == null || userVO.getOpenId() == null) {
                 throw new ZaozaoException("openid不能为空");
@@ -107,6 +112,8 @@ public class UserServiceImpl implements UserService {
                 user.setRegisterTime(new Date());
                 user.setOpenId(userVO.getOpenId());
                 user.setSubcribe(true);
+                zzid = redisService.getZzid();
+                user.setZzid(zzid);
                 getWxInfo(user, userVO);
                 logger.info("保存用户：" + user.toString());
                 userDao.insert(user);
@@ -122,6 +129,9 @@ public class UserServiceImpl implements UserService {
                 userDao.subcribe(userVO.getOpenId());
             }
         }catch (Exception e){
+            if(!StringUtils.isEmpty(zzid)){
+                redisService.pushBackZzid(zzid);
+            }
             logger.error(e.getMessage(), e);
         }
     }

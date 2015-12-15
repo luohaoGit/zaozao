@@ -6,7 +6,7 @@
 
     <resultMap id="userResultMap" type="User">
         <id property="id" column="id" javaType="string" />
-        <result property="zzid" column="zzid" javaType="int" />
+        <result property="zzid" column="zzid" javaType="string" />
         <result property="name" column="name" javaType="string" />
         <result property="username" column="username" javaType="string" />
         <result property="password" column="password" javaType="string" />

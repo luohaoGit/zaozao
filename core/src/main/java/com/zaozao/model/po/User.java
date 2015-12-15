@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class User extends BasePO {
 
-    private Integer zzid;
+    private String zzid;
     private String username; //用户名
     private String password; //密码
     private String name; //姓名
@@ -52,11 +52,11 @@ public class User extends BasePO {
         this.cars = cars;
     }
 
-    public Integer getZzid() {
+    public String getZzid() {
         return zzid;
     }
 
-    public void setZzid(Integer zzid) {
+    public void setZzid(String zzid) {
         this.zzid = zzid;
     }
 
