@@ -43,7 +43,7 @@
                 <div class="box-body">
                   起始:<input type="text" name="start" id="start"/>
                   长度:<input type="text" name="len" id="len"/>
-                  <button id="addzzid">增加</button>
+                  <button id="addzzid" style="display:none">增加</button>
                     <table id="table" class="table table-bordered table-striped">
                       <thead>
                       <tr>

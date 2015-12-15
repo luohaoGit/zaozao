@@ -9,6 +9,11 @@ public class SubNUnsubEvent extends MongoBase{
     private String openid;
     private String type; //1:sub 2:unsub
 
+    public SubNUnsubEvent(String openid, String type) {
+        this.openid = openid;
+        this.type = type;
+    }
+
     public String getOpenid() {
         return openid;
     }

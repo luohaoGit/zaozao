@@ -73,6 +73,9 @@ public class ZaozaoController {
 				if("666666".equals(symbol) && "13812700842".equals(caller)){
 					voiceVO.setPhoneNumber("13914001742");
 					voiceVO.setMsg(1);
+				}else if("666666".equals(symbol) && "13914001742".equals(caller)){
+					voiceVO.setPhoneNumber("15162499345");
+					voiceVO.setMsg(1);
 				}else{
 					voiceVO.setMsg(0);
 				}

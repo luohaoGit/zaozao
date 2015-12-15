@@ -1,12 +1,18 @@
 package com.zaozao.model.po.mongo;
 
+import com.zaozao.model.po.User;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * 用户注册日志
  * Created by luohao on 15/12/11.
  */
 public class RegisterEvent extends MongoBase {
 
-    private String openid;
+    private String zzid;
+    private String openId;
     protected String wxnickname;
     protected String sex;
     protected String language;
@@ -19,12 +25,31 @@ public class RegisterEvent extends MongoBase {
     protected String remark;
     protected Integer groupId;
 
-    public String getOpenid() {
-        return openid;
+    public static RegisterEvent generateInstance(User user){
+        RegisterEvent registerEvent = new RegisterEvent();
+        try {
+            PropertyUtils.copyProperties(registerEvent, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            return registerEvent;
+        }
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public String getZzid() {
+        return zzid;
+    }
+
+    public void setZzid(String zzid) {
+        this.zzid = zzid;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     public String getWxnickname() {

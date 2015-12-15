@@ -4,12 +4,10 @@ import com.zaozao.dao.UserDao;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
-import com.zaozao.service.CarService;
-import com.zaozao.service.RedisService;
-import com.zaozao.service.UserService;
-import com.zaozao.service.WeixinService;
+import com.zaozao.service.*;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
@@ -31,7 +29,7 @@ import java.util.List;
  * Created by luohao on 2015/10/18.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, LogstashService {
 
     protected static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -115,7 +113,9 @@ public class UserServiceImpl implements UserService {
                 zzid = redisService.getZzid();
                 user.setZzid(zzid);
                 getWxInfo(user);
-                logger.info("保存用户：" + user.toString());
+
+                logstash.info(RegisterEvent.generateInstance(user).toJson());
+
                 userDao.insert(user);
                 Car car = new Car();
                 car.setUser(user);

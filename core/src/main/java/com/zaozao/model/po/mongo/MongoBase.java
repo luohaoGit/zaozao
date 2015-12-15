@@ -1,5 +1,7 @@
 package com.zaozao.model.po.mongo;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * Created by luohao on 15/12/11.
  */
@@ -23,5 +25,9 @@ public class MongoBase {
 
     public void setCollectionName(String collectionName) {
         this.collectionName = collectionName;
+    }
+
+    public String toJson(){
+        return JSON.toJSONString(this);
     }
 }

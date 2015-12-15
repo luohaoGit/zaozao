@@ -80,7 +80,7 @@
 			<logger name="ERROR" level="INFO">
 				<appender-ref ref="ERROR_FILE" />
 			</logger>
-			<logger name="DATA" level="INFO">
+			<logger name="LOGSTASH" level="INFO">
 				<appender-ref ref="DATA_FILE" />
 			</logger>
 			<logger name="dao" level="ERROR"/>
