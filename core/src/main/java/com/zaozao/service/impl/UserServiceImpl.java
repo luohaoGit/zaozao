@@ -95,8 +95,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void autoRegister(UserVO userVO) {
+    public User autoRegister(UserVO userVO) {
         String zzid = "";
+        User user = new User();
         try {
             if (userVO == null || userVO.getOpenId() == null) {
                 throw new ZaozaoException("openid不能为空");
@@ -104,7 +105,6 @@ public class UserServiceImpl implements UserService {
             int count = userDao.checkByWx(userVO.getOpenId());
             //没有关注的人，新增
             if (count == 0) {
-                User user = new User();
                 //generatorQrCode(user);
                 user.setId(userVO.getOpenId());
                 user.setTelephone("未绑定");
@@ -114,31 +114,35 @@ public class UserServiceImpl implements UserService {
                 user.setSubcribe(true);
                 zzid = redisService.getZzid();
                 user.setZzid(zzid);
-                getWxInfo(user, userVO);
+                getWxInfo(user);
                 logger.info("保存用户：" + user.toString());
                 userDao.insert(user);
                 Car car = new Car();
                 car.setUser(user);
                 carService.autoAddCar(car);
             } else {
-/*            User user = userDao.findByWx(userVO.getOpenId());
-            if(StringUtils.isEmpty(user.getQrTicket())){
-                generatorQrCode(user);
-                userDao.updateQr(user);
-            }*/
-                userDao.subcribe(userVO.getOpenId());
+                user = userDao.findByWx(userVO.getOpenId());
+                if(user != null && StringUtils.isEmpty(user.getSubscribeTime()) && user.isSubcribe()){
+                    //同步微信信息
+                    getWxInfo(user);
+                    userDao.update(user);
+                }else{
+                    userDao.subcribe(userVO.getOpenId());
+                }
             }
         }catch (Exception e){
             if(!StringUtils.isEmpty(zzid)){
                 redisService.pushBackZzid(zzid);
             }
             logger.error(e.getMessage(), e);
+        }finally {
+            return user;
         }
     }
 
-    private User getWxInfo(User user, UserVO userVO){
+    private User getWxInfo(User user){
         try {
-            WxMpUser wxMpUser = weixinService.oauth2getUserInfo(userVO.getWxMpOAuth2AccessToken(), null);
+            WxMpUser wxMpUser = weixinService.userInfo(user.getOpenId(), "zh_CN");
             if(wxMpUser != null){
                 user.setWxnickname(wxMpUser.getNickname());
                 user.setSex(wxMpUser.getSex());

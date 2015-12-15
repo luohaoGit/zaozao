@@ -91,6 +91,22 @@
         WHERE id = #{id};
     </update>
 
+    <update id="updateWxInfo" parameterType="User">
+        UPDATE t_user SET
+        wxnickname = #{wxnickname},
+        sex = #{sex},
+        language = #{language},
+        city = #{city},
+        province = #{province},
+        country = #{country},
+        headimgurl = #{headImgUrl},
+        subscribetime = #{subscribeTime},
+        unionid = #{unionId},
+        remark = #{remark},
+        groupid = #{groupId}
+        WHERE id = #{id};
+    </update>
+
     <update id="bindTel" parameterType="User">
         UPDATE t_user SET
         telephone = #{telephone},
@@ -141,8 +157,8 @@
     </select>
 
     <select id="findByWx" resultMap="userResultMap" parameterType="String">
-        SELECT <include refid="userColumn" />
-        from t_user u
+        SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
+        from t_user u left join t_car c on u.id=c.userid
         WHERE u.openid = #{openId};
     </select>
 

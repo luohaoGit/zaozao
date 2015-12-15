@@ -40,6 +40,8 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <mvc:view-controller path="/" view-name="index"/>
+
     <import resource="spring-mybatis.xml"/>
     <import resource="spring-quarts.xml"/>
     <import resource="spring-weixin.xml"/>

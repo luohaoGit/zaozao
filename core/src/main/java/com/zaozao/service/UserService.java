@@ -23,7 +23,7 @@ public interface UserService {
 
     void register(UserVO userVO);
 
-    void autoRegister(UserVO userVO);
+    User autoRegister(UserVO userVO);
 
     void login(UserVO userVO);
 

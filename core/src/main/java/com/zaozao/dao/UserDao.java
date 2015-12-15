@@ -13,6 +13,8 @@ public interface UserDao extends BaseDao<User> {
 
     void updateQr(User user);
 
+    void updateWxInfo(User user);
+
     int checkByTel(String telephone);
 
     int checkByWx(String openid);

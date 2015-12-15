@@ -11,7 +11,8 @@
     <title></title>
 </head>
 <body>
-你好${brand},网站建设中。。。
-<img src="data:image/png;base64,${qrcode}"/>
+你好${brand},早早移车欢迎您!
+<h1>请关注早早移车公众号,微信搜索"早早移车",您也可以扫一扫</h1>
+<img src="/img/qrcode_for_gh_f6aa1edbfa91_344.jpg"/>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.zaozao.action;
 
+import com.alibaba.fastjson.JSON;
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.model.po.User;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
@@ -43,7 +45,8 @@ public class Weixinh5Controller {
 			logger.error(e.getMessage());
 			throw new ZaozaoException(e.getMessage());
 		} finally {
-			userService.autoRegister(userVO);
+			User user = userService.autoRegister(userVO);
+			model.addAttribute("json", JSON.toJSON(user));
 		}
 		return "weixinh5/personalInformation";
 	}

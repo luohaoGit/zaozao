@@ -17,7 +17,7 @@
 			<ion-content>
 				<div class="list card border-radius">
 					<div class="item item-icon-right list-container" ng-repeat="x in lists" ng-click="skip(x)">
-						<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
+						<div ng-if="x.hasIcon"><img class="head" ng-src="{{x.content}}" /></div>
 						<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
 						<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
 						<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
@@ -48,7 +48,7 @@
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script type="text/javascript">
 		var json=JSON.parse('${json}');
-		wx.config({
+/*		wx.config({
 			debug:true,
 			appId:json.appId,
 			timestamp: json.timestamp,
@@ -90,23 +90,25 @@
 				'chooseCard',
 				'openCard'
 			]
-		});
+		});*/
 	</script>
 	<script>
 		var personalInformation = angular.module('personalInformation',['ionic']);
 		personalInformation.controller('personalInformation',['$scope','$ionicActionSheet',function($scope,$ionicActionSheet){
+			$scope.data = JSON.parse('${json}');
+
 			$scope.lists = [
-				{href:'#',name:'没头像，没礼貌，请上传头像！',hasIcon:true,content:'',flag:false},
-				{href:'#',name:'早早ID',hasIcon:false,content:'23232424223',flag:true},
-				{href:'#',name:'我的车牌',hasIcon:false,content:'苏A L634P',flag:true},
-				{href:'#',name:'我的昵称',hasIcon:false,content:'王宇',flag:true}
+				{href:'#',name:'',hasIcon:true,content:$scope.data.headImgUrl,flag:false},
+				{href:'#',name:'早早ID',hasIcon:false,content:$scope.data.zzid,flag:true},
+				{href:'#',name:'我的车牌',hasIcon:false,content:$scope.data.cars[0].carNumber,flag:true},
+				{href:'#',name:'我的昵称',hasIcon:false,content:$scope.data.wxnickname,flag:true}
 			];
 			$scope.lists_1 = [
 				{href:'#',name:'我的移车名片',hasIcon:false,content:'',flag:true}
 			];
 			$scope.lists_2 = [
 				{href:'#',name:'修改密码',hasIcon:false,content:'',flag:true},
-				{href:'#',name:'绑定手机',hasIcon:false,content:'15850761726',flag:true}
+				{href:'#',name:'绑定手机',hasIcon:false,content:'',flag:true}
 			];
 			$scope.skip = function(item){
 				console.log(item);
