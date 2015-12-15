@@ -388,7 +388,6 @@
 </dependencyManagement>
 
 <repositories>
-<!--
         <repository>
           <id>jboss</id>
           <name>JBoss Repository</name>
@@ -401,7 +400,6 @@
           </snapshots>
           <layout>default</layout>
         </repository>
--->
 
 
     <repository>
