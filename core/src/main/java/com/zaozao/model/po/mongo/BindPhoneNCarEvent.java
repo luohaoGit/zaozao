@@ -11,6 +11,12 @@ public class BindPhoneNCarEvent extends MongoBase{
     private String phone;
     private String carNumber;
 
+    public BindPhoneNCarEvent(String openid, String phone, String carNumber) {
+        this.openid = openid;
+        this.phone = phone;
+        this.carNumber = carNumber;
+    }
+
     public String getUserid() {
         return userid;
     }
