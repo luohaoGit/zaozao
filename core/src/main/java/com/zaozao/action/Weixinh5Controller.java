@@ -2,8 +2,11 @@ package com.zaozao.action;
 
 import com.alibaba.fastjson.JSON;
 import com.zaozao.exception.ZaozaoException;
+import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.vo.CarVO;
 import com.zaozao.model.vo.UserVO;
+import com.zaozao.service.CarService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -14,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -28,6 +33,9 @@ public class Weixinh5Controller {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private CarService carService;
 
 	@Autowired
 	private WeixinService weixinService;
@@ -84,10 +92,17 @@ public class Weixinh5Controller {
 		return "weixinh5/informationPlate";
 	}
 
-	@RequestMapping(value="/h5/bindphone", method = RequestMethod.GET)
+	@RequestMapping(value="/h5/phone", method = RequestMethod.POST)
 	public String bindPhone(ModelMap model, HttpServletRequest request) {
 
-		return "weixinh5/bindingPhone";
+		return null;
+	}
+
+	@RequestMapping(value="/h5/carnumber", method = RequestMethod.POST, consumes = "application/json")
+	public String bindCar(@RequestBody CarVO carVO, ModelMap model) {
+		carService.updateCarNumberByUser(carVO);
+		model.addAttribute("model", carVO);
+		return null;
 	}
 
 	@RequestMapping(value="/h5/sendvcode", method = RequestMethod.GET)

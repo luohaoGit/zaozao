@@ -105,7 +105,6 @@ public class UserServiceImpl implements UserService, LogstashService {
             if (count == 0) {
                 //generatorQrCode(user);
                 user.setId(userVO.getOpenId());
-                user.setTelephone("未绑定");
                 user.setPassword("000000");
                 user.setRegisterTime(new Date());
                 user.setOpenId(userVO.getOpenId());

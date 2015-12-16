@@ -98,6 +98,8 @@ public class RESTfulAction {
         private String name;
         private String sex;
 
+        public Person(){}
+
         public int getId() {
             return id;
         }

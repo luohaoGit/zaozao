@@ -1,5 +1,7 @@
 package com.zaozao.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -13,8 +15,12 @@ import java.io.PrintWriter;
  */
 public class CustomSimpleMappingExceptionResolver extends SimpleMappingExceptionResolver{
 
+    public static final Logger logger = LoggerFactory.getLogger(CustomSimpleMappingExceptionResolver.class);
+
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+
+        logger.error(ex.getMessage(), ex);
 
         //expose ModalAndView for chosen error view
         String viewName = determineViewName(ex, request);

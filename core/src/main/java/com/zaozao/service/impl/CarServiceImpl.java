@@ -3,6 +3,7 @@ package com.zaozao.service.impl;
 import com.zaozao.dao.CarDao;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.vo.CarVO;
 import com.zaozao.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,15 @@ public class CarServiceImpl implements CarService {
             car.setCarNumber(car.getCarNumber().toUpperCase());
         }
         carDao.insert(car);
+    }
+
+    public void updateCarNumberByUser(CarVO carVO) {
+        Car car = new Car();
+        User user = new User();
+        user.setId(carVO.getOpenid());
+        car.setCarNumber(carVO.getCarNumber());
+        car.setUser(user);
+        carDao.updateCarNumber(car);
     }
 
 }

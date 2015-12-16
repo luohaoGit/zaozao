@@ -38,11 +38,13 @@
 
 			<div class="list card border-radius">
 				<div class="item item-icon-right list-container" ng-click="bindcar()">
-					<div class="noname">绑定车牌</div>
+					<div class="noname">{{carText}}</div>
+					<div class="content">{{data.cars[0].carNumber}}</div>
 					<i class="icon ion-chevron-right icon-color"></i>
 				</div>
 				<div class="item item-icon-right list-container" ng-click="bindphone()">
-					<div class="noname">绑定手机</div>
+					<div class="noname">{{phoneText}}</div>
+					<div class="content">{{telephone}}</div>
 					<i class="icon ion-chevron-right icon-color"></i>
 				</div>
 			</div>
@@ -94,6 +96,7 @@
 
 
 <script type="text/javascript">
+	var persondata = JSON.parse('${json}');
 	angular.module('ionicApp', ['ionic'])
 
 			.config(function($stateProvider, $urlRouterProvider) {
@@ -144,7 +147,12 @@
 			})
 
 			.controller('personalInformation', function($scope,$ionicActionSheet,$state) {
-				$scope.data = JSON.parse('${json}');
+				$scope.data = persondata;
+
+				$scope.telephone = $scope.data.telephone;
+				if($scope.telephone){
+					$scope.telephone = $scope.telephone.substr(0, 3) + '****' + $scope.telephone.substr(7)
+				}
 
 				$scope.lists = [
 					{href:'#',name:'',hasIcon:true,content:$scope.data.headImgUrl,flag:false},
@@ -157,6 +165,18 @@
 				$scope.lists_2 = [
 					{name:"bindphone", href:'#',name:'绑定手机',hasIcon:false,content:'',flag:true}
 				];
+
+				$scope.carText = "绑定车牌";
+				if($scope.data.cars[0].carNumber){
+					$scope.carText = "修改车牌";
+				}
+
+				$scope.phoneText = "绑定手机";
+				if($scope.data.telephone){
+					$scope.phoneText = "修改手机";
+				}
+
+
 				$scope.skip = function(item){
 					if(item.hasIcon){
 						$ionicActionSheet.show({
@@ -179,6 +199,7 @@
 						//$state.go("app.bindphone");
 					}
 				};
+
 
 				$scope.bindphone = function(){
 					$state.go("app.bindphone");

@@ -61,6 +61,12 @@
         WHERE id = #{id};
     </update>
 
+    <update id="updateCarNumber" parameterType="Car">
+        UPDATE t_car SET
+        carnumber = #{carNumber}
+        WHERE userid = #{user.id};
+    </update>
+
     <delete id="delete" parameterType="String">
         DELETE FROM t_car WHERE id = #{id}
     </delete>
