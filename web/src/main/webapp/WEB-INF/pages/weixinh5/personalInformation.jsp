@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
 	<link rel="stylesheet" href="/weixinh5/css/personalInformation.css" />
 	<link rel="stylesheet" href="/weixinh5/css/bindingPhone.css" />
+	<link rel="stylesheet" href="/weixinh5/css/informationPlate.css" />
 	<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
 </head>
 <body>
@@ -195,6 +196,7 @@
 					"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 				$scope.myAreas = [];
 				$scope.myLetters = [];
+				$scope.data = {};
 
 				angular.forEach(areas, function(data,index,array){
 					$scope.myAreas.push({"id": index,"label": data});
