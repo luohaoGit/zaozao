@@ -6,6 +6,7 @@ import com.zaozao.model.po.User;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import org.slf4j.Logger;
@@ -33,7 +34,6 @@ public class Weixinh5Controller {
 
 	@RequestMapping(value="/h5/person/information")
 	public String personalInformation(ModelMap model, HttpServletRequest request) {
-		logger.info("***************************code" + request.getParameter("code"));
 		String code = request.getParameter("code");
 		UserVO userVO = new UserVO();
 		try {
@@ -42,7 +42,7 @@ public class Weixinh5Controller {
 			userVO.setWxMpOAuth2AccessToken(auth2AccessToken);
 			userVO.setOpenId(openid);
 		} catch (WxErrorException e) {
-			logger.error(e.getMessage());
+			logger.error(e.getMessage(), e);
 			throw new ZaozaoException(e.getMessage());
 		} finally {
 			User user = userService.autoRegister(userVO);
@@ -70,8 +70,29 @@ public class Weixinh5Controller {
 	 * @return
      */
 	@RequestMapping(value="/h5/car/plate", method = RequestMethod.GET)
-	public String informationPlate(ModelMap model) {
+	public String informationPlate(ModelMap model, HttpServletRequest request) {
+		String code = request.getParameter("code");
+		try {
+			WxMpOAuth2AccessToken auth2AccessToken = weixinService.oauth2getAccessToken(code);
+			String openid = auth2AccessToken.getOpenId();
 
+			WxJsapiSignature wxJsapiSignature = weixinService.createJsapiSignature("http://www.zaozaoche.com/weixin/h5/car/plate");
+		} catch (WxErrorException e) {
+			logger.error(e.getMessage(), e);
+			throw new ZaozaoException(e.getMessage());
+		}
 		return "weixinh5/informationPlate";
+	}
+
+	@RequestMapping(value="/h5/bindphone", method = RequestMethod.GET)
+	public String bindPhone(ModelMap model, HttpServletRequest request) {
+
+		return "weixinh5/bindingPhone";
+	}
+
+	@RequestMapping(value="/h5/sendvcode", method = RequestMethod.GET)
+	public String sendVCode(ModelMap model, HttpServletRequest request) {
+
+		return null;
 	}
 }

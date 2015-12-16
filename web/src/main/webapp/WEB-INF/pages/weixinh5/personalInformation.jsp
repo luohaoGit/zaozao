@@ -1,139 +1,255 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>个人信息</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="stylesheet" href="/weixinh5/css/ionic.min.css"> 
-		<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
-		<link rel="stylesheet" href="/weixinh5/css/personalInformation.css" />
-		<script type="text/javascript" src="/weixinh5/js/jquery-1.11.1.js"></script>
-		<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
-		<script type="text/javascript" src="/weixinh5/js/angular-resource.min.js"></script>
-	</head>
-	<body>
-		<div ng-app="personalInformation" ng-controller="personalInformation">
-			<ion-content>
-				<div class="list card border-radius">
-					<div class="item item-icon-right list-container" ng-repeat="x in lists" ng-click="skip(x)">
-						<div ng-if="x.hasIcon"><img class="head" ng-src="{{x.content}}" /></div>
-						<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-						<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
-					</div>
-				</div>
-				<div class="list card border-radius">
-					<div class="item item-icon-right list-container" ng-repeat="x in lists_1" ng-click="skip(x)">
-						<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
-						<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-						<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
-					</div>
-				</div>
-				<div class="list card border-radius">
-					<div class="item item-icon-right list-container" ng-repeat="x in lists_2" ng-click="skip(x)">
-						<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
-						<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-						<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-						<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
-					</div>
-				</div>
-			</ion-content>
-		</div>
-	</body>
-	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script type="text/javascript">
-		var json=JSON.parse('${json}');
-/*		wx.config({
-			debug:true,
-			appId:json.appId,
-			timestamp: json.timestamp,
-			nonceStr:json.nonceStr,
-			signature:json.signature,
-			jsApiList: [
-				'checkJsApi',
-				'onMenuShareTimeline',
-				'onMenuShareAppMessage',
-				'onMenuShareQQ',
-				'onMenuShareWeibo',
-				'hideMenuItems',
-				'showMenuItems',
-				'hideAllNonBaseMenuItem',
-				'showAllNonBaseMenuItem',
-				'translateVoice',
-				'startRecord',
-				'stopRecord',
-				'onRecordEnd',
-				'playVoice',
-				'pauseVoice',
-				'stopVoice',
-				'uploadVoice',
-				'downloadVoice',
-				'chooseImage',
-				'previewImage',
-				'uploadImage',
-				'downloadImage',
-				'getNetworkType',
-				'openLocation',
-				'getLocation',
-				'hideOptionMenu',
-				'showOptionMenu',
-				'closeWindow',
-				'scanQRCode',
-				'chooseWXPay',
-				'openProductSpecificView',
-				'addCard',
-				'chooseCard',
-				'openCard'
-			]
-		});*/
-	</script>
-	<script>
-		var personalInformation = angular.module('personalInformation',['ionic']);
-		personalInformation.controller('personalInformation',['$scope','$ionicActionSheet',function($scope,$ionicActionSheet){
-			$scope.data = JSON.parse('${json}');
+<html ng-app="ionicApp">
+<head>
+	<title>个人信息</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="/weixinh5/css/ionic.min.css">
+	<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
+	<link rel="stylesheet" href="/weixinh5/css/personalInformation.css" />
+	<link rel="stylesheet" href="/weixinh5/css/bindingPhone.css" />
+	<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
+</head>
+<body>
 
-			$scope.lists = [
-				{href:'#',name:'',hasIcon:true,content:$scope.data.headImgUrl,flag:false},
-				{href:'#',name:'早早ID',hasIcon:false,content:$scope.data.zzid,flag:true},
-				{href:'#',name:'我的车牌',hasIcon:false,content:$scope.data.cars[0].carNumber,flag:true},
-				{href:'#',name:'我的昵称',hasIcon:false,content:$scope.data.wxnickname,flag:true}
-			];
-			$scope.lists_1 = [
-				{href:'#',name:'我的移车名片',hasIcon:false,content:'',flag:true}
-			];
-			$scope.lists_2 = [
-				{href:'#',name:'修改密码',hasIcon:false,content:'',flag:true},
-				{href:'#',name:'绑定手机',hasIcon:false,content:'',flag:true}
-			];
-			$scope.skip = function(item){
-				console.log(item);
-				if(item.hasIcon){
-					$ionicActionSheet.show({
-			            titleText: null,
-			            buttons: [{
-			                text: '拍照'
-			            }, {
-			                text: '从相册中选择'
-			            }, ],
-			            cancelText: '取消',
-			            cancel: function() {
-			                console.log('取消');
-			            },
-			            buttonClicked: function(index) {
-			                console.log('BUTTON CLICKED', index);
-			                return true;
-			            }
-			        });
-				} else {
-					console.log(item.href);
-					//self.location = item.href;
+<ion-nav-view></ion-nav-view>
+
+<script id="app.html" type="text/ng-template">
+	<ion-side-menus>
+		<ion-pane ion-side-menu-content>
+			<ion-nav-view name="appContent" animation="slide-left-right"></ion-nav-view>
+		</ion-pane>
+	</ion-side-menus>
+</script>
+
+<script id="personalInformation.html" type="text/ng-template">
+	<ion-view title="">
+		<ion-content>
+			<div class="list card border-radius">
+				<div class="item item-icon-right list-container" ng-repeat="x in lists" ng-click="skip(x)">
+					<div ng-if="x.hasIcon"><img class="head" ng-src="{{x.content}}" /></div>
+					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
+					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
+					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
+					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
+				</div>
+			</div>
+
+			<div class="list card border-radius">
+				<div class="item item-icon-right list-container" ng-click="bindcar()">
+					<div class="noname">绑定车牌</div>
+					<i class="icon ion-chevron-right icon-color"></i>
+				</div>
+				<div class="item item-icon-right list-container" ng-click="bindphone()">
+					<div class="noname">绑定手机</div>
+					<i class="icon ion-chevron-right icon-color"></i>
+				</div>
+			</div>
+
+			<div class="list card border-radius">
+				<div class="item item-icon-right list-container" ng-repeat="x in lists_1" ng-click="skip(x)">
+					<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
+					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
+					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
+					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
+					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
+				</div>
+			</div>
+
+		</ion-content>
+	</ion-view>
+</script>
+
+
+<script id="bindcar.html" type="text/ng-template">
+	<ion-view title="绑定车牌">
+		<ion-content class="container">
+			<div class="hint padding-top padding-bottom1">请填写车牌号</div>
+			<div class="plate-container">
+				<select id="selectedArea" class="item-input item-select fl" ng-change="selectAreaAction()" ng-model="selectArea" ng-options="value.id as value.label for value in myAreas"></select>
+				<select id="selectedLetter" class="item-input item-select fr" ng-change="selectLetterAction()" ng-model="selectLetter" ng-options="value.id as value.label for value in myLetters"></select>
+				<input class="plate-input" type="text" maxlength="5" ng-model="data.plateNumber" placeholder="请输入车牌号！" />
+			</div>
+			<div class="button button-calm" ng-click="weChat()">确定</div>
+		</ion-content>
+	</ion-view>
+</script>
+
+<script id="bindphone.html" type="text/ng-template">
+	<ion-view title="绑定手机">
+		<ion-content class="container">
+			<input type="text" ng-show="false" ng-model="message" />
+			<div class="message" ng-bind="message"></div>
+			<input class="width-full margin-position" type="text" ng-model="phone" placeholder="手机号" />
+			<div class="width-full margin-position position-relative">
+				<input class="width-full margin-position" type="text" ng-model="securitycode" placeholder="验证码" />
+				<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">验证码</div>
+				<div class="security text-color" ng-hide="timeFlag">{{time}}</div>
+			</div>
+			<div class="button button-calm width-full" ng-click="next()">确定</div>
+		</ion-content>
+	</ion-view>
+</script>
+
+
+<script type="text/javascript">
+	angular.module('ionicApp', ['ionic'])
+
+			.config(function($stateProvider, $urlRouterProvider) {
+				$stateProvider
+
+						.state('app', {
+							url: "/app",
+							abstract: true,
+							templateUrl: "app.html",
+							controller: 'AppCtrl'
+						})
+
+						.state('app.personalInformation', {
+							url: "/personalInformation",
+							views: {
+								'appContent' :{
+									templateUrl: "personalInformation.html",
+									controller: 'personalInformation'
+								}
+							}
+						})
+
+						.state('app.bindcar', {
+							url: "/bindcar",
+							views: {
+								'appContent' :{
+									templateUrl: "bindcar.html",
+									controller: 'bindcar'
+								}
+							}
+						})
+
+						.state('app.bindphone', {
+							url: "/bindphone",
+							views: {
+								'appContent' :{
+									templateUrl: "bindphone.html",
+									controller: 'bindphone'
+								}
+							}
+						})
+
+				// if none of the above states are matched, use this as the fallback
+				$urlRouterProvider.otherwise('/app/personalInformation');
+			})
+
+			.controller('AppCtrl', function($scope) {
+			})
+
+			.controller('personalInformation', function($scope,$ionicActionSheet,$state) {
+				$scope.data = JSON.parse('${json}');
+
+				$scope.lists = [
+					{href:'#',name:'',hasIcon:true,content:$scope.data.headImgUrl,flag:false},
+					{href:'#',name:'早早ID',hasIcon:false,content:$scope.data.zzid,flag:false},
+					{href:'#',name:'我的昵称',hasIcon:false,content:$scope.data.wxnickname,flag:false}
+				];
+				$scope.lists_1 = [
+					{href:'#',name:'我的移车名片',hasIcon:false,content:'',flag:true}
+				];
+				$scope.lists_2 = [
+					{name:"bindphone", href:'#',name:'绑定手机',hasIcon:false,content:'',flag:true}
+				];
+				$scope.skip = function(item){
+					if(item.hasIcon){
+						$ionicActionSheet.show({
+							titleText: null,
+							buttons: [{
+								text: '拍照'
+							}, {
+								text: '从相册中选择'
+							}, ],
+							cancelText: '取消',
+							cancel: function() {
+								console.log('取消');
+							},
+							buttonClicked: function(index) {
+								console.log('BUTTON CLICKED', index);
+								return true;
+							}
+						});
+					} else {
+						//$state.go("app.bindphone");
+					}
+				};
+
+				$scope.bindphone = function(){
+					$state.go("app.bindphone");
 				}
-			};
-		}]);
-	</script>
+
+				$scope.bindcar = function(){
+					$state.go("app.bindcar");
+				}
+			})
+
+			.controller('bindcar', function($scope, $stateParams) {
+				var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
+					"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
+				var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
+					"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+				$scope.myAreas = [];
+				$scope.myLetters = [];
+
+				angular.forEach(areas, function(data,index,array){
+					$scope.myAreas.push({"id": index,"label": data});
+				});
+
+				$scope.selectArea = $scope.myAreas[0].id;
+				$scope.selectAreaAction = function(){
+					console.log($('#selectedArea').val());
+				}
+
+				angular.forEach(letters, function(data,index,array){
+					$scope.myLetters.push({"id": index,"label": data});
+				});
+
+				$scope.selectLetter = $scope.myLetters[0].id;
+				$scope.selectLetterAction = function(){
+					console.log($('#selectedLetter').val());
+				}
+				$scope.query = function(){
+
+				}
+
+				$scope.data.plateNumber = "";
+				$scope.$watch('data.plateNumber', function(newValue, oldValue, scope){
+					if(/^[A-Za-z0-9]+$/.test(newValue)){
+						scope.data.plateNumber = newValue.toUpperCase();
+					}else{
+						scope.data.plateNumber = newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase();
+					}
+				})
+			})
+
+			.controller('bindphone', function($scope, $stateParams) {
+				$scope.sendFlag = false;
+				$scope.timeFlag = true;
+				$scope.sendSecurityCode = function(){
+					$scope.time = 60;
+					$scope.sendFlag = true;
+					$scope.timeFlag = false;
+					var myTime = setInterval(function() {
+						if(--$scope.time==0){
+							clearInterval(myTime);
+							$scope.sendFlag = false;
+							$scope.timeFlag = true;
+						}
+						$scope.$digest();
+					}, 1000);
+				};
+				$scope.next = function(){
+					console.log($scope.phone);
+					$scope.message = '手机号是必须的';
+				};
+			});
+
+</script>
+
+</body>
 </html>

@@ -8,9 +8,7 @@
 		<link rel="stylesheet" href="/weixinh5/css/ionic.min.css"> 
 		<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
 		<link rel="stylesheet" href="/weixinh5/css/autoService.css" />
-		<script type="text/javascript" src="/weixinh5/js/jquery-1.11.1.js"></script>
 		<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
-		<script type="text/javascript" src="/weixinh5/js/angular-resource.min.js"></script>
 	</head>
 	<body>
 		<div ng-app="autoService" ng-controller="autoService">
