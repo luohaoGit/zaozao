@@ -69,11 +69,11 @@
 		<ion-content class="container">
 			<div class="hint padding-top padding-bottom1">请填写车牌号</div>
 			<div class="plate-container">
-				<select id="selectedArea" class="item-input item-select fl" ng-change="selectAreaAction()" ng-model="selectArea" ng-options="value.id as value.label for value in myAreas"></select>
-				<select id="selectedLetter" class="item-input item-select fr" ng-change="selectLetterAction()" ng-model="selectLetter" ng-options="value.id as value.label for value in myLetters"></select>
+				<select class="item-input item-select fl" ng-model="data.selectArea" ng-options="value.id as value.label for value in myAreas"></select>
+				<select class="item-input item-select fr" ng-model="data.selectLetter" ng-options="value.id as value.label for value in myLetters"></select>
 				<input class="plate-input" type="text" maxlength="5" ng-model="data.plateNumber" placeholder="请输入车牌号！" />
 			</div>
-			<div class="button button-calm" ng-click="weChat()">确定</div>
+			<div class="button button-calm" ng-disabled="!data.valid" ng-click="updateCar()">确定</div>
 		</ion-content>
 	</ion-view>
 </script>
@@ -96,7 +96,6 @@
 
 
 <script type="text/javascript">
-	var persondata = JSON.parse('${json}');
 	angular.module('ionicApp', ['ionic'])
 
 			.config(function($stateProvider, $urlRouterProvider) {
@@ -143,11 +142,12 @@
 				$urlRouterProvider.otherwise('/app/personalInformation');
 			})
 
-			.controller('AppCtrl', function($scope) {
+			.controller('AppCtrl', function($scope, $rootScope) {
+				$rootScope.pdata = JSON.parse('${json}');
 			})
 
-			.controller('personalInformation', function($scope,$ionicActionSheet,$state) {
-				$scope.data = persondata;
+			.controller('personalInformation', function($scope,$ionicActionSheet,$state, $rootScope) {
+				$scope.data = $rootScope.pdata;
 
 				$scope.telephone = $scope.data.telephone;
 				if($scope.telephone){
@@ -210,44 +210,64 @@
 				}
 			})
 
-			.controller('bindcar', function($scope, $stateParams) {
+			.controller('bindcar', function($scope, $stateParams, $http, $window, $rootScope) {
 				var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
 					"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
 				var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
 					"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 				$scope.myAreas = [];
 				$scope.myLetters = [];
-				$scope.data = {};
 
 				angular.forEach(areas, function(data,index,array){
-					$scope.myAreas.push({"id": index,"label": data});
+					$scope.myAreas.push({"id": data,"label": data});
 				});
-
-				$scope.selectArea = $scope.myAreas[0].id;
-				$scope.selectAreaAction = function(){
-					console.log($('#selectedArea').val());
-				}
 
 				angular.forEach(letters, function(data,index,array){
-					$scope.myLetters.push({"id": index,"label": data});
+					$scope.myLetters.push({"id": data,"label": data});
 				});
 
-				$scope.selectLetter = $scope.myLetters[0].id;
-				$scope.selectLetterAction = function(){
-					console.log($('#selectedLetter').val());
+				$scope.data = {
+					pdata: $rootScope.pdata,
+					selectArea:'京',
+					selectLetter:'A',
+					plateNumber:$rootScope.pdata.cars[0].carNumber,
+					valid:false
 				}
-				$scope.query = function(){
 
+				if($scope.data.plateNumber){
+					$scope.data.selectArea = $scope.data.plateNumber[0];
+					$scope.data.selectLetter = $scope.data.plateNumber[1];
+					$scope.data.plateNumber = $scope.data.plateNumber.substr(2, 5);
 				}
 
-				$scope.data.plateNumber = "";
 				$scope.$watch('data.plateNumber', function(newValue, oldValue, scope){
+					scope.data.valid = false;
 					if(/^[A-Za-z0-9]+$/.test(newValue)){
 						scope.data.plateNumber = newValue.toUpperCase();
 					}else{
 						scope.data.plateNumber = newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase();
 					}
+					if(scope.data.plateNumber.length == 5){
+						scope.data.valid = true;
+					}
 				})
+
+				$scope.updateCar = function(){
+					var carNumber = $scope.data.selectArea + $scope.data.selectLetter + $scope.data.plateNumber;
+					var data = {
+						carNumber : carNumber,
+						openid: $scope.data.pdata.id
+					}
+
+					$http.post('/weixin/h5/carnumber.json',data)
+					.success(function(data){
+						$rootScope.pdata.cars[0].carNumber = carNumber;
+						$window.history.back();
+					})
+					.error(function(data){
+						alert("更新失败");
+					});
+				}
 			})
 
 			.controller('bindphone', function($scope, $stateParams) {
