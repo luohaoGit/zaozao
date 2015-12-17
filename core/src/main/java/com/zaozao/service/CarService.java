@@ -14,4 +14,6 @@ public interface CarService {
     void autoAddCar(Car car);
 
     void updateCarNumberByUser(CarVO carvo);
+
+    int checkByNumber(String carNumber);
 }

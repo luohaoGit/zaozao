@@ -15,4 +15,6 @@ public interface CarDao extends BaseDao<Car> {
 
     void updateCarNumber(Car car);
 
+    int checkCar(String carNumber);
+
 }

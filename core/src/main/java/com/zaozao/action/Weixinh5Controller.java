@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -102,6 +100,17 @@ public class Weixinh5Controller {
 	public String bindCar(@RequestBody CarVO carVO, ModelMap model) {
 		carService.updateCarNumberByUser(carVO);
 		model.addAttribute("model", carVO);
+		return null;
+	}
+
+	@RequestMapping(value="/h5/carnumber", method = RequestMethod.GET)
+	public String checkCar(ModelMap model, @RequestParam String carNumber) {
+		logger.info("test**********" + carNumber);
+		Object o = JSON.parse("{\"count\":0}");
+		if(carService.checkByNumber(carNumber) > 0){
+			o = JSON.parse("{\"count\":1}");
+		}
+		model.addAttribute("model", o);
 		return null;
 	}
 

@@ -45,4 +45,8 @@ public class CarServiceImpl implements CarService, LogstashService {
 
     }
 
+    public int checkByNumber(String carNumber) {
+        return carDao.checkCar(carNumber);
+    }
+
 }

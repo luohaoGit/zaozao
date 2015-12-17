@@ -71,6 +71,12 @@
         DELETE FROM t_car WHERE id = #{id}
     </delete>
 
+    <select id="checkCar" resultType="java.lang.Integer" parameterType="String">
+        SELECT count(*)
+        from t_car c
+        WHERE c.carnumber = #{carNumber};
+    </select>
+
     <select id="searchById" resultMap="carResultMap" parameterType="String">
         SELECT <include refid="carColumn" />
         from t_car
