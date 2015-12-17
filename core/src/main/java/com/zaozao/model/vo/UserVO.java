@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 /**
  * Created by luohao on 2015/10/20.
@@ -30,6 +31,8 @@ public class UserVO extends BaseVO {
 
     @NotNull
     private String openId;
+
+    private Date regTime;
 
     private WxMpOAuth2AccessToken wxMpOAuth2AccessToken;
 
@@ -79,6 +82,14 @@ public class UserVO extends BaseVO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Date getRegTime() {
+        return regTime;
+    }
+
+    public void setRegTime(Date regTime) {
+        this.regTime = regTime;
     }
 
     public WxMpOAuth2AccessToken getWxMpOAuth2AccessToken() {

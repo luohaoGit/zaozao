@@ -48,4 +48,8 @@ public interface RedisService {
     void setCarNPhone(String carNumber, String phone);
 
     String getPhoneByCar(String carNumber);
+
+    void expireSmsCode(String openid, String code);
+
+    String getSmsCode(String openid);
 }

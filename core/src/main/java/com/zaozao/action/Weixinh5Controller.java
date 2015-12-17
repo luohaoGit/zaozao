@@ -5,8 +5,11 @@ import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.CarVO;
+import com.zaozao.model.vo.CommonResultVO;
+import com.zaozao.model.vo.SMSVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.CarService;
+import com.zaozao.service.SMSService;
 import com.zaozao.service.UserService;
 import com.zaozao.service.WeixinService;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
@@ -37,6 +40,9 @@ public class Weixinh5Controller {
 
 	@Autowired
 	private WeixinService weixinService;
+
+	@Autowired
+	private SMSService smsService;
 
 	@RequestMapping(value="/h5/person/information")
 	public String personalInformation(ModelMap model, HttpServletRequest request) {
@@ -105,18 +111,20 @@ public class Weixinh5Controller {
 
 	@RequestMapping(value="/h5/carnumber", method = RequestMethod.GET)
 	public String checkCar(ModelMap model, @RequestParam String carNumber) {
-		logger.info("test**********" + carNumber);
-		Object o = JSON.parse("{\"count\":0}");
+		CommonResultVO commonResultVO = new CommonResultVO(0, true);
 		if(carService.checkByNumber(carNumber) > 0){
-			o = JSON.parse("{\"count\":1}");
+			commonResultVO.setCount(1);
 		}
-		model.addAttribute("model", o);
+		model.addAttribute("model", commonResultVO);
 		return null;
 	}
 
-	@RequestMapping(value="/h5/sendvcode", method = RequestMethod.GET)
-	public String sendVCode(ModelMap model, HttpServletRequest request) {
-
+	@RequestMapping(value="/h5/sendsmscode", method = RequestMethod.POST, consumes = "application/json")
+	public String sendSmsCode(ModelMap model, @RequestBody UserVO userVO) {
+		String code = userService.generateSmsCode(userVO.getOpenId());
+		SMSVO smsvo = new SMSVO(userVO.getTelephone(), code);
+		smsService.sendSMSMessage(smsvo);
+		model.addAttribute("model", new CommonResultVO(1, true));
 		return null;
 	}
 }

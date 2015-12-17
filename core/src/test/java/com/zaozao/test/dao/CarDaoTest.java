@@ -1,11 +1,13 @@
 package com.zaozao.test.dao;
 
 
+import com.mchange.v2.codegen.CodegenUtils;
 import com.zaozao.dao.CarDao;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.po.mongo.MongoBase;
 import com.zaozao.test.base.BaseJunit4Test;
+import com.zaozao.utils.CodeGeneratorUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +54,6 @@ public class CarDaoTest {
     public void testByUserId(){
         //Car car = carDao.searchByUserId("6d3c75cd-3261-495f-8b0c-5a9680f3fd97");
         //logger.info("*********************************" + car.toString());
-        MongoBase mongoBase = new MongoBase();
-        logger.info(mongoBase.toJson());
+        logger.info(CodeGeneratorUtils.generateSmsCode());
     }
 }

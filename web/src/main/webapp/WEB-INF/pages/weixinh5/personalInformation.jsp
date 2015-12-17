@@ -259,14 +259,26 @@
 						openid: $scope.data.pdata.id
 					}
 
-					$http.post('/weixin/h5/carnumber.json',data)
-					.success(function(data){
-						$rootScope.pdata.cars[0].carNumber = carNumber;
-						$window.history.back();
-					})
-					.error(function(data){
-						alert("更新失败");
+					$http({
+						method:'GET',
+						url:'/weixin/h5/carnumber.json?carNumber=' + carNumber
+					}).success(function(data){
+						if(data.count == 1){
+							alert("车牌已被绑定");
+						}else{
+							$http.post('/weixin/h5/carnumber.json',data)
+									.success(function(data){
+										$rootScope.pdata.cars[0].carNumber = carNumber;
+										$window.history.back();
+									})
+									.error(function(data){
+										alert("更新失败");
+									});
+						}
+					}).error(function(data){
+						alert("网络错误");
 					});
+
 				}
 			})
 

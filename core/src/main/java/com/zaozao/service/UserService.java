@@ -36,4 +36,6 @@ public interface UserService {
     void subcribe(String openid);
 
     String getQrCode(String id);
+
+    String generateSmsCode(String openid);
 }

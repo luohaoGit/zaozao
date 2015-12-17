@@ -8,6 +8,7 @@ import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
 import com.zaozao.service.*;
+import com.zaozao.utils.CodeGeneratorUtils;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
@@ -222,5 +223,11 @@ public class UserServiceImpl implements UserService, LogstashService {
     public String getQrCode(String id) {
         String qrcode = userDao.getQRById(id);
         return qrcode;
+    }
+
+    public String generateSmsCode(String openid) {
+        String smsCode = CodeGeneratorUtils.generateSmsCode();
+        redisService.expireSmsCode(openid, smsCode);
+        return smsCode;
     }
 }

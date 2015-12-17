@@ -25,6 +25,7 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private RedisClientTemplate redisClientTemplate;
 
     private String routePrefix = "user.route.";
+    private String smsCodeKeyPrefix = "user.smscode.";
     private String carNPhoneKey = "user.carNphone.";
 
     private String accessTokenLockKey = "sys.accesstoken.lock";
@@ -37,6 +38,7 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     private int routeExpire = 15 * 60;//second
     private int carNPhoneExpire = 5 * 60;//second
     private int voiceTokenExpire = 60;//second
+    private int smsCodeExpire = 60 * 30; //second
 
     public boolean acquireAccessTokenLock() {
         long expires = System.currentTimeMillis() + accessTokenLockExpire + 1;
@@ -165,6 +167,16 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     public String getPhoneByCar(String carNumber) {
         String key = carNPhoneKey + carNumber;
         return redisClientTemplate.get(key);
+    }
+
+    public void expireSmsCode(String openid, String code) {
+        String key = smsCodeKeyPrefix + openid;
+        redisClientTemplate.set(key, code);
+        redisClientTemplate.expire(key, smsCodeExpire);
+    }
+
+    public String getSmsCode(String openid) {
+        return redisClientTemplate.get(smsCodeKeyPrefix + openid);
     }
 
     public RedisClientTemplate getRedisClientTemplate() {
