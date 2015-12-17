@@ -226,7 +226,10 @@ public class UserServiceImpl implements UserService, LogstashService {
     }
 
     public String generateSmsCode(String openid) {
-        String smsCode = CodeGeneratorUtils.generateSmsCode();
+        String smsCode = redisService.getSmsCode(openid);
+        if(StringUtils.isEmpty(smsCode)){
+            smsCode = CodeGeneratorUtils.generateSmsCode();
+        }
         redisService.expireSmsCode(openid, smsCode);
         return smsCode;
     }

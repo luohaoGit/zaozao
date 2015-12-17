@@ -9,4 +9,5 @@ public interface SMSService {
 
     void sendSMSMessage(SMSVO smsvo);
 
+    String generateCodeContent(String code);
 }

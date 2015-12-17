@@ -32,7 +32,7 @@ public class UserVO extends BaseVO {
     @NotNull
     private String openId;
 
-    private Date regTime;
+    private String registerTime;
 
     private WxMpOAuth2AccessToken wxMpOAuth2AccessToken;
 
@@ -84,12 +84,12 @@ public class UserVO extends BaseVO {
         this.username = username;
     }
 
-    public Date getRegTime() {
-        return regTime;
+    public String getRegisterTime() {
+        return registerTime;
     }
 
-    public void setRegTime(Date regTime) {
-        this.regTime = regTime;
+    public void setRegisterTime(String registerTime) {
+        this.registerTime = registerTime;
     }
 
     public WxMpOAuth2AccessToken getWxMpOAuth2AccessToken() {

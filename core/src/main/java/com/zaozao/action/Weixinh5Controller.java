@@ -24,6 +24,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/weixin")
@@ -119,12 +122,22 @@ public class Weixinh5Controller {
 		return null;
 	}
 
-	@RequestMapping(value="/h5/sendsmscode", method = RequestMethod.POST, consumes = "application/json")
-	public String sendSmsCode(ModelMap model, @RequestBody UserVO userVO) {
-		String code = userService.generateSmsCode(userVO.getOpenId());
-		SMSVO smsvo = new SMSVO(userVO.getTelephone(), code);
-		smsService.sendSMSMessage(smsvo);
-		model.addAttribute("model", new CommonResultVO(1, true));
+	@RequestMapping(value="/h5/smscode", method = RequestMethod.POST, consumes = "application/json")
+	public String sendSmsCode(ModelMap model, @RequestBody UserVO userVO) throws ParseException {
+		CommonResultVO result = new CommonResultVO(0, false);
+
+		User user = userService.findById(userVO.getOpenId());
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date registerTime = sdf.parse(userVO.getRegisterTime());
+		if(registerTime != null && registerTime.equals(user.getRegisterTime())){
+			String code = userService.generateSmsCode(userVO.getOpenId());
+			SMSVO smsvo = new SMSVO(userVO.getTelephone(), smsService.generateCodeContent(code));
+			smsService.sendSMSMessage(smsvo);
+			result.setSuccess(true);
+		}
+
+		model.addAttribute("model", result);
 		return null;
 	}
 }

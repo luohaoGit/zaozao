@@ -83,13 +83,13 @@
 		<ion-content class="container">
 			<input type="text" ng-show="false" ng-model="message" />
 			<div class="message" ng-bind="message"></div>
-			<input class="width-full margin-position" type="text" ng-model="phone" placeholder="手机号" />
+			<input class="width-full margin-position" type="text" maxlength="11" ng-model="data.phone" placeholder="手机号" />
 			<div class="width-full margin-position position-relative">
-				<input class="width-full margin-position" type="text" ng-model="securitycode" placeholder="验证码" />
-				<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">验证码</div>
+				<input class="width-full margin-position" type="text" maxlength="6" ng-model="data.code" placeholder="验证码" />
+				<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">发送验证码</div>
 				<div class="security text-color" ng-hide="timeFlag">{{time}}</div>
 			</div>
-			<div class="button button-calm width-full" ng-click="next()">确定</div>
+			<div class="button button-calm width-full" ng-disabled="!(data.valid && data.codevalid)" ng-click="next()">确定</div>
 		</ion-content>
 	</ion-view>
 </script>
@@ -282,10 +282,46 @@
 				}
 			})
 
-			.controller('bindphone', function($scope, $stateParams) {
+			.controller('bindphone', function($scope, $rootScope) {
+				$scope.data = {
+					pdata: $rootScope.pdata,
+					phone: "",
+					valid: false,
+					codevalid: false
+				}
+
+				$scope.$watch("data.phone", function(newValue, oldValue, scope){
+					scope.data.valid = false;
+
+					if(!/^[0-9]*$/.test(newValue)){
+						scope.data.phone = newValue.replace(/[^0-9]*/g,"");
+					}
+
+					if(/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(newValue)){
+						scope.data.valid = true;
+					}
+				});
+
+				$scope.$watch("data.code", function(newValue, oldValue, scope){
+					scope.data.codevalid = false;
+
+					if(!/^[0-9]*$/.test(newValue)){
+						scope.data.code = newValue.replace(/[^0-9]*/g,"");
+					}
+
+					if(newValue.length == 6){
+						scope.data.codevalid = true;
+					}
+				});
+
 				$scope.sendFlag = false;
 				$scope.timeFlag = true;
 				$scope.sendSecurityCode = function(){
+					if(!$scope.data.valid){
+						$scope.message = '手机号是必须的';
+						return;
+					}
+
 					$scope.time = 60;
 					$scope.sendFlag = true;
 					$scope.timeFlag = false;

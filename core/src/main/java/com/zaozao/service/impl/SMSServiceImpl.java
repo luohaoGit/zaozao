@@ -28,12 +28,15 @@ public class SMSServiceImpl implements SMSService {
     @Value("${sms_send_product_id}")
     private String smsSendProductId;
 
+    @Value("${sms.code}")
+    private String smsCodeContent;
+
     public void sendSMSMessage(SMSVO smsvo) {
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("account", smsSendUsername);
         param.put("pswd", smsSendPassword);
         param.put("mobile", smsvo.getMobile());
-        param.put("msg", "【早早】" + smsvo.getContent());
+        param.put("msg", smsvo.getContent());
         param.put("needstatus", "true");
         param.put("product", smsSendProductId);
         //param.put("extno", "");
@@ -80,5 +83,9 @@ public class SMSServiceImpl implements SMSService {
         }else if("120".equals(respstatus)){
             throw new ZaozaoException("超范围发送");
         }
+    }
+
+    public String generateCodeContent(String code) {
+        return String.format(smsCodeContent, code);
     }
 }
