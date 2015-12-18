@@ -254,7 +254,7 @@
 
 				$scope.updateCar = function(){
 					var carNumber = $scope.data.selectArea + $scope.data.selectLetter + $scope.data.plateNumber;
-					var data = {
+					var cardata = {
 						carNumber : carNumber,
 						openid: $scope.data.pdata.id
 					}
@@ -266,7 +266,7 @@
 						if(data.count == 1){
 							alert("车牌已被绑定");
 						}else{
-							$http.post('/weixin/h5/carnumber.json',data)
+							$http.post('/weixin/h5/carnumber.json',cardata)
 									.success(function(data){
 										$rootScope.pdata.cars[0].carNumber = carNumber;
 										$window.history.back();

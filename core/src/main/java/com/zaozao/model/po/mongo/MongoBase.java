@@ -3,23 +3,20 @@ package com.zaozao.model.po.mongo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.util.Date;
-
 /**
  * Created by luohao on 15/12/11.
  */
 public class MongoBase {
 
-    private Date createTime = new Date();
-
+    private Long createTime = System.currentTimeMillis();
     private String collectionName = this.getClass().getSimpleName();
 
     @JSONField(format="yyyy-MM-dd HH:mm:ss.SSS")
-    public Date getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

@@ -2,6 +2,8 @@ package com.zaozao.model.po.mongo;
 
 import com.zaozao.model.po.User;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.Date;
  * Created by luohao on 15/12/11.
  */
 public class RegisterEvent extends MongoBase {
+
+    protected static Logger logger = LoggerFactory.getLogger(RegisterEvent.class);
 
     private String zzid;
     private String openId;
@@ -30,9 +34,9 @@ public class RegisterEvent extends MongoBase {
         RegisterEvent registerEvent = new RegisterEvent();
         try {
             PropertyUtils.copyProperties(registerEvent, user);
-            registerEvent.setCreateTime(new Date());
+            registerEvent.setCreateTime(System.currentTimeMillis());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }finally {
             return registerEvent;
         }

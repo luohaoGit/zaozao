@@ -1,20 +1,26 @@
 package com.zaozao.model.po.mongo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.util.Date;
+
 /**
  * 用户点击日志
  * Created by luohao on 15/12/11.
  */
 public class ClickEvent extends MongoBase {
 
-    private Long leaveTime;
+    private Date leaveTime;
     private String clickItem;
     private String openid;
 
-    public Long getLeaveTime() {
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss.SSS")
+    public Date getLeaveTime() {
         return leaveTime;
     }
 
-    public void setLeaveTime(Long leaveTime) {
+    public void setLeaveTime(Date leaveTime) {
         this.leaveTime = leaveTime;
     }
 

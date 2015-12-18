@@ -1,7 +1,7 @@
 package com.zaozao.weixin.handler;
 
-import com.zaozao.service.UserService;
-import com.zaozao.service.WeixinService;
+import com.zaozao.model.po.mongo.ClickEvent;
+import com.zaozao.model.po.mongo.WxMessageEvent;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
@@ -10,7 +10,6 @@ import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +22,17 @@ import java.util.Map;
 public class DefaultHandler implements WxMpMessageHandler {
     protected static Logger logger = LoggerFactory.getLogger(DefaultHandler.class);
 
-    @Autowired
-    private WeixinService weixinService;
-
-    @Autowired
-    private UserService userService;
+    protected static Logger logstash = LoggerFactory.getLogger("LOGSTASH");
 
     @Value("${wx.default}")
     private String defaultMsg;
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        logger.info("recieve weixin message:" + message.toString());
-        String result = defaultMsg;
 
+        WxMessageEvent wxMessageEvent = WxMessageEvent.generateInstance(message);
+        logstash.info(wxMessageEvent.toJson());
+
+        String result = defaultMsg;
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                 .content(result)
                 .fromUser(message.getToUserName())
