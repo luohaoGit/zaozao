@@ -5,7 +5,9 @@ import com.mchange.v2.codegen.CodegenUtils;
 import com.zaozao.dao.CarDao;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
 import com.zaozao.model.po.mongo.MongoBase;
+import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.test.base.BaseJunit4Test;
 import com.zaozao.utils.CodeGeneratorUtils;
 import org.junit.Test;
@@ -54,6 +56,8 @@ public class CarDaoTest {
     public void testByUserId(){
         //Car car = carDao.searchByUserId("6d3c75cd-3261-495f-8b0c-5a9680f3fd97");
         //logger.info("*********************************" + car.toString());
-        logger.info(CodeGeneratorUtils.generateSmsCode());
+        //logger.info(CodeGeneratorUtils.generateSmsCode());
+        logger.info(RegisterEvent.generateInstance(new User()).toJson());
+        logger.info(new BindPhoneNCarEvent("1", "", "3").toJson());
     }
 }

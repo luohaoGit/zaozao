@@ -4,6 +4,7 @@ import com.zaozao.model.po.User;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 
 /**
  * 用户注册日志
@@ -29,6 +30,7 @@ public class RegisterEvent extends MongoBase {
         RegisterEvent registerEvent = new RegisterEvent();
         try {
             PropertyUtils.copyProperties(registerEvent, user);
+            registerEvent.setCreateTime(new Date());
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
