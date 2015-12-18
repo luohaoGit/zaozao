@@ -5,10 +5,7 @@ import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.*;
-import com.zaozao.service.CarService;
-import com.zaozao.service.SMSService;
-import com.zaozao.service.UserService;
-import com.zaozao.service.WeixinService;
+import com.zaozao.service.*;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
@@ -43,6 +40,9 @@ public class Weixinh5Controller {
 
 	@Autowired
 	private SMSService smsService;
+
+	@Autowired
+	private RouteService routeService;
 
 	@RequestMapping(value="/h5/person/information")
 	public String personalInformation(ModelMap model, HttpServletRequest request) {
@@ -89,7 +89,6 @@ public class Weixinh5Controller {
 					+ request.getContextPath()
 					+ request.getServletPath()
 					+ "?" + (request.getQueryString());
-			logger.info("$$$$$$$$$$$$$$" + ownUrl);
 			WxMpOAuth2AccessToken auth2AccessToken = weixinService.oauth2getAccessToken(code);
 			String openid = auth2AccessToken.getOpenId();
 			WxJsapiSignature wxJsapiSignature = weixinService.createJsapiSignature(ownUrl);
@@ -100,6 +99,29 @@ public class Weixinh5Controller {
 			throw new ZaozaoException(e.getMessage());
 		}
 		return "weixinh5/informationPlate";
+	}
+
+	@RequestMapping(value="/h5/car/plate", method = RequestMethod.POST, consumes = "application/json")
+	public String queryUser(ModelMap model, @RequestBody CarVO carVO) {
+
+		if(StringUtils.isEmpty(carVO.getSmbol()) || StringUtils.isEmpty(carVO.getOpenid())){
+			throw new ZaozaoException("参数非法");
+		}
+
+		CommonResultVO commonResultVO = new CommonResultVO(null, false);
+
+		if("wx".equals(carVO.getType())){
+			if(routeService.createWxRoute(carVO.getOpenid(), carVO.getSmbol()).getSuccess()){
+				commonResultVO.setSuccess(true);
+			}
+		}else if("phone".equals(carVO.getType())){
+			if(routeService.createVoiceRoute(carVO.getOpenid(), carVO.getSmbol()).getSuccess()){
+				commonResultVO.setSuccess(true);
+			}
+		}
+
+		model.addAttribute("model", commonResultVO);
+		return null;
 	}
 
 	@RequestMapping(value="/h5/phone", method = RequestMethod.POST)
@@ -137,7 +159,7 @@ public class Weixinh5Controller {
 			String code = userService.generateSmsCode(userVO.getOpenId());
 			SMSVO smsvo = new SMSVO(userVO.getTelephone(), smsService.generateCodeContent(code));
 			smsService.sendSMSMessage(smsvo);
-			result.setSuccess(true);
+			result.setSuccess(Boolean.TRUE);
 		}
 
 		model.addAttribute("model", result);

@@ -5,6 +5,8 @@ import com.zaozao.jedis.bean.RouteExpireMessage;
 import com.zaozao.jedis.bean.Route;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.po.mongo.QueryEvent;
+import com.zaozao.model.vo.RouteResultVO;
 import com.zaozao.service.*;
 import me.chanjar.weixin.mp.bean.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.WxMpTemplateMessage;
@@ -24,7 +26,7 @@ import java.util.List;
  * Created by luohao on 15/11/25.
  */
 @Service
-public class RouteServiceImpl implements RouteService{
+public class RouteServiceImpl implements RouteService, LogstashService{
     protected static Logger logger = LoggerFactory.getLogger(RouteServiceImpl.class);
 
     @Autowired
@@ -37,13 +39,12 @@ public class RouteServiceImpl implements RouteService{
     private RedisService redisService;
 
     @Autowired
-    private StuckRecordService stuckRecordService;
-
-    @Autowired
     private HBService hbService;
 
-    public String createWxRoute(String openid, String symbol) {
-        String result = defaultMsg;
+    public RouteResultVO createWxRoute(String openid, String symbol) {
+        QueryEvent queryEvent = new QueryEvent(openid, QueryEvent.WEIXIN);
+
+        RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
         try{
             symbol = symbol.replace(replacePattern, "");
             User user; //车主
@@ -62,7 +63,7 @@ public class RouteServiceImpl implements RouteService{
                     }
 
                     if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌
-                        result = notOwnNO;
+                        routeResultVO.setMsg(notOwnNO);
                     }else{
                         //为苦主建立与车主的路由
                         Route kuRoute = new Route(ku, che, true, 0);
@@ -73,13 +74,6 @@ public class RouteServiceImpl implements RouteService{
 
                         RouteExpireMessage routeExpireMessage = new RouteExpireMessage(ku, che, 0);
                         redisService.pushExpireMessage(routeExpireMessage.toJson());
-
-/*                        StuckRecordVO stuckRecordVO = new StuckRecordVO();
-                        stuckRecordVO.setCreateTime(new Date());
-                        stuckRecordVO.setBeStuckUser(ku);
-                        stuckRecordVO.setStuckUser(che);
-                        stuckRecordVO.setStuckCarNumber(carNumber);
-                        stuckRecordService.addRecord(stuckRecordVO);*/
 
                         //通知车主
                         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
@@ -95,22 +89,27 @@ public class RouteServiceImpl implements RouteService{
                         weixinService.pushTemplateMessage(templateMessage);
 
                         //回复苦主
-                        result = replyKu;
+                        routeResultVO = new RouteResultVO(true, replyKu);
                     }
+                    queryEvent.setFeedbackTime(System.currentTimeMillis() - queryEvent.getCreateTime());
+                    queryEvent.setSucceed(true);
+                    queryEvent.setToUser(che);
                 }else{
-                    result = notFoundNO;
+                    routeResultVO.setMsg(notFoundNO);
                 }
             }
         }catch (Exception e){
-            result = notFoundNO;
+            routeResultVO.setMsg(notFoundNO);
             logger.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }finally {
-            return result;
+            logstash.info(queryEvent.toJson());
+            return routeResultVO;
         }
     }
 
-    public void createVoiceRoute(String openid, String symbol) {
+    public RouteResultVO createVoiceRoute(String openid, String symbol) {
+        RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
         try{
             User me = userService.findByOpenid(openid);
             String myPhone = me.getTelephone();
@@ -133,6 +132,8 @@ public class RouteServiceImpl implements RouteService{
         }catch (Exception e){
             logger.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
+        }finally {
+            return routeResultVO;
         }
     }
 

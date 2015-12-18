@@ -40,7 +40,7 @@ public class CarServiceImpl implements CarService, LogstashService {
         car.setUser(user);
         carDao.updateCarNumber(car);
 
-        BindPhoneNCarEvent bindPhoneNCarEvent = new BindPhoneNCarEvent(carVO.getOpenid(), "", carVO.getCarNumber());
+        BindPhoneNCarEvent bindPhoneNCarEvent = new BindPhoneNCarEvent(carVO.getOpenid(), null, carVO.getCarNumber());
         logstash.info(bindPhoneNCarEvent.toJson());
 
     }

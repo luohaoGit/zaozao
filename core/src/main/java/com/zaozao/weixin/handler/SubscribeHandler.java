@@ -34,7 +34,7 @@ public class SubscribeHandler implements WxMpMessageHandler {
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
 
-        SubNUnsubEvent subNUnsubEvent = new SubNUnsubEvent(message.getFromUserName(), "1");
+        SubNUnsubEvent subNUnsubEvent = new SubNUnsubEvent(message.getFromUserName(), SubNUnsubEvent.SUB);
         logstash.info(subNUnsubEvent.toJson());
 
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()

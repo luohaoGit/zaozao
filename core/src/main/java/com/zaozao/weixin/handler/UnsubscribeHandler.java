@@ -29,7 +29,7 @@ public class UnsubscribeHandler implements WxMpMessageHandler {
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
 
-        SubNUnsubEvent subNUnsubEvent = new SubNUnsubEvent(message.getFromUserName(), "2");
+        SubNUnsubEvent subNUnsubEvent = new SubNUnsubEvent(message.getFromUserName(), SubNUnsubEvent.UNSUB);
         logstash.info(subNUnsubEvent.toJson());
 
         userService.unsubcribe(message.getFromUserName());

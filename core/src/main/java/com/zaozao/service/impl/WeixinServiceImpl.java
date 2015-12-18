@@ -94,14 +94,11 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
             // 说明是同步回复的消息
             // 将xml写入HttpServletResponse
             if ("raw".equals(encryptType)) {
-                logger.info("response to weixin: " + outMessage.toXml());
                 response.getWriter().write(outMessage.toXml());
             } else if ("aes".equals(encryptType)) {
-                logger.info("response to weixin: " + outMessage.toEncryptedXml(wxMpConfigStorage));
                 response.getWriter().write(outMessage.toEncryptedXml(wxMpConfigStorage));
             }
         } else {
-            logger.info("response to weixin: \"\"");
             // 说明是异步回复的消息，直接将空字符串写入HttpServletResponse
             response.getWriter().write("");
         }

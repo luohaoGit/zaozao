@@ -5,27 +5,27 @@ package com.zaozao.model.vo;
  */
 public class CommonResultVO {
 
-    private int count;
-    private boolean success;
+    private Integer count;
+    private Boolean success;
 
-    public CommonResultVO(int count, boolean success) {
+    public CommonResultVO(Integer count, Boolean success) {
         this.count = count;
         this.success = success;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
-    public boolean isSuccess() {
+    public Boolean getSuccess() {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(Boolean success) {
         this.success = success;
     }
 }

@@ -6,11 +6,19 @@ package com.zaozao.model.po.mongo;
  */
 public class QueryEvent extends MongoBase {
 
+    public static final String PHONE = "phone";
+    public static final String WEIXIN = "wx";
+
     private Long feedbackTime; //反馈结果的时间
-    private Boolean succeed; //查询结果状态（是否成功）
+    private Boolean succeed = false; //查询结果状态（是否成功）
     private String fromUser;
     private String toUser;
-    private String type; //1:电话 2:微信
+    private String type; //1:phone 2:wx
+
+    public QueryEvent(String fromUser, String type) {
+        this.fromUser = fromUser;
+        this.type = type;
+    }
 
     public Long getFeedbackTime() {
         return feedbackTime;

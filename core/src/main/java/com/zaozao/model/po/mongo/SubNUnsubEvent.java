@@ -6,6 +6,9 @@ package com.zaozao.model.po.mongo;
  */
 public class SubNUnsubEvent extends MongoBase{
 
+    public static final String SUB = "sub";
+    public static final String UNSUB = "unsub";
+
     private String openid;
     private String type; //1:sub 2:unsub
 

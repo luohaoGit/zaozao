@@ -26,7 +26,7 @@ public class RouteHandler implements WxMpMessageHandler {
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
         logger.info("recieve weixin message:" + message.toString());
-        String result = routeService.createWxRoute(message.getFromUserName(), message.getContent());
+        String result = routeService.createWxRoute(message.getFromUserName(), message.getContent()).getMsg();
 
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                 .content(result)
