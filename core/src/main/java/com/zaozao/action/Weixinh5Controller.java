@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
-import com.zaozao.model.vo.CarVO;
-import com.zaozao.model.vo.CommonResultVO;
-import com.zaozao.model.vo.SMSVO;
-import com.zaozao.model.vo.UserVO;
+import com.zaozao.model.vo.*;
 import com.zaozao.service.CarService;
 import com.zaozao.service.SMSService;
 import com.zaozao.service.UserService;
@@ -88,10 +85,16 @@ public class Weixinh5Controller {
 	public String informationPlate(ModelMap model, HttpServletRequest request) {
 		String code = request.getParameter("code");
 		try {
+			String ownUrl = "http://" + request.getServerName()
+					+ request.getContextPath()
+					+ request.getServletPath()
+					+ "?" + (request.getQueryString());
+			logger.info("$$$$$$$$$$$$$$" + ownUrl);
 			WxMpOAuth2AccessToken auth2AccessToken = weixinService.oauth2getAccessToken(code);
 			String openid = auth2AccessToken.getOpenId();
-
-			WxJsapiSignature wxJsapiSignature = weixinService.createJsapiSignature("http://www.zaozaoche.com/weixin/h5/car/plate");
+			WxJsapiSignature wxJsapiSignature = weixinService.createJsapiSignature(ownUrl);
+			AuthInfoVO authInfoVO = new AuthInfoVO(wxJsapiSignature, openid);
+			model.addAttribute("authinfo", JSON.toJSON(authInfoVO));
 		} catch (WxErrorException e) {
 			logger.error(e.getMessage(), e);
 			throw new ZaozaoException(e.getMessage());

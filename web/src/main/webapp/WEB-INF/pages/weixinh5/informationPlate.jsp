@@ -31,13 +31,13 @@
 
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 	<script type="text/javascript">
-		var json=JSON.parse('${json}');
+		var authinfo=JSON.parse('${authinfo}');
 		wx.config({
-		 debug:true,
-		 appId:json.appId,
-		 timestamp: json.timestamp,
-		 nonceStr:json.nonceStr,
-		 signature:json.signature,
+		 debug:false,
+		 appId:authinfo.wxJsapiSignature.appid,
+		 timestamp: authinfo.wxJsapiSignature.timestamp,
+		 nonceStr:authinfo.wxJsapiSignature.noncestr,
+		 signature:authinfo.wxJsapiSignature.signature,
 		 jsApiList: [
 		 'openCard'
 		 ]
