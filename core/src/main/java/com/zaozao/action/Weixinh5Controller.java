@@ -12,6 +12,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -44,6 +45,9 @@ public class Weixinh5Controller extends BaseController{
 
 	@Autowired
 	private RouteService routeService;
+
+	@Value("${wx.replyKu}")
+	private String replyKu;
 
 	@RequestMapping(value="/h5/person/information")
 	public String personalInformation(ModelMap model, HttpServletRequest request) {
@@ -114,6 +118,12 @@ public class Weixinh5Controller extends BaseController{
 		RouteResultVO routeResultVO = new RouteResultVO();
 		if("wx".equals(carVO.getType())){
 			routeResultVO = routeService.createWxRoute(carVO.getOpenid(), carVO.getSymbol());
+			if(routeResultVO.getSuccess()){
+				MessageVO messageVO = new MessageVO();
+				messageVO.setOpenid(carVO.getOpenid());
+				messageVO.setContent(replyKu);
+				weixinService.sendCustomMessage(messageVO);
+			}
 		}else if("phone".equals(carVO.getType())){
 			routeResultVO = routeService.createVoiceRoute(carVO.getOpenid(), carVO.getSymbol());
 		}

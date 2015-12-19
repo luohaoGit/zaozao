@@ -39,21 +39,10 @@ public class ZaozaoController {
 	@Autowired
 	private RedisService redisService;
 
-	@RequestMapping(value="/logstash/test", method = RequestMethod.GET)
-	public String logstash(ModelMap model) {
-		VoiceVO voiceVO = new VoiceVO();
-		voiceVO.setPhoneNumber(UUID.randomUUID().toString());
-		voiceVO.setMsg(new Random().nextInt());
-		model.put("model", voiceVO);
-		logstash.info(JSON.toJSONString(voiceVO));
-		logger.info(System.getProperty("catalina.home"));
-		return null;
-	}
-
 	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
-	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol,
-								 HttpServletRequest request, ModelMap model) {
+	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol, ModelMap model) {
 
+		//15850761726
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){
 			voiceVO.setMsg(0);
@@ -68,16 +57,14 @@ public class ZaozaoController {
 					voiceVO.setMsg(1);
 				}
 			}else{
-				//车管所查询
-				String phone = "";
-				if("666666".equals(symbol) && "13812700842".equals(caller)){
-					voiceVO.setPhoneNumber("13914001742");
-					voiceVO.setMsg(1);
-				}else if("666666".equals(symbol) && "13914001742".equals(caller)){
-					voiceVO.setPhoneNumber("15162499345");
-					voiceVO.setMsg(1);
-				}else{
-					voiceVO.setMsg(0);
+				if("666666".equals(symbol)){
+					String phone = redisService.getRedisClientTemplate().get("user.test.phone." + caller);
+					if(!StringUtils.isEmpty(phone)){
+						voiceVO.setPhoneNumber(phone);
+						voiceVO.setMsg(1);
+					}else{
+						voiceVO.setMsg(0);
+					}
 				}
 			}
 		}

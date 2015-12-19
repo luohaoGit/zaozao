@@ -92,11 +92,10 @@
 				$http.post('/weixin/h5/car/plate.json',postdata)
 						.success(function(data){
 							if(data.success){
-
+								wx.closeWindow();
 							}else{
 								alert(data.msg);
 							}
-							//wx.closeWindow();
 						})
 						.error(function(data){
 							alert("没有找到车主");
