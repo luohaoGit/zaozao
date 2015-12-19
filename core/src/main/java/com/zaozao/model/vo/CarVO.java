@@ -8,7 +8,7 @@ public class CarVO extends BaseVO {
     private String carNumber; //车牌号
     private String openid;
     private String type;
-    private String smbol;
+    private String symbol;
 
     public String getCarNumber() {
         return carNumber;
@@ -34,11 +34,11 @@ public class CarVO extends BaseVO {
         this.type = type;
     }
 
-    public String getSmbol() {
-        return smbol;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setSmbol(String smbol) {
-        this.smbol = smbol;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

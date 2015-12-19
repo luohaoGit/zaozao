@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/weixin")
@@ -104,21 +105,23 @@ public class Weixinh5Controller {
 	@RequestMapping(value="/h5/car/plate", method = RequestMethod.POST, consumes = "application/json")
 	public String queryUser(ModelMap model, @RequestBody CarVO carVO) {
 
-		if(StringUtils.isEmpty(carVO.getSmbol()) || StringUtils.isEmpty(carVO.getOpenid())){
+		if(StringUtils.isEmpty(carVO.getSymbol()) || StringUtils.isEmpty(carVO.getOpenid())){
 			throw new ZaozaoException("参数非法");
 		}
 
 		CommonResultVO commonResultVO = new CommonResultVO(null, false);
 
+		RouteResultVO routeResultVO = new RouteResultVO();
 		if("wx".equals(carVO.getType())){
-			if(routeService.createWxRoute(carVO.getOpenid(), carVO.getSmbol()).getSuccess()){
-				commonResultVO.setSuccess(true);
-			}
+			routeResultVO = routeService.createWxRoute(carVO.getOpenid(), carVO.getSymbol());
 		}else if("phone".equals(carVO.getType())){
-			if(routeService.createVoiceRoute(carVO.getOpenid(), carVO.getSmbol()).getSuccess()){
-				commonResultVO.setSuccess(true);
-			}
+			routeResultVO = routeService.createVoiceRoute(carVO.getOpenid(), carVO.getSymbol());
 		}
+
+		if(routeResultVO.getSuccess()){
+			commonResultVO.setSuccess(true);
+		}
+		commonResultVO.setMsg(routeResultVO.getMsg());
 
 		model.addAttribute("model", commonResultVO);
 		return null;

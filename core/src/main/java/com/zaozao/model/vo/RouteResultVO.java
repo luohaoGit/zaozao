@@ -8,6 +8,9 @@ public class RouteResultVO extends BaseVO{
     private Boolean success;
     private String msg;
 
+    public RouteResultVO() {
+    }
+
     public RouteResultVO(Boolean success, String msg) {
         this.success = success;
         this.msg = msg;
