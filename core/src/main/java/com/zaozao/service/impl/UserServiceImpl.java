@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService, LogstashService {
             if(!StringUtils.isEmpty(zzid)){
                 redisService.pushBackZzid(zzid);
             }
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
         }finally {
             return user;
         }
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService, LogstashService {
                 user.setGroupId(wxMpUser.getGroupId());
             }
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
         } finally {
             return user;
         }
@@ -176,10 +176,10 @@ public class UserServiceImpl implements UserService, LogstashService {
             String qrcode = Base64.encodeBase64String(buffer);
             user.setQrCode(qrcode);
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             //throw new ZaozaoException(e.getMessage());
         } catch (IOException e){
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             //throw new ZaozaoException(e.getMessage());
         }finally {
             return user;

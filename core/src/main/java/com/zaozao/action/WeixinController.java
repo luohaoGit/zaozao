@@ -25,7 +25,7 @@ import java.io.*;
  */
 @Controller
 @RequestMapping("/wx")
-public class WeixinController {
+public class WeixinController extends BaseController{
 
     protected static Logger logger = LoggerFactory.getLogger(WeixinController.class);
 
@@ -62,7 +62,7 @@ public class WeixinController {
         try {
             weixinService.receive(request, response);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         //response.getWriter().write(xStream.toXML(xStream));

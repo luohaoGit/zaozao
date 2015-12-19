@@ -10,7 +10,6 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageInterceptor;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ import java.util.Map;
 public class RouteInterceptor implements WxMpMessageInterceptor {
 
     protected static Logger logger = LoggerFactory.getLogger(RouteInterceptor.class);
+    protected static Logger logstash = LoggerFactory.getLogger("LOGSTASH");
+    protected static Logger error = LoggerFactory.getLogger("ERROR");
 
     @Autowired
     private WeixinService weixinService;
@@ -48,7 +49,6 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
 
 
     public boolean intercept(WxMpXmlMessage message, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
-        logger.info("收到消息：" + ToStringBuilder.reflectionToString(message));
 
         try{
             String content = message.getContent();
@@ -99,7 +99,7 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
                 return false;
             }
         }catch (Exception e){
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
         }
 
         return true;

@@ -2,10 +2,7 @@ package com.zaozao.service.impl;
 
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.vo.MessageVO;
-import com.zaozao.service.CarService;
-import com.zaozao.service.RedisService;
-import com.zaozao.service.UserService;
-import com.zaozao.service.WeixinService;
+import com.zaozao.service.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -25,7 +22,7 @@ import java.io.IOException;
 /**
  * Created by luohao on 2015/10/26.
  */
-public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService, InitializingBean {
+public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService, LogstashService, InitializingBean {
 
     protected static Logger logger = LoggerFactory.getLogger(WeixinServiceImpl.class);
 
@@ -107,7 +104,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
 
     public void sendCustomMessage(MessageVO messageVO) {
         if(StringUtils.isEmpty(messageVO.getOpenid())){
-            logger.error("customMessage's openid should not be null");
+            error.error("customMessage's openid should not be null");
             return;
         }
 
@@ -140,7 +137,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
             }
             this.customMessageSend(message);
         } catch (WxErrorException e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }
     }
@@ -150,7 +147,7 @@ public class WeixinServiceImpl extends WxMpServiceImpl implements WeixinService,
         try {
             this.templateSend(templateMessage);
         } catch (WxErrorException e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }
     }

@@ -9,5 +9,6 @@ import org.slf4j.LoggerFactory;
 public interface LogstashService {
 
     Logger logstash = LoggerFactory.getLogger("LOGSTASH");
+    Logger error = LoggerFactory.getLogger("ERROR");
 
 }

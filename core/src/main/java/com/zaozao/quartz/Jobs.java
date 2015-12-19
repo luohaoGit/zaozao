@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 public class Jobs {
 
     protected static Logger logger = LoggerFactory.getLogger(Jobs.class);
+    public static final Logger error = LoggerFactory.getLogger("ERROR");
 
     @Autowired
     private WeixinService weixinService;
@@ -36,12 +37,11 @@ public class Jobs {
                 redisService.releaseAccessTokenLock();
             }
         } catch (WxErrorException e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
         }
     }
 
     public void consumeWxExpireMsg(){
-        logger.info("****************consumeWxExpireMsg");
         RouteExpireMessage routeExpireMessage = redisService.getExpireMessage();
         if(routeExpireMessage != null){
             logger.info("********************consumeExpireMsg:" + routeExpireMessage.toJson());

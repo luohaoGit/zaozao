@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
  */
 public class BaseController {
 
-    Logger logstash = LoggerFactory.getLogger("LOGSTASH");
+    public static final Logger logstash = LoggerFactory.getLogger("LOGSTASH");
+    public static final Logger error = LoggerFactory.getLogger("ERROR");
 
 }

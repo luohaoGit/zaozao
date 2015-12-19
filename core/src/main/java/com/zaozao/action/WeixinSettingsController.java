@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/admin/settings")
-public class WeixinSettingsController {
+public class WeixinSettingsController extends BaseController {
 
     protected static Logger logger = LoggerFactory.getLogger(WeixinSettingsController.class);
 
@@ -55,7 +55,7 @@ public class WeixinSettingsController {
                 model.put("menu", wxMenu.toJson());
             }
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         return "weixin/menu";
@@ -67,10 +67,10 @@ public class WeixinSettingsController {
             WxMenu menu = WxMenu.fromJson(request.getInputStream());
             weixinService.menuCreate(menu);
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         } catch (IOException e){
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         return null;
@@ -81,7 +81,7 @@ public class WeixinSettingsController {
         try {
             weixinService.menuDelete();
         } catch (WxErrorException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         return null;

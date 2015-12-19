@@ -6,6 +6,7 @@ import com.zaozao.jedis.bean.Route;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.po.mongo.QueryEvent;
+import com.zaozao.model.po.mongo.RouteEvent;
 import com.zaozao.model.vo.RouteResultVO;
 import com.zaozao.service.*;
 import me.chanjar.weixin.mp.bean.WxMpTemplateData;
@@ -72,6 +73,10 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                         Route cheRoute = new Route(che, ku, false, 0);
                         redisService.saveRoute(cheRoute);
 
+                        RouteEvent routeEvent = new RouteEvent(ku, che, RouteEvent.WEIXIN);
+                        routeEvent.setSymbol(symbol);
+                        logstash.info(routeEvent.toJson());
+
                         RouteExpireMessage routeExpireMessage = new RouteExpireMessage(ku, che, 0);
                         redisService.pushExpireMessage(routeExpireMessage.toJson());
 
@@ -100,7 +105,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
             }
         }catch (Exception e){
             routeResultVO.setMsg(notFoundNO);
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }finally {
             logstash.info(queryEvent.toJson());
@@ -130,7 +135,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
 
             }
         }catch (Exception e){
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }finally {
             return routeResultVO;

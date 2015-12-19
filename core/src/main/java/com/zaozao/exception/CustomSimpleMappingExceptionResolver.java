@@ -16,11 +16,12 @@ import java.io.PrintWriter;
 public class CustomSimpleMappingExceptionResolver extends SimpleMappingExceptionResolver{
 
     public static final Logger logger = LoggerFactory.getLogger(CustomSimpleMappingExceptionResolver.class);
+    public static final Logger error = LoggerFactory.getLogger("ERROR");
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
-        logger.error(ex.getMessage(), ex);
+        error.error(ex.getMessage(), ex);
 
         //expose ModalAndView for chosen error view
         String viewName = determineViewName(ex, request);

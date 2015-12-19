@@ -2,6 +2,7 @@ package com.zaozao.service.impl;
 
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.service.HBService;
+import com.zaozao.service.LogstashService;
 import com.zaozao.utils.WebServiceUtil;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by luohao on 2015/11/5.
  */
 @Service
-public class HBServiceImpl implements HBService {
+public class HBServiceImpl implements HBService, LogstashService {
 
     protected static Logger logger = LoggerFactory.getLogger(HBServiceImpl.class);
 
@@ -45,7 +46,7 @@ public class HBServiceImpl implements HBService {
         try {
             mobile = getPhoneFromXML(WebServiceUtil.soap(hbUrl, xml, "1.1"));
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         return mobile;
@@ -61,7 +62,7 @@ public class HBServiceImpl implements HBService {
                     .element("sjhm");
             phone = el.getText();
         } catch (DocumentException e) {
-            logger.error(e.getMessage());
+            error.error(e.getMessage());
             throw new ZaozaoException(e.getMessage());
         }
         return phone;

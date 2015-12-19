@@ -1,7 +1,6 @@
 package com.zaozao.weixin.router;
 
 import com.zaozao.weixin.handler.*;
-import com.zaozao.weixin.interceptor.CreateRouteInterceptor;
 import com.zaozao.weixin.interceptor.RouteInterceptor;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -40,9 +39,6 @@ public class InitRouterConfig implements InitializingBean {
 
     @Autowired
     private DefaultHandler defaultHandler;
-
-    @Autowired
-    private CreateRouteInterceptor createRouteInterceptor;
 
     @Autowired
     private RouteInterceptor routeInterceptor;

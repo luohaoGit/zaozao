@@ -36,7 +36,7 @@ public class RegisterEvent extends MongoBase {
             PropertyUtils.copyProperties(registerEvent, user);
             registerEvent.setCreateTime(System.currentTimeMillis());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
         }finally {
             return registerEvent;
         }

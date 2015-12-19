@@ -4,11 +4,15 @@ package com.zaozao.model.po.mongo;
  * 用户聊天日志
  * Created by luohao on 15/12/11.
  */
-public class ChatEvent extends MongoBase{
+public class ReplyEvent extends MongoBase{
 
     private String from;
-    private String to;
     private String content;
+
+    public ReplyEvent(String from, String content) {
+        this.from = from;
+        this.content = content;
+    }
 
     public String getFrom() {
         return from;
@@ -16,14 +20,6 @@ public class ChatEvent extends MongoBase{
 
     public void setFrom(String from) {
         this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
     }
 
     public String getContent() {

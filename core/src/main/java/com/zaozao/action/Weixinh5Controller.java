@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/weixin")
-public class Weixinh5Controller {
+public class Weixinh5Controller extends BaseController{
 
 	public static final Logger logger = LoggerFactory.getLogger(Weixinh5Controller.class);
 	public static final Logger logstash = LoggerFactory.getLogger("DATA");
@@ -55,7 +55,7 @@ public class Weixinh5Controller {
 			userVO.setWxMpOAuth2AccessToken(auth2AccessToken);
 			userVO.setOpenId(openid);
 		} catch (WxErrorException e) {
-			logger.error(e.getMessage(), e);
+			error.error(e.getMessage(), e);
 			throw new ZaozaoException(e.getMessage());
 		} finally {
 			User user = userService.autoRegister(userVO);
@@ -96,7 +96,7 @@ public class Weixinh5Controller {
 			AuthInfoVO authInfoVO = new AuthInfoVO(wxJsapiSignature, openid);
 			model.addAttribute("authinfo", JSON.toJSON(authInfoVO));
 		} catch (WxErrorException e) {
-			logger.error(e.getMessage(), e);
+			error.error(e.getMessage(), e);
 			throw new ZaozaoException(e.getMessage());
 		}
 		return "weixinh5/informationPlate";

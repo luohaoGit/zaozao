@@ -6,9 +6,6 @@ package com.zaozao.model.po.mongo;
  */
 public class QueryEvent extends MongoBase {
 
-    public static final String PHONE = "phone";
-    public static final String WEIXIN = "wx";
-
     private Long feedbackTime; //反馈结果的时间
     private Boolean succeed = false; //查询结果状态（是否成功）
     private String fromUser;

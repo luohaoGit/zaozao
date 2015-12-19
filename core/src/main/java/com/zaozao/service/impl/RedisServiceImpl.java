@@ -3,6 +3,7 @@ package com.zaozao.service.impl;
 import com.zaozao.jedis.RedisClientTemplate;
 import com.zaozao.jedis.bean.RouteExpireMessage;
 import com.zaozao.jedis.bean.Route;
+import com.zaozao.service.LogstashService;
 import com.zaozao.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by luohao on 15/11/20.
  */
 @Service
-public class RedisServiceImpl implements RedisService, InitializingBean {
+public class RedisServiceImpl implements RedisService, LogstashService, InitializingBean {
 
     protected static Logger logger = LoggerFactory.getLogger(RedisServiceImpl.class);
 
@@ -71,7 +72,7 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
         try {
             Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
         }finally {
             redisClientTemplate.del(accessTokenLockKey);
         }

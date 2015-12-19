@@ -43,7 +43,7 @@ public class WxMessageEvent extends MongoBase {
         try {
             PropertyUtils.copyProperties(wxMessageEvent, message);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            error.error(e.getMessage(), e);
         }finally {
             return wxMessageEvent;
         }
