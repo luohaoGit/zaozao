@@ -1,5 +1,6 @@
 package com.zaozao.weixin.handler;
 
+import com.zaozao.model.vo.RouteResultVO;
 import com.zaozao.service.*;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -25,14 +26,16 @@ public class RouteHandler implements WxMpMessageHandler {
     private RouteService routeService;
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        logger.info("recieve weixin message:" + message.toString());
-        String result = routeService.createWxRoute(message.getFromUserName(), message.getContent()).getMsg();
+        RouteResultVO routeResultVO = routeService.createWxRoute(message.getFromUserName(), message.getContent());
 
-        WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                .content(result)
-                .fromUser(message.getToUserName())
-                .toUser(message.getFromUserName())
-                .build();
+        WxMpXmlOutMessage wxMpXmlOutMessage = null;
+        if(routeResultVO.getSuccess()){
+            wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
+                    .content(routeResultVO.getMsg())
+                    .fromUser(message.getToUserName())
+                    .toUser(message.getFromUserName())
+                    .build();
+        }
         return wxMpXmlOutMessage;
     }
 }

@@ -88,21 +88,21 @@ public class InitRouterConfig implements InitializingBean {
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT)
                 .interceptor(routeInterceptor)
-                .handler(textHandler)
+                .handler(defaultHandler)
                 .end()
 
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_IMAGE)
                 .interceptor(routeInterceptor)
-                .handler(textHandler)
+                .handler(defaultHandler)
                 .end()
 
                 .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_VOICE)
                 .interceptor(routeInterceptor)
-                .handler(textHandler)
+                .handler(defaultHandler)
                 .end()
 
                 //默认路由

@@ -39,6 +39,12 @@ public class WxMessageEvent extends MongoBase {
     private String recognition;
 
     public static WxMessageEvent generateInstance(WxMpXmlMessage message){
+        String eventKey = message.getEventKey();
+        if(eventKey != null && eventKey.contains("redirect_uri")){
+            int start = eventKey.indexOf("/weixin/h5");
+            int end = eventKey.indexOf("&response_type");
+            message.setEventKey(eventKey.substring(start, end));
+        }
         WxMessageEvent wxMessageEvent = new WxMessageEvent();
         try {
             PropertyUtils.copyProperties(wxMessageEvent, message);

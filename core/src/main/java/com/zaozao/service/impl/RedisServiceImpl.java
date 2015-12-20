@@ -113,7 +113,16 @@ public class RedisServiceImpl implements RedisService, LogstashService, Initiali
         String value = redisClientTemplate.rpop(expireMsgQueueKey);
         if(!StringUtils.isEmpty(value)){
             routeExpireMessage = RouteExpireMessage.parseJson(value);
-            Long createMillis = Long.parseLong(routeExpireMessage.getCreateMillis());
+
+            //判断此时是否路由还存在
+            Route route = this.getRoute(routeExpireMessage.getKu());
+            if(route != null){
+                routeExpireMessage.setCreateMillis(System.currentTimeMillis());
+                this.pushExpireMessage(route.toJson());
+                return null;
+            }
+
+            Long createMillis = routeExpireMessage.getCreateMillis();
             if(System.currentTimeMillis() < createMillis + routeExpire * 1000){
                 //路由未超时,重新push到队列
                 this.pushExpireMessage(value);

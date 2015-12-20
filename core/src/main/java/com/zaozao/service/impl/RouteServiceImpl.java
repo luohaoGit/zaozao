@@ -84,7 +84,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                         WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
                         templateMessage.setToUser(user.getOpenId());
                         templateMessage.setTemplateId(informTempId);
-                        templateMessage.setUrl(downloadUrl);
+                        templateMessage.setUrl(detailUrl);
                         templateMessage.getDatas().add(new WxMpTemplateData("first", String.format(first, carNumber)));
                         templateMessage.getDatas().add(new WxMpTemplateData("keyword1", carNumber));
                         templateMessage.getDatas().add(new WxMpTemplateData("keyword2",
@@ -189,8 +189,8 @@ public class RouteServiceImpl implements RouteService, LogstashService{
 
     @Value("${inform_template_id}")
     private String informTempId;
-    @Value("${wx.downloadUrl}")
-    private String downloadUrl;
+    @Value("${wx.detailUrl}")
+    private String detailUrl;
     @Value("${wx.default}")
     private String defaultMsg;
     @Value("${wx.replacePattern}")

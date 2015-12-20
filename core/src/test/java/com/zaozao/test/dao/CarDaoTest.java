@@ -57,7 +57,12 @@ public class CarDaoTest {
         //Car car = carDao.searchByUserId("6d3c75cd-3261-495f-8b0c-5a9680f3fd97");
         //logger.info("*********************************" + car.toString());
         //logger.info(CodeGeneratorUtils.generateSmsCode());
-        logger.info(RegisterEvent.generateInstance(new User()).toJson());
-        logger.info(new BindPhoneNCarEvent("1", "", "3").toJson());
+        //logger.info(RegisterEvent.generateInstance(new User()).toJson());
+        //logger.info(new BindPhoneNCarEvent("1", "", "3").toJson());
+        String eventKey = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb8360ea79a287c6f&redirect_uri=http://www.zaozaoche.com/weixin/h5/person/information&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+        int start = eventKey.indexOf("weixin/h5");
+        int end = eventKey.indexOf("&response_type");
+        eventKey = eventKey.substring(start, end);
+        logger.info(eventKey);
     }
 }

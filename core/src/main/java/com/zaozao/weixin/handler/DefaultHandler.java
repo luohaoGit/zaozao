@@ -42,12 +42,12 @@ public class DefaultHandler implements WxMpMessageHandler {
         logstash.info(wxMessageEvent.toJson());
 
 
-        String result = defaultMsg;
+/*        String result = defaultMsg;
         WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                 .content(result)
                 .fromUser(message.getToUserName())
                 .toUser(message.getFromUserName())
-                .build();
-        return wxMpXmlOutMessage;
+                .build();*/
+        return null;
     }
 }

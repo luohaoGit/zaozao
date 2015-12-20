@@ -13,7 +13,7 @@ public class RouteExpireMessage implements Serializable{
     private String ku;
     private String che;
     private int type;
-    private String createMillis = String.valueOf(System.currentTimeMillis());
+    private Long createMillis = System.currentTimeMillis();
 
     public RouteExpireMessage(){}
 
@@ -39,11 +39,11 @@ public class RouteExpireMessage implements Serializable{
         this.che = che;
     }
 
-    public String getCreateMillis() {
+    public Long getCreateMillis() {
         return createMillis;
     }
 
-    public void setCreateMillis(String createMillis) {
+    public void setCreateMillis(Long createMillis) {
         this.createMillis = createMillis;
     }
 

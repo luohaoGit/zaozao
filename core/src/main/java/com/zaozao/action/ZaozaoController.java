@@ -1,15 +1,12 @@
 package com.zaozao.action;
 
-import com.alibaba.fastjson.JSON;
 import com.zaozao.model.bo.VoiceVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -17,11 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/zaozao")
@@ -75,6 +67,5 @@ public class ZaozaoController {
 
 	//oz57qsld4yxFo1F1D2ZrCL2AQjqs
 	//oz57qslTKiP-Gw8FQAEPuA3x8aN0
-	//06c85a5f-82b4-4bd0-baa0-30631efa1d08
 
 }

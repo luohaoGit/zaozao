@@ -55,14 +55,14 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
             String type = message.getMsgType();
             String mediaId = message.getMediaId();
             Route route = redisService.getRoute(message.getFromUserName());
-            //WeixinRoute toUserRoute = redisService.getRoute(route.getToUserName());
+            Route cheRoute = redisService.getRoute(route.getToUserName());
 
             if(route != null){
                 MessageVO messageVO = new MessageVO();
                 messageVO.setOpenid(route.getToUserName());
                 messageVO.setType(type);
 
-                if(type.equals(WxConsts.XML_MSG_TEXT)) {
+                if(WxConsts.XML_MSG_TEXT.equals(type)) {
                     String msgPrefix = route.isKuOrChe() ? kuPrefix : chePrefix;
                     if ("1".equals(content) || "2".equals(content)) {
                         if (route.isKuOrChe()) {
@@ -89,13 +89,18 @@ public class RouteInterceptor implements WxMpMessageInterceptor {
                         }
                     }
                     messageVO.setContent(msgPrefix + content);
-                }else if(type.equals(WxConsts.XML_MSG_IMAGE)){
+                }else if(WxConsts.XML_MSG_IMAGE.equals(type)){
                     messageVO.setMediaId(mediaId);
                 }else if(type.equals(WxConsts.XML_MSG_VOICE)){
                     messageVO.setMediaId(mediaId);
                 }
 
                 weixinService.sendCustomMessage(messageVO);
+
+                //刷新路由超时时间
+                redisService.saveRoute(route);
+                redisService.saveRoute(cheRoute);
+
                 return false;
             }
         }catch (Exception e){
