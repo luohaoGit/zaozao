@@ -84,7 +84,7 @@ public class ManagerController {
                 list.add(s);
             }
         }
-        final int size =  list.size();
+        final int size = list.size();
         redisService.pushZzid((String[])list.toArray(new String[size]));
         return "admin/zzid";
     }

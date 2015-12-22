@@ -11,6 +11,7 @@ public class QueryEvent extends MongoBase {
     private String fromUser;
     private String toUser;
     private String type; //1:phone 2:wx
+    private String symbol;
 
     public QueryEvent(String fromUser, String type) {
         this.fromUser = fromUser;
@@ -55,5 +56,13 @@ public class QueryEvent extends MongoBase {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

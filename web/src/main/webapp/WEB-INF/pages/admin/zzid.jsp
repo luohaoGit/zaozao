@@ -41,6 +41,7 @@
                   <h3 class="box-title">早早号</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
+                  10009999,50000<br>
                   起始:<input type="text" name="start" id="start"/>
                   长度:<input type="text" name="len" id="len"/>
                   <button id="addzzid" style="display:none">增加</button>

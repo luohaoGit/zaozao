@@ -31,6 +31,11 @@ public class ZaozaoController {
 	@Autowired
 	private RedisService redisService;
 
+	@RequestMapping(value="/test/{test}")
+	public String test(@PathVariable String test){
+		return test;
+	}
+
 	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol, ModelMap model) {
 

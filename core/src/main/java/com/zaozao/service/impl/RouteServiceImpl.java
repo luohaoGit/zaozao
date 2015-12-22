@@ -99,6 +99,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                     queryEvent.setFeedbackTime(System.currentTimeMillis() - queryEvent.getCreateTime());
                     queryEvent.setSucceed(true);
                     queryEvent.setToUser(che);
+                    queryEvent.setSymbol(symbol);
                 }else{
                     routeResultVO.setMsg(notFoundNO);
                 }

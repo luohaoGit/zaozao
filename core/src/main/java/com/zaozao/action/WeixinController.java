@@ -38,12 +38,6 @@ public class WeixinController extends BaseController{
     @Autowired
     private RedisService redisService;
 
-    @RequestMapping(value="/test")
-    public String test(ModelMap model){
-        //redisService.saveRoute(new Route("luohao", "haha", true, true));
-        return "index";
-    }
-
     @RequestMapping(value="/message/template", method = RequestMethod.POST)
     public String informUser(@RequestBody MessageVO messageVO){
 

@@ -64,9 +64,9 @@
 			}
 
 			$scope.data = {
-				selectArea:'京',
-				selectLetter:'A',
-				plateNumber:"",
+				selectArea:localStorage.area ? localStorage.area : '京',
+				selectLetter:localStorage.letter ? localStorage.letter : 'A',
+				plateNumber:localStorage.plateNumber,
 				valid:false
 			}
 
@@ -85,10 +85,16 @@
 
 			$scope.weChat = function(){
 				var postdata = {
-					openid : authinfo.openid,
+					openid : authinfo.openid ? authinfo.openid : localStorage.openid,
 					type:"wx",
 					symbol: $scope.data.selectArea + $scope.data.selectLetter + $scope.data.plateNumber
 				};
+
+				localStorage.openid = authinfo.openid;
+				localStorage.area = $scope.data.selectArea;
+				localStorage.letter = $scope.data.selectLetter;
+				localStorage.plateNumber = $scope.data.plateNumber;
+
 				$http.post('/weixin/h5/car/plate.json',postdata)
 						.success(function(data){
 							if(data.success){
