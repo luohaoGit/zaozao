@@ -97,7 +97,7 @@
 		$("#wxbtn").on("click", function() {
 			var carnum = $("#carnum").val();
 
-			if (!/^[A-Za-z0-9]+$/.test(carnum)) {
+			if(!validate()){
 				$("#wxbtn").addClass("weui_btn_disabled");
 				$('.js_tooltips').show();
 				setTimeout(function () {
@@ -150,14 +150,17 @@
 		});
 
 		function validate(){
+			var res = false;
 			var newValue = $("#carnum").val();
 			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
 			$("#wxbtn").addClass("weui_btn_disabled");
 			if(newValue.length == 5){
 				if(/^[A-Za-z0-9]+$/.test(newValue)) {
 					$("#wxbtn").removeClass("weui_btn_disabled");
+					res = true;
 				}
 			}
+			return res;
 		}
 
 		function dialog(msg){

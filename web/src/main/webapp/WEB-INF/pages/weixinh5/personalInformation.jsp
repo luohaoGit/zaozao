@@ -136,14 +136,17 @@
 		}
 
 		function validate(){
+			var res = false;
 			var newValue = $("#carnum").val();
 			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
 			$("#carBtn").addClass("weui_btn_disabled");
 			if(newValue.length == 5){
 				if(/^[A-Za-z0-9]+$/.test(newValue)) {
 					$("#carBtn").removeClass("weui_btn_disabled");
+					res = true;
 				}
 			}
+			return res;
 		}
 
 		function go(id){
@@ -176,7 +179,7 @@
 				$("#carBtn").on("click", function(){
 					var carnum = $("#carnum").val();
 
-					if(!/^[A-Za-z0-9]+$/.test(carnum)){
+					if(!validate()){
 						$("#carBtn").addClass("weui_btn_disabled");
 						$('.js_tooltips').show();
 						setTimeout(function (){
