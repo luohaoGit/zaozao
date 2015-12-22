@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>个人中心</title>
+    <title>车牌号咨询</title>
     <link rel="stylesheet" href="/weixinh5/css/weui.min.css"/>
     <link rel="stylesheet" href="/weixinh5/css/zaozaowx.css"/>
 </head>
@@ -13,178 +13,154 @@
     <div class="container js_container">
         <div class="page">
             <div class="bd">
+                <div class="weui_toptips weui_warn js_tooltips">格式不对</div>
+                <div class="weui_cells_title">请填写车牌号，我们帮您联系车主！</div>
                 <div class="weui_cells">
-                    <div class="weui_cell">
-                        <div class="weui_cell_hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>
-                    </div>
-                    <div class="weui_cell">
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <p>早早ID</p>
+                    <div class="weui_cell weui_cell_select weui_select_before">
+                        <div class="weui_cell_hd">
+                            <select class="weui_select" id="area"></select>
                         </div>
-                        <div class="weui_cell_ft">10000</div>
-                    </div>
-                    <div class="weui_cell">
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <p>我的昵称</p>
+                        <div class="weui_cell_hd">
+                            <select class="weui_select" id="letter"></select>
                         </div>
-                        <div class="weui_cell_ft">10000</div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input id="carnum" class="weui_input" maxlength="5" type="text" placeholder="请输入车牌号"/>
+                        </div>
                     </div>
                 </div>
-
-                <div class="weui_cells weui_cells_access">
-                    <a class="weui_cell js_cell" href="javascript:;" data-id="carnumber">
+                <div class="weui_cells">
+                    <div class="weui_cells_title">您也可以输入车主留下的其他信息</div>
+                    <div class="weui_cell">
                         <div class="weui_cell_bd weui_cell_primary">
-                            <p>我的车牌</p>
+                            <input class="weui_input" type="tel" placeholder="请输入早早号或手机号"/>
                         </div>
-                        <div class="weui_cell_ft">说明文字</div>
-                    </a>
-                    <a class="weui_cell js_cell" href="javascript:;">
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <p>我的手机</p>
-                        </div>
-                        <div class="weui_cell_ft">说明文字</div>
-                    </a>
+                    </div>
                 </div>
-
-                <div class="weui_cells weui_cells_access">
-                    <a class="weui_cell js_cell" href="javascript:;">
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <p>我的移车名片</p>
+                <div class="weui_btn_area">
+                    <a id="wxbtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">启动微信聊天</a>
+                    <a id="telbtn" class="weui_btn weui_btn_primary" href="javascript:">拨打车主电话</a>
+                </div>
+                <div class="weui_dialog_alert" id="dialog" style="display: none;">
+                    <div class="weui_mask"></div>
+                    <div class="weui_dialog">
+                        <div class="weui_dialog_hd"><strong class="weui_dialog_title">早早移车</strong></div>
+                        <div class="weui_dialog_bd" id="dialog_msg"></div>
+                        <div class="weui_dialog_ft">
+                            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
                         </div>
-                        <div class="weui_cell_ft"></div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="text/html" id="tpl_carnumber">
-        <div class="page">
-            <div class="bd">
-                <div class="weui_cells_title">输入您的车牌号</div>
-                <div class="weui_cells">
-                    <div class="weui_cell weui_cell_select weui_select_before">
-                        <div class="weui_cell_hd">
-                            <select class="weui_select" name="area">
-                                <option value="0">京</option>
-                                <option value="1">津</option>
-                                <option value="2">沪</option>
-                                <option value="3">渝</option>
-                                <option value="4">冀</option>
-                                <option value="5">豫</option>
-                                <option value="6">云</option>
-                                <option value="7">辽</option>
-                                <option value="8">黑</option>
-                                <option value="9">湘</option>
-                                <option value="10">皖</option>
-                                <option value="11">鲁</option>
-                                <option value="12">新</option>
-                                <option value="13">苏</option>
-                                <option value="14">浙</option>
-                                <option value="15">赣</option>
-                                <option value="16">鄂</option>
-                                <option value="17">桂</option>
-                                <option value="18">甘</option>
-                                <option value="19">晋</option>
-                                <option value="20">蒙</option>
-                                <option value="21">陕</option>
-                                <option value="22">吉</option>
-                                <option value="23">闽</option>
-                                <option value="24">贵</option>
-                                <option value="25">粤</option>
-                                <option value="26">青</option>
-                                <option value="27">藏</option>
-                                <option value="28">川</option>
-                                <option value="29">宁</option>
-                                <option value="30">琼</option>
-                            </select>
-                        </div>
-                        <div class="weui_cell_hd">
-                            <select class="weui_select" name="letter">
-                                <option value="0">A</option>
-                                <option value="1">B</option>
-                                <option value="2">C</option>
-                                <option value="3">D</option>
-                                <option value="4">E</option>
-                                <option value="5">F</option>
-                                <option value="6">G</option>
-                                <option value="7">H</option>
-                                <option value="8">I</option>
-                                <option value="9">J</option>
-                                <option value="10">K</option>
-                                <option value="11">L</option>
-                                <option value="12">M</option>
-                                <option value="13">N</option>
-                                <option value="14">O</option>
-                                <option value="15">P</option>
-                                <option value="16">Q</option>
-                                <option value="17">R</option>
-                                <option value="18">S</option>
-                                <option value="19">T</option>
-                                <option value="20">U</option>
-                                <option value="21">V</option>
-                                <option value="22">W</option>
-                                <option value="23">X</option>
-                                <option value="24">Y</option>
-                                <option value="25"</option>
-                            </select>
-                        </div>
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <input class="weui_input" type="tel" placeholder="请输入车牌号"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui_btn_area">
-                    <a class="weui_btn weui_btn_primary" href="javascript:">确定</a>
-                </div>
-            </div>
-        </div>
-    </script>
-
     <script src="/weixinh5/js/zepto.min.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         $(function () {
-            // page stack
-            var stack = [];
-            var $container = $('.js_container');
-            $container.on('click', '.js_cell[data-id]', function () {
-                var id = $(this).data('id');
-                go(id);
+            var authinfo=JSON.parse('${authinfo}');
+            wx.config({
+                debug:false,
+                appId:authinfo.wxJsapiSignature.appid,
+                timestamp: authinfo.wxJsapiSignature.timestamp,
+                nonceStr:authinfo.wxJsapiSignature.noncestr,
+                signature:authinfo.wxJsapiSignature.signature,
+                jsApiList: []
             });
 
-            // location.hash = '#hash1' 和点击后退都会触发`hashchange`，这个demo页面只关心后退
-            $(window).on('hashchange', function (e) {
-                if (/#.+/gi.test(e.newURL)) {
-                    return;
+            var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
+                "蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
+            var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
+                "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+            var selecetedArea = localStorage.area ? localStorage.area : '京';
+            var selecetedLetter = localStorage.letter ? localStorage.letter : 'A';
+            var carnum = localStorage.plateNumber ? localStorage.plateNumber : '';
+
+            $("#carnum").val(carnum);
+            $.each(areas, function(index, item){
+                var selected = '';
+                if(item == selecetedArea){
+                    selected = 'selected';
                 }
-                var $top = stack.pop();
-                if (!$top) {
-                    return;
-                }
-                $top.addClass('slideOut').on('animationend', function () {
-                    $top.remove();
-                }).on('webkitAnimationEnd', function () {
-                    $top.remove();
-                });
+                $("#area").append('<option ' + selected + ' value="' + index + '">' + item + '</option>')
             });
 
-            function go(id){
-                var $tpl = $($('#tpl_' + id).html()).addClass('slideIn').addClass(id);
-                $container.append($tpl);
-                stack.push($tpl);
-                // why not use `history.pushState`, https://github.com/weui/weui/issues/26
-                //history.pushState({id: id}, '', '#' + id);
-                location.hash = '#' + id;
+            $.each(letters, function(index, item){
+                var selected = '';
+                if(item == selecetedLetter){
+                    selected = 'selected';
+                }
+                $("#letter").append('<option ' + selected + ' value="' + index + '">' + item + '</option>')
+            });
 
-                $($tpl).on('webkitAnimationEnd', function (){
-                    $(this).removeClass('slideIn');
-                }).on('animationend', function (){
-                    $(this).removeClass('slideIn');
+            $("#wxbtn").on("click", function() {
+                var carnum = $("#carnum").val();
+
+                if (!/^[A-Za-z0-9]+$/.test(carnum)) {
+                    $("#wxbtn").addClass("weui_btn_disabled");
+                    $('.js_tooltips').show();
+                    setTimeout(function () {
+                        $('.js_tooltips').hide();
+                    }, 3000);
+                    return;
+                }
+
+                localStorage.area = areas[$("#area").val()];
+                localStorage.letter = letters[$("#letter").val()];
+                localStorage.plateNumber = carnum;
+                localStorage.openid = authinfo.openid;
+                var newNumber = areas[$("#area").val()] + letters[$("#letter").val()] + carnum;
+
+                var postdata = {
+                    openid : authinfo.openid ? authinfo.openid : localStorage.openid,
+                    type:"wx",
+                    symbol: newNumber
+                };
+
+                $.ajax({
+                    type: 'post', url: '/weixin/h5/car/plate.json',
+                    data: JSON.stringify(postdata),
+                    contentType: 'application/json',
+                    success: function () {
+                        wx.closeWindow();
+                    },
+                    error: function(){
+                        dialog("没有找到车主");
+                    }
                 });
+
+            });
+
+            $('#carnum').on('input propertychange', function() {
+                validate()
+            });
+
+            $("#area").on("change", function(){
+                validate()
+            });
+
+            $("#letter").on("change", function(){
+                validate()
+            });
+
+            function validate(){
+                var newValue = $("#carnum").val();
+                $("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
+                $("#wxbtn").addClass("weui_btn_disabled");
+                if(newValue.length == 5){
+                    if(/^[A-Za-z0-9]+$/.test(newValue)) {
+                        $("#wxbtn").removeClass("weui_btn_disabled");
+                    }
+                }
             }
 
-            if (/#.*/gi.test(location.href)) {
-                go(location.hash.slice(1));
+            function dialog(msg){
+                $("#dialog_msg").html(msg);
+                $('#dialog').show();
+                $('#dialog').find('.weui_btn_dialog').on('click', function () {
+                    $('#dialog').hide();
+                });
             }
         });
     </script>
