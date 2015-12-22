@@ -1,346 +1,249 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html ng-app="ionicApp">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>个人信息</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<link rel="stylesheet" href="/weixinh5/css/ionic.min.css">
-	<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
-	<link rel="stylesheet" href="/weixinh5/css/personalInformation.css" />
-	<link rel="stylesheet" href="/weixinh5/css/bindingPhone.css" />
-	<link rel="stylesheet" href="/weixinh5/css/informationPlate.css" />
-	<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<title>个人中心</title>
+	<link rel="stylesheet" href="/weixinh5/css/weui.min.css"/>
+	<link rel="stylesheet" href="/weixinh5/css/zaozaowx.css"/>
 </head>
-<body>
+<body ontouchstart>
 
-<ion-nav-view></ion-nav-view>
-
-<script id="app.html" type="text/ng-template">
-	<ion-side-menus>
-		<ion-pane ion-side-menu-content>
-			<ion-nav-view name="appContent" animation="slide-left-right"></ion-nav-view>
-		</ion-pane>
-	</ion-side-menus>
-</script>
-
-<script id="personalInformation.html" type="text/ng-template">
-	<ion-view title="">
-		<ion-content>
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-repeat="x in lists" ng-click="skip(x)">
-					<div ng-if="x.hasIcon"><img class="head" ng-src="{{x.content}}" /></div>
-					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
+<div class="container js_container">
+	<div class="page">
+		<div class="bd">
+			<div class="weui_cells">
+				<div class="weui_cell">
+					<div class="weui_cell_hd"><img src="${user.headImgUrl}" alt="" style="height:40px;width:40px;margin-right:5px;display:block"></div>
+				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_bd weui_cell_primary">
+						<p>早早ID</p>
+					</div>
+					<div class="weui_cell_ft">${user.zzid}</div>
+				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_bd weui_cell_primary">
+						<p>我的昵称</p>
+					</div>
+					<div class="weui_cell_ft">${user.wxnickname}</div>
 				</div>
 			</div>
 
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-click="bindcar()">
-					<div class="noname">{{carText}}</div>
-					<div class="content">{{data.cars[0].carNumber}}</div>
-					<i class="icon ion-chevron-right icon-color"></i>
-				</div>
-				<div class="item item-icon-right list-container" ng-click="bindphone()">
-					<div class="noname">{{phoneText}}</div>
-					<div class="content">{{telephone}}</div>
-					<i class="icon ion-chevron-right icon-color"></i>
-				</div>
+			<div class="weui_cells weui_cells_access">
+				<a class="weui_cell js_cell" href="javascript:;" data-id="carnumber">
+					<div class="weui_cell_bd weui_cell_primary">
+						<p>我的车牌</p>
+					</div>
+					<div class="weui_cell_ft" id="carNumber">${user.cars[0].carNumber}</div>
+				</a>
+				<a class="weui_cell js_cell" href="javascript:;">
+					<div class="weui_cell_bd weui_cell_primary">
+						<p>我的手机</p>
+					</div>
+					<div class="weui_cell_ft">${user.telephone}</div>
+				</a>
 			</div>
 
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-repeat="x in lists_1" ng-click="skip(x)">
-					<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
-					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
+			<div class="weui_cells weui_cells_access">
+				<a class="weui_cell js_cell" href="javascript:;">
+					<div class="weui_cell_bd weui_cell_primary">
+						<p>我的移车名片</p>
+					</div>
+					<div class="weui_cell_ft"></div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="tpl_carnumber">
+	<div class="page">
+		<div class="weui_toptips weui_warn js_tooltips">格式不对</div>
+		<div class="bd">
+			<div class="weui_cells_title">输入您的车牌号</div>
+			<div class="weui_cells">
+				<div class="weui_cell weui_cell_select weui_select_before">
+					<div class="weui_cell_hd">
+						<select class="weui_select" id="area"></select>
+					</div>
+					<div class="weui_cell_hd">
+						<select class="weui_select" id="letter"></select>
+					</div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input id="carnum" maxlength="5" class="weui_input" type="text" placeholder="请输入车牌号"/>
+					</div>
 				</div>
 			</div>
-
-		</ion-content>
-	</ion-view>
+			<div class="weui_btn_area">
+				<a id="carBtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">确定</a>
+			</div>
+		</div>
+		<div class="weui_dialog_alert" id="dialog" style="display: none;">
+			<div class="weui_mask"></div>
+			<div class="weui_dialog">
+				<div class="weui_dialog_hd"><strong class="weui_dialog_title">早早移车</strong></div>
+				<div class="weui_dialog_bd" id="dialog_msg"></div>
+				<div class="weui_dialog_ft">
+					<a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </script>
 
-
-<script id="bindcar.html" type="text/ng-template">
-	<ion-view title="绑定车牌">
-		<ion-content class="container">
-			<div class="hint padding-top padding-bottom1">请填写车牌号</div>
-			<div class="plate-container">
-				<select class="item-input item-select fl" ng-model="data.selectArea" ng-options="value.id as value.label for value in myAreas"></select>
-				<select class="item-input item-select fr" ng-model="data.selectLetter" ng-options="value.id as value.label for value in myLetters"></select>
-				<input class="plate-input" type="text" maxlength="5" ng-model="data.plateNumber" placeholder="请输入车牌号！" />
-			</div>
-			<div class="button button-calm" ng-disabled="!data.valid" ng-click="updateCar()">确定</div>
-		</ion-content>
-	</ion-view>
-</script>
-
-<script id="bindphone.html" type="text/ng-template">
-	<ion-view title="绑定手机">
-		<ion-content class="container">
-			<input type="text" ng-show="false" ng-model="message" />
-			<div class="message" ng-bind="message"></div>
-			<input class="width-full margin-position" type="text" maxlength="11" ng-model="data.phone" placeholder="手机号" />
-			<div class="width-full margin-position position-relative">
-				<input class="width-full margin-position" type="text" maxlength="6" ng-model="data.code" placeholder="验证码" />
-				<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">发送验证码</div>
-				<div class="security text-color" ng-hide="timeFlag">{{time}}</div>
-			</div>
-			<div class="button button-calm width-full" ng-disabled="!(data.valid && data.codevalid)" ng-click="next()">确定</div>
-		</ion-content>
-	</ion-view>
-</script>
-
-
+<script src="/weixinh5/js/zepto.min.js"></script>
 <script type="text/javascript">
-	angular.module('ionicApp', ['ionic'])
+	$(function () {
+		//var pageData = JSON.parse('${user}');
+		var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
+			"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
+		var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
+			"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+		var carNumber = '${user.cars[0].carNumber}';
 
-			.config(function($stateProvider, $urlRouterProvider) {
-				$stateProvider
+		// page stack
+		var stack = [];
+		var $container = $('.js_container');
+		$container.on('click', '.js_cell[data-id]', function () {
+			var id = $(this).data('id');
+			go(id);
+		});
 
-						.state('app', {
-							url: "/app",
-							abstract: true,
-							templateUrl: "app.html",
-							controller: 'AppCtrl'
-						})
+		// location.hash = '#hash1' 和点击后退都会触发`hashchange`，这个demo页面只关心后退
+		$(window).on('hashchange', function (e) {
+			if (/#.+/gi.test(e.newURL)) {
+				return;
+			}
+			var $top = stack.pop();
+			if (!$top) {
+				return;
+			}
+			$top.addClass('slideOut').on('animationend', function () {
+				$top.remove();
+			}).on('webkitAnimationEnd', function () {
+				$top.remove();
+			});
+		});
 
-						.state('app.personalInformation', {
-							url: "/personalInformation",
-							views: {
-								'appContent' :{
-									templateUrl: "personalInformation.html",
-									controller: 'personalInformation'
-								}
-							}
-						})
+		function dialog(msg){
+			$("#dialog_msg").html(msg);
+			$('#dialog').show();
+			$('#dialog').find('.weui_btn_dialog').on('click', function () {
+				$('#dialog').hide();
+			});
+		}
 
-						.state('app.bindcar', {
-							url: "/bindcar",
-							views: {
-								'appContent' :{
-									templateUrl: "bindcar.html",
-									controller: 'bindcar'
-								}
-							}
-						})
-
-						.state('app.bindphone', {
-							url: "/bindphone",
-							views: {
-								'appContent' :{
-									templateUrl: "bindphone.html",
-									controller: 'bindphone'
-								}
-							}
-						})
-
-				// if none of the above states are matched, use this as the fallback
-				$urlRouterProvider.otherwise('/app/personalInformation');
-			})
-
-			.controller('AppCtrl', function($scope, $rootScope) {
-				$rootScope.pdata = JSON.parse('${json}');
-			})
-
-			.controller('personalInformation', function($scope,$ionicActionSheet,$state, $rootScope) {
-				$scope.data = $rootScope.pdata;
-
-				$scope.telephone = $scope.data.telephone;
-				if($scope.telephone){
-					$scope.telephone = $scope.telephone.substr(0, 3) + '****' + $scope.telephone.substr(7)
+		function validate(){
+			var newValue = $("#carnum").val();
+			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
+			$("#carBtn").addClass("weui_btn_disabled");
+			if(newValue.length == 5){
+				if(/^[A-Za-z0-9]+$/.test(newValue)) {
+					$("#carBtn").removeClass("weui_btn_disabled");
 				}
+			}
+		}
 
-				$scope.lists = [
-					{href:'#',name:'',hasIcon:true,content:$scope.data.headImgUrl,flag:false},
-					{href:'#',name:'早早ID',hasIcon:false,content:$scope.data.zzid,flag:false},
-					{href:'#',name:'我的昵称',hasIcon:false,content:$scope.data.wxnickname,flag:false}
-				];
-				$scope.lists_1 = [
-					{href:'#',name:'我的移车名片',hasIcon:false,content:'',flag:true}
-				];
-				$scope.lists_2 = [
-					{name:"bindphone", href:'#',name:'绑定手机',hasIcon:false,content:'',flag:true}
-				];
+		function go(id){
+			var $tpl = $($('#tpl_' + id).html()).addClass('slideIn').addClass(id);
+			$container.append($tpl);
+			stack.push($tpl);
+			// why not use `history.pushState`, https://github.com/weui/weui/issues/26
+			//history.pushState({id: id}, '', '#' + id);
+			location.hash = '#' + id;
 
-				$scope.carText = "绑定车牌";
-				if($scope.data.cars[0].carNumber){
-					$scope.carText = "修改车牌";
-				}
+			if(id == "carnumber"){
+				var carArea = carNumber.substr(0, 1);
+				var carLetter = carNumber.substr(1, 1);
+				var carNum = carNumber.substr(2, 5);
 
-				$scope.phoneText = "绑定手机";
-				if($scope.data.telephone){
-					$scope.phoneText = "修改手机";
-				}
+				$("#carnum").val(carNum);
 
-
-				$scope.skip = function(item){
-					if(item.hasIcon){
-						$ionicActionSheet.show({
-							titleText: null,
-							buttons: [{
-								text: '拍照'
-							}, {
-								text: '从相册中选择'
-							}, ],
-							cancelText: '取消',
-							cancel: function() {
-								console.log('取消');
-							},
-							buttonClicked: function(index) {
-								console.log('BUTTON CLICKED', index);
-								return true;
-							}
-						});
-					} else {
-						//$state.go("app.bindphone");
-					}
-				};
-
-
-				$scope.bindphone = function(){
-					$state.go("app.bindphone");
-				}
-
-				$scope.bindcar = function(){
-					$state.go("app.bindcar");
-				}
-			})
-
-			.controller('bindcar', function($scope, $stateParams, $http, $window, $rootScope) {
-				var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
-					"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
-				var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-					"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-				$scope.myAreas = [];
-				$scope.myLetters = [];
-
-				angular.forEach(areas, function(data,index,array){
-					$scope.myAreas.push({"id": data,"label": data});
+				$('#carnum').on('input propertychange', function() {
+					validate();
 				});
 
-				angular.forEach(letters, function(data,index,array){
-					$scope.myLetters.push({"id": data,"label": data});
+				$("#area").on("change", function(){
+					validate()
 				});
 
-				$scope.data = {
-					pdata: $rootScope.pdata,
-					selectArea:'京',
-					selectLetter:'A',
-					plateNumber:$rootScope.pdata.cars[0].carNumber,
-					valid:false
-				}
-
-				if($scope.data.plateNumber){
-					$scope.data.selectArea = $scope.data.plateNumber[0];
-					$scope.data.selectLetter = $scope.data.plateNumber[1];
-					$scope.data.plateNumber = $scope.data.plateNumber.substr(2, 5);
-				}
-
-				$scope.$watch('data.plateNumber', function(newValue, oldValue, scope){
-					scope.data.valid = false;
-					if(/^[A-Za-z0-9]+$/.test(newValue)){
-						scope.data.plateNumber = newValue.toUpperCase();
-					}else{
-						scope.data.plateNumber = newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase();
-					}
-					if(scope.data.plateNumber.length == 5){
-						scope.data.valid = true;
-					}
-				})
-
-				$scope.updateCar = function(){
-					var carNumber = $scope.data.selectArea + $scope.data.selectLetter + $scope.data.plateNumber;
-					var cardata = {
-						carNumber : carNumber,
-						openid: $scope.data.pdata.id
-					}
-
-					$http({
-						method:'GET',
-						url:'/weixin/h5/carnumber.json?carNumber=' + carNumber
-					}).success(function(data){
-						if(data.count == 1){
-							alert("车牌已被绑定");
-						}else{
-							$http.post('/weixin/h5/carnumber.json',cardata)
-									.success(function(data){
-										$rootScope.pdata.cars[0].carNumber = carNumber;
-										$window.history.back();
-									})
-									.error(function(data){
-										alert("更新失败");
-									});
-						}
-					}).error(function(data){
-						alert("网络错误");
-					});
-
-				}
-			})
-
-			.controller('bindphone', function($scope, $rootScope) {
-				$scope.data = {
-					pdata: $rootScope.pdata,
-					phone: "",
-					valid: false,
-					codevalid: false
-				}
-
-				$scope.$watch("data.phone", function(newValue, oldValue, scope){
-					scope.data.valid = false;
-
-					if(!/^[0-9]*$/.test(newValue)){
-						scope.data.phone = newValue.replace(/[^0-9]*/g,"");
-					}
-
-					if(/^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/i.test(newValue)){
-						scope.data.valid = true;
-					}
+				$("#letter").on("change", function(){
+					validate()
 				});
 
-				$scope.$watch("data.code", function(newValue, oldValue, scope){
-					scope.data.codevalid = false;
+				$("#carBtn").on("click", function(){
+					var carnum = $("#carnum").val();
 
-					if(!/^[0-9]*$/.test(newValue)){
-						scope.data.code = newValue.replace(/[^0-9]*/g,"");
-					}
-
-					if(newValue.length == 6){
-						scope.data.codevalid = true;
-					}
-				});
-
-				$scope.sendFlag = false;
-				$scope.timeFlag = true;
-				$scope.sendSecurityCode = function(){
-					if(!$scope.data.valid){
-						$scope.message = '手机号是必须的';
+					if(!/^[A-Za-z0-9]+$/.test(carnum)){
+						$("#carBtn").addClass("weui_btn_disabled");
+						$('.js_tooltips').show();
+						setTimeout(function (){
+							$('.js_tooltips').hide();
+						}, 3000);
 						return;
 					}
 
-					$scope.time = 60;
-					$scope.sendFlag = true;
-					$scope.timeFlag = false;
-					var myTime = setInterval(function() {
-						if(--$scope.time==0){
-							clearInterval(myTime);
-							$scope.sendFlag = false;
-							$scope.timeFlag = true;
+					var newNumber = areas[$("#area").val()] + letters[$("#letter").val()] + carnum;
+					$.ajax({
+						type: 'get', url: '/weixin/h5/carnumber.json?carNumber=' + newNumber,
+						success: function (data) {
+							if (data.count == 1) {
+								dialog("车牌已被绑定");
+							} else {
+								$.ajax({
+									type: 'post', url: '/weixin/h5/carnumber.json',
+									data: JSON.stringify({
+										carNumber : newNumber,
+										openid: '${user.id}'
+									}),
+									contentType: 'application/json',
+									success: function () {
+										$("#carNumber").html(newNumber);
+										carNumber = newNumber;
+										location.hash = "";
+									},
+									error: function(){
+										dialog("保存失败");
+									}
+								});
+							}
+						},
+						error: function(){
+							dialog("网络错误")
 						}
-						$scope.$digest();
-					}, 1000);
-				};
-				$scope.next = function(){
-					console.log($scope.phone);
-					$scope.message = '手机号是必须的';
-				};
+					});
+				})
+
+				$.each(areas, function(index, item){
+					var selected = '';
+					if(item == carArea){
+						selected = 'selected';
+					}
+					$("#area").append('<option ' + selected + ' value="' + index + '">' + item + '</option>')
+				});
+
+				$.each(letters, function(index, item){
+					var selected = '';
+					if(item == carLetter){
+						selected = 'selected';
+					}
+					$("#letter").append('<option ' + selected + ' value="' + index + '">' + item + '</option>')
+				});
+			}
+
+			$($tpl).on('webkitAnimationEnd', function (){
+				$(this).removeClass('slideIn');
+			}).on('animationend', function (){
+				$(this).removeClass('slideIn');
 			});
+		}
 
+		if (/#.*/gi.test(location.href)) {
+			go(location.hash.slice(1));
+		}
+	});
 </script>
-
 </body>
 </html>

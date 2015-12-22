@@ -1,5 +1,6 @@
 package com.zaozao.model.po;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
@@ -46,6 +47,7 @@ public class BasePO implements Serializable{
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return JSON.toJSONString(this);
     }
+
 }

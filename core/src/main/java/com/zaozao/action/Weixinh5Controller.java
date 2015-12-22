@@ -63,7 +63,7 @@ public class Weixinh5Controller extends BaseController{
 			throw new ZaozaoException(e.getMessage());
 		} finally {
 			User user = userService.autoRegister(userVO);
-			model.addAttribute("json", JSON.toJSON(user));
+			model.addAttribute("user", user);
 		}
 		return "weixinh5/personalInformation";
 	}
@@ -81,8 +81,6 @@ public class Weixinh5Controller extends BaseController{
 	}
 
 	/**
-	 * ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
-	 * "蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"]
 	 * @param model
 	 * @return
      */
