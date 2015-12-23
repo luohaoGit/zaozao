@@ -7,6 +7,21 @@
 	<title>个人中心</title>
 	<link rel="stylesheet" href="/weixinh5/css/weui.min.css"/>
 	<link rel="stylesheet" href="/weixinh5/css/zaozaowx.css"/>
+	<style>
+		.security{
+			position: absolute;
+			top: 0;
+			right: 0;
+			text-align: center;
+			line-height: 2rem;
+			height: 2rem;
+			min-height: 2rem;
+			min-width: 4rem;
+			margin: 0.5rem 0;
+			padding: 0 1rem;
+			border-left: solid 1px #B2B2B2!important;
+		}
+	</style>
 </head>
 <body ontouchstart>
 
@@ -38,7 +53,7 @@
 					</div>
 					<div class="weui_cell_ft" id="carNumber">${user.cars[0].carNumber}</div>
 				</a>
-				<a class="weui_cell js_cell" href="javascript:;">
+				<a class="weui_cell js_cell" href="javascript:;" data-id="phonenumber">
 					<div class="weui_cell_bd weui_cell_primary">
 						<p>我的手机</p>
 					</div>
@@ -58,9 +73,21 @@
 	</div>
 </div>
 
+<div class="weui_toptips weui_warn js_tooltips">格式不对</div>
+<div class="weui_toptips weui_warn sec_tooltips">手机号和验证码是必须的</div>
+<div class="weui_dialog_alert" id="dialog" style="display: none;">
+	<div class="weui_mask"></div>
+	<div class="weui_dialog">
+		<div class="weui_dialog_hd"><strong class="weui_dialog_title">早早移车</strong></div>
+		<div class="weui_dialog_bd" id="dialog_msg"></div>
+		<div class="weui_dialog_ft">
+			<a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+		</div>
+	</div>
+</div>
+
 <script type="text/html" id="tpl_carnumber">
 	<div class="page">
-		<div class="weui_toptips weui_warn js_tooltips">格式不对</div>
 		<div class="bd">
 			<div class="weui_cells_title">输入您的车牌号</div>
 			<div class="weui_cells">
@@ -80,14 +107,29 @@
 				<a id="carBtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">确定</a>
 			</div>
 		</div>
-		<div class="weui_dialog_alert" id="dialog" style="display: none;">
-			<div class="weui_mask"></div>
-			<div class="weui_dialog">
-				<div class="weui_dialog_hd"><strong class="weui_dialog_title">早早移车</strong></div>
-				<div class="weui_dialog_bd" id="dialog_msg"></div>
-				<div class="weui_dialog_ft">
-					<a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+	</div>
+</script>
+
+<script type="text/html" id="tpl_phonenumber">
+	<div class="page">
+		<div class="bd">
+			<div class="weui_cells weui_cells_form">
+				<div class="weui_cell">
+					<div class="weui_cell_hd"><label class="weui_label">手机号</label></div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input id="phone" class="weui_input" maxlength="11" type="tel" placeholder="请输入手机号"/>
+					</div>
 				</div>
+				<div class="weui_cell">
+					<div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+					<div class="weui_cell_bd weui_cell_primary">
+						<input id="sec" class="weui_input" maxlength="6" type="tel" placeholder="请输入验证码"/>
+						<div id="secBtn" class="security" style="display:none"></div>
+					</div>
+				</div>
+			</div>
+			<div class="weui_btn_area">
+				<a id="phoneBtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">确定</a>
 			</div>
 		</div>
 	</div>
@@ -102,6 +144,8 @@
 		var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
 			"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 		var carNumber = '${user.cars[0].carNumber}';
+		var phoneNumber = '${user.telephone}';
+		var time = 120, send = false;
 
 		// page stack
 		var stack = [];
@@ -110,44 +154,6 @@
 			var id = $(this).data('id');
 			go(id);
 		});
-
-		// location.hash = '#hash1' 和点击后退都会触发`hashchange`，这个demo页面只关心后退
-		$(window).on('hashchange', function (e) {
-			if (/#.+/gi.test(e.newURL)) {
-				return;
-			}
-			var $top = stack.pop();
-			if (!$top) {
-				return;
-			}
-			$top.addClass('slideOut').on('animationend', function () {
-				$top.remove();
-			}).on('webkitAnimationEnd', function () {
-				$top.remove();
-			});
-		});
-
-		function dialog(msg){
-			$("#dialog_msg").html(msg);
-			$('#dialog').show();
-			$('#dialog').find('.weui_btn_dialog').on('click', function () {
-				$('#dialog').hide();
-			});
-		}
-
-		function validate(){
-			var res = false;
-			var newValue = $("#carnum").val();
-			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
-			$("#carBtn").addClass("weui_btn_disabled");
-			if(newValue.length == 5){
-				if(/^[A-Za-z0-9]+$/.test(newValue)) {
-					$("#carBtn").removeClass("weui_btn_disabled");
-					res = true;
-				}
-			}
-			return res;
-		}
 
 		function go(id){
 			var $tpl = $($('#tpl_' + id).html()).addClass('slideIn').addClass(id);
@@ -234,6 +240,53 @@
 					}
 					$("#letter").append('<option ' + selected + ' value="' + index + '">' + item + '</option>')
 				});
+			}else if(id == "phonenumber"){
+				$("#phone").val(phoneNumber);
+				if(send){
+					$("#secBtn").show();
+					$("#secBtn").html(time);
+				}else{
+					$("#secBtn").html("发送验证码");
+				}
+
+				$('#phone').on('input propertychange', function() {
+					phoneNumber = $("#phone").val();
+					if(valiPhone()){
+						$("#secBtn").show();
+						$("#phoneBtn").removeClass("weui_btn_disabled");
+					}else{
+						$("#secBtn").hide();
+						$("#phoneBtn").addClass("weui_btn_disabled");
+					}
+				});
+
+				$("#secBtn").on("click", function(){
+					if(send){
+						return;
+					}
+					send = true;
+					$("#secBtn").html(time);
+					var myTime = setInterval(function() {
+						$("#secBtn").html(time);
+						if(--time==0){
+							send = false;
+							$("#secBtn").html("发送验证码");
+							clearInterval(myTime);
+						}
+					}, 1000);
+				});
+
+				$("#phoneBtn").on("click", function(){
+					var sec = $("#sec").val();
+					if(valiPhone() && sec.length == 6){
+
+					}else{
+						$('.sec_tooltips').show();
+						setTimeout(function (){
+							$('.sec_tooltips').hide();
+						}, 3000);
+					}
+				});
 			}
 
 			$($tpl).on('webkitAnimationEnd', function (){
@@ -242,6 +295,62 @@
 				$(this).removeClass('slideIn');
 			});
 		}
+
+
+		// location.hash = '#hash1' 和点击后退都会触发`hashchange`，这个demo页面只关心后退
+		$(window).on('hashchange', function (e) {
+			if (/#.+/gi.test(e.newURL)) {
+				return;
+			}
+			var $top = stack.pop();
+			if (!$top) {
+				return;
+			}
+			$top.addClass('slideOut').on('animationend', function () {
+				$top.remove();
+			}).on('webkitAnimationEnd', function () {
+				$top.remove();
+			});
+		});
+
+		function dialog(msg){
+			$("#dialog_msg").html(msg);
+			$('#dialog').show();
+			$('#dialog').find('.weui_btn_dialog').on('click', function () {
+				$('#dialog').hide();
+			});
+		}
+
+		function validate(){
+			var res = false;
+			var newValue = $("#carnum").val();
+
+			if(newValue.length > 5){
+				newValue = newValue.substr(0, 5);
+				$("#carnum").val(newValue);
+			}
+
+			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
+			$("#carBtn").addClass("weui_btn_disabled");
+
+			if(newValue.length == 5){
+				if(/^[A-Za-z0-9]+$/.test(newValue)) {
+					$("#carBtn").removeClass("weui_btn_disabled");
+					res = true;
+				}
+			}
+			return res;
+		}
+
+		function valiPhone(){
+			var res = false;
+			var newValue = $("#phone").val();
+			if(newValue.length == 11 && /^(13|14|15|17|18)\d{9}$/.test(newValue)){
+				res = true;
+			}
+			return res;
+		}
+
 
 		if (/#.*/gi.test(location.href)) {
 			go(location.hash.slice(1));
