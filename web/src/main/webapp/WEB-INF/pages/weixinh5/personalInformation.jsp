@@ -270,6 +270,7 @@
 						$("#secBtn").html(time);
 						if(--time==0){
 							send = false;
+							time = 120;
 							$("#secBtn").html("发送验证码");
 							clearInterval(myTime);
 						}
