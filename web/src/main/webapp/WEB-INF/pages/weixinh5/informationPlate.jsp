@@ -5,10 +5,10 @@
 		<title>车牌号咨询</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="stylesheet" href="/weixinh5/css/ionic.min.css">
-		<link rel="stylesheet" href="/weixinh5/css/ionicons.min.css">
+		<link href="http://cdn.bootcss.com/ionic/1.2.1/css/ionic.min.css" rel="stylesheet">
+		<link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="/weixinh5/css/informationPlate.css" />
-		<script type="text/javascript" src="/weixinh5/js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="http://cdn.bootcss.com/ionic/1.2.1/js/ionic.bundle.min.js"></script>
 	</head>
 	<body>
 	<div ng-app="queryPlate" ng-controller="queryPlateController">
