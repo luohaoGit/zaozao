@@ -5,95 +5,13 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link href="http://cdn.bootcss.com/ionic/1.2.1/css/ionic.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="/weixinh5/css/personalInformation.css" />
-	<link rel="stylesheet" href="/weixinh5/css/bindingPhone.css" />
-	<link rel="stylesheet" href="/weixinh5/css/informationPlate.css" />
 	<link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+	<link href="/weixinh5/css/style.css" rel="stylesheet"/>
 	<script type="text/javascript" src="http://cdn.bootcss.com/ionic/1.2.1/js/ionic.bundle.min.js"></script>
 </head>
 <body>
 
 <ion-nav-view></ion-nav-view>
-
-<script id="app.html" type="text/ng-template">
-	<ion-side-menus>
-		<ion-pane ion-side-menu-content>
-			<ion-nav-view name="appContent" animation="slide-left-right"></ion-nav-view>
-		</ion-pane>
-	</ion-side-menus>
-</script>
-
-<script id="personalInformation.html" type="text/ng-template">
-	<ion-view title="">
-		<ion-content>
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-repeat="x in lists" ng-click="skip(x)">
-					<div ng-if="x.hasIcon"><img class="head" ng-src="{{x.content}}" /></div>
-					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
-				</div>
-			</div>
-
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-click="bindcar()">
-					<div class="noname">{{carText}}</div>
-					<div class="content">{{data.cars[0].carNumber}}</div>
-					<i class="icon ion-chevron-right icon-color"></i>
-				</div>
-				<div class="item item-icon-right list-container" ng-click="bindphone()">
-					<div class="noname">{{phoneText}}</div>
-					<div class="content">{{telephone}}</div>
-					<i class="icon ion-chevron-right icon-color"></i>
-				</div>
-			</div>
-
-			<div class="list card border-radius">
-				<div class="item item-icon-right list-container" ng-repeat="x in lists_1" ng-click="skip(x)">
-					<div ng-if="x.hasIcon"><img class="head" ng-src="/weixinh5/img/test.png" /></div>
-					<div ng-if="x.hasIcon" class="name">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="noname">{{x.name}}</div>
-					<div ng-if="!x.hasIcon" class="content">{{x.content}}</div>
-					<i class="icon ion-chevron-right icon-color" ng-if="x.flag"></i>
-				</div>
-			</div>
-
-		</ion-content>
-	</ion-view>
-</script>
-
-
-<script id="bindcar.html" type="text/ng-template">
-	<ion-view title="绑定车牌">
-		<ion-content class="container">
-			<div class="hint padding-top padding-bottom1">请填写车牌号</div>
-			<div class="plate-container">
-				<select class="item-input item-select fl" ng-model="data.selectArea" ng-options="value.id as value.label for value in myAreas"></select>
-				<select class="item-input item-select fr" ng-model="data.selectLetter" ng-options="value.id as value.label for value in myLetters"></select>
-				<input class="plate-input" type="text" maxlength="5" ng-model="data.plateNumber" placeholder="请输入车牌号！" />
-			</div>
-			<div class="button button-calm" ng-disabled="!data.valid" ng-click="updateCar()">确定</div>
-		</ion-content>
-	</ion-view>
-</script>
-
-<script id="bindphone.html" type="text/ng-template">
-	<ion-view title="绑定手机">
-		<ion-content class="container">
-			<input type="text" ng-show="false" ng-model="message" />
-			<div class="message" ng-bind="message"></div>
-			<input class="width-full margin-position" type="text" maxlength="11" ng-model="data.phone" placeholder="手机号" />
-			<div class="width-full margin-position position-relative">
-				<input class="width-full margin-position" type="text" maxlength="6" ng-model="data.code" placeholder="验证码" />
-				<div class="button button-clear security" ng-hide="sendFlag" ng-click="sendSecurityCode()">发送验证码</div>
-				<div class="security text-color" ng-hide="timeFlag">{{time}}</div>
-			</div>
-			<div class="button button-calm width-full" ng-disabled="!(data.valid && data.codevalid)" ng-click="next()">确定</div>
-		</ion-content>
-	</ion-view>
-</script>
-
 
 <script type="text/javascript">
 	angular.module('ionicApp', ['ionic'])
@@ -104,7 +22,7 @@
 						.state('app', {
 							url: "/app",
 							abstract: true,
-							templateUrl: "app.html",
+							templateUrl: "/weixinh5/html/app.html",
 							controller: 'AppCtrl'
 						})
 
@@ -112,7 +30,7 @@
 							url: "/personalInformation",
 							views: {
 								'appContent' :{
-									templateUrl: "personalInformation.html",
+									templateUrl: "/weixinh5/html/personalInformation.html",
 									controller: 'personalInformation'
 								}
 							}
@@ -122,7 +40,7 @@
 							url: "/bindcar",
 							views: {
 								'appContent' :{
-									templateUrl: "bindcar.html",
+									templateUrl: "/weixinh5/html/perfectInformation.html",
 									controller: 'bindcar'
 								}
 							}
@@ -132,7 +50,7 @@
 							url: "/bindphone",
 							views: {
 								'appContent' :{
-									templateUrl: "bindphone.html",
+									templateUrl: "/weixinh5/html/bindingPhone.html",
 									controller: 'bindphone'
 								}
 							}
@@ -143,7 +61,7 @@
 			})
 
 			.controller('AppCtrl', function($scope, $rootScope) {
-				$rootScope.pdata = JSON.parse('${user}');
+				$rootScope.pdata = JSON.parse('${user}')
 			})
 
 			.controller('personalInformation', function($scope,$ionicActionSheet,$state, $rootScope) {
@@ -167,15 +85,14 @@
 				];
 
 				$scope.carText = "绑定车牌";
-				if($scope.data.cars[0].carNumber){
+/*				if($scope.data.cars[0].carNumber){
 					$scope.carText = "修改车牌";
-				}
+				}*/
 
 				$scope.phoneText = "绑定手机";
 				if($scope.data.telephone){
 					$scope.phoneText = "修改手机";
 				}
-
 
 				$scope.skip = function(item){
 					if(item.hasIcon){
