@@ -85,14 +85,7 @@
 				];
 
 				$scope.carText = "绑定车牌";
-/*				if($scope.data.cars[0].carNumber){
-					$scope.carText = "修改车牌";
-				}*/
-
 				$scope.phoneText = "绑定手机";
-				if($scope.data.telephone){
-					$scope.phoneText = "修改手机";
-				}
 
 				$scope.skip = function(item){
 					if(item.hasIcon){

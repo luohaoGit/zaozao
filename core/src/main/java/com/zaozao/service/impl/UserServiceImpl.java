@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -125,6 +126,11 @@ public class UserServiceImpl implements UserService, LogstashService {
                 if(user != null && StringUtils.isEmpty(user.getSubscribeTime()) && user.isSubcribe()){
                     //同步微信信息
                     getWxInfo(user);
+                    if(CollectionUtils.isEmpty(user.getCars())){
+                        Car car = new Car();
+                        car.setUser(user);
+                        carService.autoAddCar(car);
+                    }
                     userDao.update(user);
                 }else{
                     userDao.subcribe(userVO.getOpenId());
