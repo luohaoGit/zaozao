@@ -13,6 +13,8 @@ public class SMSVO extends BaseVO {
     @NotNull
     private String content;
 
+    public SMSVO(){}
+
     public SMSVO(String mobile, String content) {
         this.mobile = mobile;
         this.content = content;

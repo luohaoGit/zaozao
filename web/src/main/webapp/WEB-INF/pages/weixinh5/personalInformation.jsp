@@ -138,7 +138,6 @@
 <script src="/weixinh5/js/zepto.min.js"></script>
 <script type="text/javascript">
 	$(function () {
-		//var pageData = JSON.parse('${user}');
 		var areas = ["京", "津", "沪", "渝", "冀", "豫", "云", "辽", "黑", "湘", "皖", "鲁", "新", "苏", "浙", "赣", "鄂", "桂", "甘", "晋",
 			"蒙", "陕", "吉", "闽", "贵", "粤", "青", "藏", "川", "宁", "琼"];
 		var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",

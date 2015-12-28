@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by luohao on 2015/10/22.
  */
-@Service
+
 public class SMSServiceImpl implements SMSService {
 
     @Value("${sms_send_url}")

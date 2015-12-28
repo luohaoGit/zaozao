@@ -25,11 +25,13 @@ public class ZaozaoException extends RuntimeException {
     }
 
     public ZaozaoException(int code, String msg){
+        super(msg);
         this.code = code;
         this.msg = msg;
     }
 
     public ZaozaoException(String msg){
+        super(msg);
         this.msg = msg;
     }
 }

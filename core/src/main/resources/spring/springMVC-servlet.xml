@@ -47,6 +47,7 @@
     <import resource="spring-weixin.xml"/>
     <import resource="spring-zaozao.xml"/>
     <import resource="spring-redis.xml"/>
+    <import resource="spring-httpclient.xml"/>
 
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="useJaf" value="false" />
