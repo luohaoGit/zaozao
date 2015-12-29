@@ -4,8 +4,8 @@
 		<title>汽车服务</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<link rel="stylesheet" href="../css/ionic.min.css"> 
-		<link rel="stylesheet" href="../css/ionicons.min.css">
+		<link href="http://cdn.bootcss.com/ionic/1.2.1/css/ionic.min.css" rel="stylesheet">
+		<link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="../css/autoService.css" />
 	</head>
 	<body>
@@ -20,19 +20,19 @@
 			</ion-content>
 		</div>
 	</body>
-	<script type="text/javascript" src="../js/ionic.bundle.min.js"></script>
+	<script type="text/javascript" src="http://cdn.bootcss.com/ionic/1.2.1/js/ionic.bundle.min.js"></script>
 	<script>
 		var autoService = angular.module('autoService',['ionic']);
 		autoService.controller('autoService', ['$scope', function($scope){
 			$scope.lists = [
-				{name:'加油',src:'../img/poi_gas_station.png',href:'http://m.dianping.com/shoplist/5/search'},
-				{name:'洗车',src:'../img/poi_auto_xiche.png',href:''},
-				{name:'保养',src:'../img/tools_maintenance.png',href:'http://m.dianping.com/shoplist/5/d/1/c/65/s/'},
-				{name:'维修',src:'../img/poi_repair_service.png',href:'http://m.dianping.com/shoplist/5/d/1/c/65/s/'},
-				{name:'停车',src:'../img/poi_parking_lot.png',href:''},
+				{name:'加油',src:'../img/poi_gas_station.png',href:'http://i.meituan.com/s/nanjing?sk=%E5%8A%A0%E6%B2%B9%E5%8D%A1'},
+				{name:'洗车',src:'../img/poi_auto_xiche.png',href:'http://m.nuomi.com/webapp/tuan/list?kw=%E6%B4%97%E8%BD%A6'},
+				{name:'保养',src:'../img/tools_maintenance.png',href:'http://wx.tuhu.cn'},
+				{name:'维修',src:'../img/poi_repair_service.png',href:'http://m.yixiuche.com'},
+				{name:'停车',src:'../img/poi_parking_lot.png',href:'http://m.nuomi.com/webapp/tuan/list?kw=%E5%81%9C%E8%BD%A6'},
 				{name:'代驾',src:'../img/poi_auto_daijia.png',href:'http://h.aidaijia.com'},
 				{name:'车险',src:'../img/poi_buy_insurance.png',href:'http://car.qunabao.com'},
-				{name:'汽车租赁',src:'../img/poi_car_rental.png',href:''},
+				{name:'汽车租赁',src:'../img/poi_car_rental.png',href:'http://m.1hai.cn'},
 			];
 			$scope.skip = function(e){
 				location.href = e;

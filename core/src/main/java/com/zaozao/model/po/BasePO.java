@@ -15,7 +15,7 @@ public class BasePO implements Serializable{
 
     private String id = UUID.randomUUID().toString().replaceAll("-", "");
     private boolean deleted = false;
-    private Date createTime;
+    private Date createTime = new Date();
 
     public String getId() {
         return id;

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -72,6 +73,10 @@ public class UserServiceImpl implements UserService, LogstashService {
     }
 
     public void bindTel(UserVO userVO) {
+        Assert.notNull(userVO);
+        Assert.notNull(userVO.getOpenId());
+        Assert.notNull(userVO.getTelephone());
+
         User user = userDao.searchById(userVO.getId());
         if(user == null){
             throw new ZaozaoException("用户不存在");

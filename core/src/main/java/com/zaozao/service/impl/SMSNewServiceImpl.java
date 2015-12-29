@@ -17,8 +17,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,34 +43,31 @@ public class SMSNewServiceImpl implements SMSService {
     @Value("${sms.code}")
     private String smsCodeContent;
 
+    @Value("${sms.prefix}")
+    private String smsPrefix;
+
     @Autowired
     private RestTemplate restTemplate;
 
     public void sendSMSMessage(SMSVO smsvo) {
-        try {
-            String timestamp = getTimestemp();
-            String key = getKey(smsSendUsername, smsSendPassword, timestamp);
-            MultiValueMap<String, String> urlVariables = new LinkedMultiValueMap<String, String>();
-            urlVariables.add("UserName", smsSendUsername);
-            urlVariables.add("Key", key);
-            urlVariables.add("Timestemp", timestamp);
-            urlVariables.add("Content", URLEncoder.encode(smsvo.getContent(), "UTF-8"));
-            urlVariables.add("CharSet", "utf-8");
-            urlVariables.add("Mobiles", smsvo.getMobile());
+        String timestamp = getTimestemp();
+        String key = getKey(smsSendUsername, smsSendPassword, timestamp);
+        MultiValueMap<String, String> urlVariables = new LinkedMultiValueMap<String, String>();
+        urlVariables.add("UserName", smsSendUsername);
+        urlVariables.add("Key", key);
+        urlVariables.add("Timestemp", timestamp);
+        urlVariables.add("Content", smsPrefix + smsvo.getContent());
+        urlVariables.add("CharSet", "utf-8");
+        urlVariables.add("Mobiles", smsvo.getMobile());
 
-            HttpHeaders headers = new HttpHeaders();
-            MediaType type = MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-            headers.setContentType(type);
-            HttpEntity<Map> formEntity = new HttpEntity<Map>(urlVariables, headers);
-            String resMsg = restTemplate.postForObject(smsSendUrl, formEntity, String.class);
-            SMSResultVO result = JSON.parseObject(resMsg, SMSResultVO.class);
-            if(result.getResult() < 0) {
-                throw new ZaozaoException(errorCodes.get(result.getResult()));
-            }
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage(), e);
-        } catch (Exception e){
-            logger.error(e.getMessage(), e);
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        headers.setContentType(type);
+        HttpEntity<Map> formEntity = new HttpEntity<Map>(urlVariables, headers);
+        String resMsg = restTemplate.postForObject(smsSendUrl, formEntity, String.class);
+        SMSResultVO result = JSON.parseObject(resMsg, SMSResultVO.class);
+        if(result.getResult() < 0) {
+            throw new ZaozaoException(errorCodes.get(result.getResult()));
         }
     }
 

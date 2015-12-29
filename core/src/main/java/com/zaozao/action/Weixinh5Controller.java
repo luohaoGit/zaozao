@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,9 @@ public class Weixinh5Controller extends BaseController{
 
 	@Autowired
 	private RouteService routeService;
+
+	@Autowired
+	private RedisService redisService;
 
 	@Value("${wx.replyKu}")
 	private String replyKu;
@@ -163,6 +167,7 @@ public class Weixinh5Controller extends BaseController{
 		CommonResultVO result = new CommonResultVO(0, false);
 
 		User user = userService.findById(userVO.getOpenId());
+		Assert.isNull(user);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date registerTime = sdf.parse(userVO.getRegisterTime());
@@ -171,6 +176,28 @@ public class Weixinh5Controller extends BaseController{
 			SMSVO smsvo = new SMSVO(userVO.getTelephone(), smsService.generateCodeContent(code));
 			smsService.sendSMSMessage(smsvo);
 			result.setSuccess(Boolean.TRUE);
+		}
+
+		model.addAttribute("model", result);
+		return null;
+	}
+
+	@RequestMapping(value="/h5/phone", method = RequestMethod.POST, consumes = "application/json")
+	public String bindPhone(ModelMap model, @RequestBody UserVO userVO) {
+		CommonResultVO result = new CommonResultVO(0, false);
+		User user = userService.findById(userVO.getOpenId());
+		Assert.notNull(user);
+
+		String seccode = redisService.getSmsCode(userVO.getOpenId());
+		if(!StringUtils.isEmpty(seccode) && seccode.equals(userVO.getSeccode())){
+			try{
+				userService.bindTel(userVO);
+				result.setSuccess(Boolean.TRUE);
+			}catch (ZaozaoException e){
+				result.setMsg(e.getMsg());
+			}catch (Exception e){
+				result.setMsg("绑定失败");
+			}
 		}
 
 		model.addAttribute("model", result);

@@ -26,6 +26,8 @@ public class UserVO extends BaseVO {
 
     private String username;
 
+    private String seccode;
+
     @NotNull
     private String id;
 
@@ -90,6 +92,14 @@ public class UserVO extends BaseVO {
 
     public void setRegisterTime(String registerTime) {
         this.registerTime = registerTime;
+    }
+
+    public String getSeccode() {
+        return seccode;
+    }
+
+    public void setSeccode(String seccode) {
+        this.seccode = seccode;
     }
 
     public WxMpOAuth2AccessToken getWxMpOAuth2AccessToken() {
