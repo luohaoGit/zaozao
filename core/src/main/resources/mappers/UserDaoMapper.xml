@@ -132,6 +132,10 @@
         WHERE u.id = #{id};
     </select>
 
+    <select id="searchShortName" resultType="java.lang.String" parameterType="String">
+        select CONCAT(shortname, letter) from t_carnumber_dict where city like CONCAT('%',#{city},'%')
+    </select>
+
     <select id="searchByCarNumber" resultMap="userResultMap" parameterType="String">
         SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
         from t_user u left join t_car c on u.id=c.userid

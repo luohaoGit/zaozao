@@ -38,4 +38,6 @@ public interface UserService {
     String getQrCode(String id);
 
     String generateSmsCode(String openid);
+
+    String getShortCarName(String city);
 }

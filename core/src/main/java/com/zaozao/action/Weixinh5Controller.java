@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,6 +101,16 @@ public class Weixinh5Controller extends BaseController{
 			String openid = auth2AccessToken.getOpenId();
 			WxJsapiSignature wxJsapiSignature = weixinService.createJsapiSignature(ownUrl);
 			AuthInfoVO authInfoVO = new AuthInfoVO(wxJsapiSignature, openid);
+
+			User user = userService.findById(openid);
+			if(user != null && !StringUtils.isEmpty(user.getCity())){
+				if(!CollectionUtils.isEmpty(user.getCars())){
+					model.addAttribute("myCarNum", user.getCars().get(0).getCarNumber());
+				}
+				String shortName = userService.getShortCarName(user.getCity());
+				model.addAttribute("shortName", shortName);
+			}
+
 			model.addAttribute("authinfo", JSON.toJSON(authInfoVO));
 		} catch (WxErrorException e) {
 			error.error(e.getMessage(), e);

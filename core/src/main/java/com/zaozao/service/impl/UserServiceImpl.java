@@ -253,4 +253,8 @@ public class UserServiceImpl implements UserService, LogstashService {
         redisService.expireSmsCode(openid, smsCode);
         return smsCode;
     }
+
+    public String getShortCarName(String city) {
+        return userDao.searchShortName(city);
+    }
 }

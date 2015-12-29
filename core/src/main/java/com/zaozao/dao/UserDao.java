@@ -32,4 +32,6 @@ public interface UserDao extends BaseDao<User> {
     void subcribe(String openid);
 
     String getQRById(String id);
+
+    String searchShortName(String city);
 }
