@@ -57,7 +57,7 @@
 					<div class="weui_cell_bd weui_cell_primary">
 						<p>我的手机</p>
 					</div>
-					<div class="weui_cell_ft">${user.telephone}</div>
+					<div class="weui_cell_ft" id="telephone">${user.telephone}</div>
 				</a>
 			</div>
 
@@ -129,7 +129,7 @@
 				</div>
 			</div>
 			<div class="weui_btn_area">
-				<a id="phoneBtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">确定</a>
+				<a id="phoneBtn" class="weui_btn weui_btn_primary" href="javascript:">确定</a>
 			</div>
 		</div>
 	</div>
@@ -144,6 +144,11 @@
 			"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 		var carNumber = '${user.cars[0].carNumber}';
 		var phoneNumber = '${user.telephone}';
+		if(phoneNumber.length == 11){
+			$("#telephone").html(getSecTel(phoneNumber));
+		}
+		var registerTime = '${user.registerTime}';
+		var openid = '${user.openId}';
 		var time = 120, send = false;
 
 		// page stack
@@ -158,8 +163,6 @@
 			var $tpl = $($('#tpl_' + id).html()).addClass('slideIn').addClass(id);
 			$container.append($tpl);
 			stack.push($tpl);
-			// why not use `history.pushState`, https://github.com/weui/weui/issues/26
-			//history.pushState({id: id}, '', '#' + id);
 			location.hash = '#' + id;
 
 			if(id == "carnumber"){
@@ -204,7 +207,7 @@
 									type: 'post', url: '/weixin/h5/carnumber.json',
 									data: JSON.stringify({
 										carNumber : newNumber,
-										openid: '${user.id}'
+										openid: openid
 									}),
 									contentType: 'application/json',
 									success: function () {
@@ -248,14 +251,16 @@
 					$("#secBtn").html("发送验证码");
 				}
 
+				if(valiPhone()){
+					$("#secBtn").show();
+				}
+
 				$('#phone').on('input propertychange', function() {
 					phoneNumber = $("#phone").val();
 					if(valiPhone()){
 						$("#secBtn").show();
-						$("#phoneBtn").removeClass("weui_btn_disabled");
 					}else{
 						$("#secBtn").hide();
-						$("#phoneBtn").addClass("weui_btn_disabled");
 					}
 				});
 
@@ -274,12 +279,51 @@
 							clearInterval(myTime);
 						}
 					}, 1000);
+
+					$.ajax({
+						type: 'post', url: '/weixin/h5/smscode.json',
+						data: JSON.stringify({
+							registerTime : registerTime,
+							openId: openid,
+							telephone: phoneNumber
+						}),
+						contentType: 'application/json',
+						success: function (data) {
+							if(data.success){
+								dialog("发送成功");
+							}else{
+								dialog("发送失败");
+							}
+						},
+						error: function(){
+							dialog("发送失败");
+						}
+					});
 				});
 
 				$("#phoneBtn").on("click", function(){
 					var sec = $("#sec").val();
 					if(valiPhone() && sec.length == 6){
-
+						$.ajax({
+							type: 'post', url: '/weixin/h5/phone.json',
+							data: JSON.stringify({
+								seccode : sec,
+								openId: openid,
+								telephone: phoneNumber
+							}),
+							contentType: 'application/json',
+							success: function (data) {
+								if(data.success){
+									location.hash = "";
+									$("#telephone").html(getSecTel(phoneNumber));
+								}else{
+									dialog(data.msg);
+								}
+							},
+							error: function(){
+								dialog("绑定失败");
+							}
+						});
 					}else{
 						$('.sec_tooltips').show();
 						setTimeout(function (){
@@ -312,6 +356,10 @@
 				$top.remove();
 			});
 		});
+
+		function getSecTel(tel){
+			return tel.substr(0, 3) + "****" + tel.substr(7, 4);
+		}
 
 		function dialog(msg){
 			$("#dialog_msg").html(msg);

@@ -165,9 +165,8 @@ public class Weixinh5Controller extends BaseController{
 	@RequestMapping(value="/h5/smscode", method = RequestMethod.POST, consumes = "application/json")
 	public String sendSmsCode(ModelMap model, @RequestBody UserVO userVO) throws ParseException {
 		CommonResultVO result = new CommonResultVO(0, false);
-
 		User user = userService.findById(userVO.getOpenId());
-		Assert.isNull(user);
+		Assert.notNull(user);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date registerTime = sdf.parse(userVO.getRegisterTime());
@@ -185,8 +184,6 @@ public class Weixinh5Controller extends BaseController{
 	@RequestMapping(value="/h5/phone", method = RequestMethod.POST, consumes = "application/json")
 	public String bindPhone(ModelMap model, @RequestBody UserVO userVO) {
 		CommonResultVO result = new CommonResultVO(0, false);
-		User user = userService.findById(userVO.getOpenId());
-		Assert.notNull(user);
 
 		String seccode = redisService.getSmsCode(userVO.getOpenId());
 		if(!StringUtils.isEmpty(seccode) && seccode.equals(userVO.getSeccode())){
@@ -195,8 +192,10 @@ public class Weixinh5Controller extends BaseController{
 				result.setSuccess(Boolean.TRUE);
 			}catch (ZaozaoException e){
 				result.setMsg(e.getMsg());
+				error.error(e.getMessage(), e);
 			}catch (Exception e){
 				result.setMsg("绑定失败");
+				error.error(e.getMessage(), e);
 			}
 		}
 

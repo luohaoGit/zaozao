@@ -4,6 +4,7 @@ import com.zaozao.dao.UserDao;
 import com.zaozao.exception.ZaozaoException;
 import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
+import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
 import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
@@ -77,12 +78,20 @@ public class UserServiceImpl implements UserService, LogstashService {
         Assert.notNull(userVO.getOpenId());
         Assert.notNull(userVO.getTelephone());
 
-        User user = userDao.searchById(userVO.getId());
+        boolean telExits = checkByTel(userVO.getTelephone());
+        if(telExits){
+            throw new ZaozaoException("手机号已经注册过");
+        }
+
+        User user = userDao.searchById(userVO.getOpenId());
         if(user == null){
             throw new ZaozaoException("用户不存在");
         }
         user.setTelephone(userVO.getTelephone());
         userDao.bindTel(user);
+
+        BindPhoneNCarEvent bindPhoneNCarEvent = new BindPhoneNCarEvent(userVO.getOpenId(), userVO.getTelephone(), null);
+        logstash.info(bindPhoneNCarEvent.toJson());
     }
 
     public void register(UserVO userVO) {
