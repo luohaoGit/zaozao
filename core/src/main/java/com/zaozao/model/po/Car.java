@@ -16,7 +16,6 @@ public class Car extends BasePO {
     private String fueltype; //燃油类型
     private String frameNumber; //车架号
     private String color; //颜色
-    private Date registerTime; //上牌时间
 
     private User user; //车主
 
@@ -90,14 +89,6 @@ public class Car extends BasePO {
 
     public void setFrameNumber(String frameNumber) {
         this.frameNumber = frameNumber;
-    }
-
-    public Date getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Date registerTime) {
-        this.registerTime = registerTime;
     }
 
     public String getColor() {

@@ -15,7 +15,7 @@ public class BasePO implements Serializable{
 
     private String id = UUID.randomUUID().toString().replaceAll("-", "");
     private boolean deleted = false;
-    private Date createTime = new Date();
+    private Date registerTime;
 
     public String getId() {
         return id;
@@ -37,12 +37,12 @@ public class BasePO implements Serializable{
         return serialVersionUID;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getRegisterTime() {
+        return registerTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setRegisterTime(Date registerTime) {
+        this.registerTime = registerTime;
     }
 
     @Override

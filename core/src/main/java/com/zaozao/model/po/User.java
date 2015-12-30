@@ -19,7 +19,6 @@ public class User extends BasePO {
     private String telephone; //电话
     private Date birthday; //生日
     private String wxNumber; //微信号
-    private Date registerTime; //注册时间
     private String address; //地址
     private String idNumber; //身份证号码
     private String portrait; //头像
@@ -124,14 +123,6 @@ public class User extends BasePO {
 
     public void setWxNumber(String wxNumber) {
         this.wxNumber = wxNumber;
-    }
-
-    public Date getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Date registerTime) {
-        this.registerTime = registerTime;
     }
 
     public String getAddress() {

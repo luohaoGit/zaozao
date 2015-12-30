@@ -63,7 +63,8 @@
 
     <update id="updateCarNumber" parameterType="Car">
         UPDATE t_car SET
-        carnumber = #{carNumber}
+        carnumber = #{carNumber},
+        registertime = #{registerTime}
         WHERE userid = #{user.id};
     </update>
 

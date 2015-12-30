@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * Created by luohao on 2015/10/23.
  */
@@ -38,6 +40,7 @@ public class CarServiceImpl implements CarService, LogstashService {
         user.setId(carVO.getOpenid());
         car.setCarNumber(carVO.getCarNumber());
         car.setUser(user);
+        car.setRegisterTime(new Date());
         carDao.updateCarNumber(car);
 
         BindPhoneNCarEvent bindPhoneNCarEvent = new BindPhoneNCarEvent(carVO.getOpenid(), null, carVO.getCarNumber());
