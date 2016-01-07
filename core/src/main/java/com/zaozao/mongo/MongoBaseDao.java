@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -20,7 +22,11 @@ public abstract class MongoBaseDao<T> {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    protected abstract Class<T> getEntityClass();
+    protected Class<T> getEntityClass(){
+        Type genType = getClass().getGenericSuperclass();
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        return (Class) params[0];
+    }
 
     public void save(T t){
         logger.info("[Mongo Dao ]save:" + t);

@@ -1,15 +1,20 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 用户绑定手机和车辆日志(用户转化)
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "BindPhoneNCarEvent")
 public class BindPhoneNCarEvent extends MongoBase{
 
     private String userid;
     private String openid;
     private String phone;
     private String carNumber;
+
+    public BindPhoneNCarEvent(){}
 
     public BindPhoneNCarEvent(String openid, String phone, String carNumber) {
         this.openid = openid;
