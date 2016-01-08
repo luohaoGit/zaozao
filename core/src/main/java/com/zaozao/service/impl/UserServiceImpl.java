@@ -227,7 +227,7 @@ public class UserServiceImpl implements UserService, LogstashService {
         long count = userDao.count();
         long start = pageVO.getPageNumber() * pageVO.getPageSize();
         List<User> userList = userDao.getPage(start, pageSize);
-        pageVO.setRowCout(count);
+        pageVO.setRowCount(count);
         pageVO.setData(userList);
         return pageVO;
     }

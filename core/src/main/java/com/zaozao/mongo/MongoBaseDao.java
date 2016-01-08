@@ -94,5 +94,4 @@ public abstract class MongoBaseDao<T> {
         logger.info("[Mongo Dao ]updateInser:query(" + query + "),update(" + update + ")");
         this.mongoTemplate.upsert(query, update, this.getEntityClass());
     }
-
 }

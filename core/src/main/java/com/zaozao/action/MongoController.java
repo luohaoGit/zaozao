@@ -1,7 +1,7 @@
 package com.zaozao.action;
 
 import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
-import com.zaozao.model.vo.MongoQueryVO;
+import com.zaozao.model.vo.PageVO;
 import com.zaozao.service.MongoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/log")
+@RequestMapping("/admin")
 public class MongoController {
 
 	public static final Logger logger = LoggerFactory.getLogger(MongoController.class);
@@ -25,10 +23,10 @@ public class MongoController {
 	private MongoService mongoService;
 
 	@RequestMapping(value="/users/transformation", method = RequestMethod.GET)
-	public String getBindPhoneNCarPage(ModelMap model, @ModelAttribute MongoQueryVO queryVO) {
-		List<BindPhoneNCarEvent> data = mongoService.getUsersTransformation(queryVO);
-		model.addAttribute("model", data);
-		return null;
+	public String getBindPhoneNCarPage(ModelMap model, @ModelAttribute PageVO pageVO) {
+		pageVO = mongoService.getUsersTransformation(pageVO);
+		model.addAttribute("page", pageVO);
+		return "admin/users_transfomate";
 	}
 
 }

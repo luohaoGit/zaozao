@@ -27,7 +27,7 @@
             <small></small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="/admin/main"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active"><a href="/admin/users">用户管理</a></li>
           </ol>
         </section>

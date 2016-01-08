@@ -1,7 +1,7 @@
 package com.zaozao.service.impl;
 
 import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
-import com.zaozao.model.vo.MongoQueryVO;
+import com.zaozao.model.vo.PageVO;
 import com.zaozao.mongo.dao.BindPhoneNCarDao;
 import com.zaozao.service.MongoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,12 @@ public class MongoServiceImpl implements MongoService {
     @Autowired
     private BindPhoneNCarDao bindPhoneNCarDao;
 
-    public List<BindPhoneNCarEvent> getUsersTransformation(MongoQueryVO queryVO) {
-        return bindPhoneNCarDao.getPage(queryVO);
+    public PageVO<BindPhoneNCarEvent> getUsersTransformation(PageVO<BindPhoneNCarEvent> queryVO) {
+        List<BindPhoneNCarEvent> data = bindPhoneNCarDao.getPage(queryVO);
+        Long rowCount = bindPhoneNCarDao.count(queryVO);
+        queryVO.setData(data);
+        queryVO.setRowCount(rowCount);
+        return queryVO;
     }
 
 }

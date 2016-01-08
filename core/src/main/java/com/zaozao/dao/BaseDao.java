@@ -18,5 +18,5 @@ public interface BaseDao<T> {
 
     Long count();
 
-    List<T> getPage(@Param(value = "start") long start, @Param(value = "size") long size);
+    List<T> getPage(@Param(value = "start") long start, @Param(value = "size") int size);
 }
