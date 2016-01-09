@@ -13,5 +13,6 @@
         $('.exit').click(function(){
             location.href = "/admin/logout";
         });
+        $('#${activeId}').addClass("active");
     });
 </script>

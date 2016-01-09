@@ -57,11 +57,21 @@ public class PageVO<T> extends BaseVO {
     }
 
     public long getShowCount() {
-        return this.getPageCount() >= this.showCount ? this.showCount : this.getPageCount();
+        return this.showCount;
     }
 
     public void setShowCount(long showCount) {
         this.showCount = showCount;
+    }
+
+    public long getStartIndex(){
+        long pre = this.pageNumber+1 - this.showCount/2;
+        return pre > 0 ? pre : 1;
+    }
+
+    public long getEndIndex(){
+        long remaining = this.getPageCount() - this.getStartIndex();
+        return this.getStartIndex() - 1 + (remaining >= this.showCount ? this.showCount : remaining+1);
     }
 
     public boolean isFirst(){

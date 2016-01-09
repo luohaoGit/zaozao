@@ -1,6 +1,7 @@
 package com.zaozao.model.po.mongo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ import java.util.Date;
  * 用户点击日志
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "ClickEvent")
 public class ClickEvent extends MongoBase {
 
     private Date leaveTime;

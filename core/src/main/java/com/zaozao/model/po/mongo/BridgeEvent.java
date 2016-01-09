@@ -1,8 +1,11 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "BridgeEvent")
 public class BridgeEvent extends MongoBase {
 
     private Long bridgingMills; //语音发起至呼通间隔时长

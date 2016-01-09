@@ -1,8 +1,11 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by luohao on 15/12/19.
  */
+@Document(collection = "RouteEvent")
 public class RouteEvent extends MongoBase{
 
     private String from;

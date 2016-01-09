@@ -17,20 +17,13 @@
       <%@ include file="../common/header.jsp"%>
       <%@ include file="../common/sidebar.jsp"%>
 
+
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            用户转换
-            <small></small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active"><a href="/admin/users/transformation">用户转换</a></li>
-          </ol>
-        </section>
+        <c:set var="pageTitle" value="用户转换日志"/>
+        <c:set var="pageUrl" value="/admin/users/transformation"/>
+        <c:set var="activeId" value="user-trans-li"/>
+        <%@ include file="../common/sectionHeader.jsp"%>
 
         <!-- Main content -->
         <section class="content">
@@ -62,38 +55,7 @@
                       </tbody>
                       <tfoot></tfoot>
                     </table>
-                    <div class="row">
-                    <div class="col-sm-5">
-                      <div class="dataTables_info">总共<b>${page.rowCount}</b>条记录</div>
-                    </div>
-                    <div class="col-sm-7">
-                      <div class="dataTables_paginate">
-                        <ul class="pagination">
-                          <li class="paginate_button first" onclick="toPage(0)">
-                            <a href="#">第一页</a>
-                          </li>
-                          <li class="paginate_button previous
-                            <c:if test="${page.first}">disabled</c:if>"
-                            <c:if test="${not page.first}">onclick="toPage(${page.pageNumber-1})"</c:if>>
-                            <a href="#">上一页</a>
-                          </li>
-                          <c:forEach var="i" begin="1" end="${page.showCount}" step="1">
-                          <li class="paginate_button <c:if test="${page.pageNumber eq i-1}">active</c:if>" onclick="toPage(${i-1})">
-                            <a href="#">${i}</a>
-                          </li>
-                          </c:forEach>
-                          <li class="paginate_button next
-                            <c:if test="${page.last}">disabled</c:if>"
-                            <c:if test="${not page.last}">onclick="toPage(${page.pageNumber+1})"</c:if>>
-                            <a href="#">下一页</a>
-                          </li>
-                          <li class="paginate_button last" onclick="toPage(${page.pageCount-1})">
-                            <a href="#">最后一页</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+                <%@ include file="../common/page.jsp"%>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div><!-- /.col -->
@@ -111,11 +73,8 @@
     <!-- page script -->
     <script>
       $(function () {
-        $('#user-trans-li').addClass("active");
+
       });
-      function toPage(i){
-        window.location = "/admin/users/transformation?pageNumber=" + i;
-      }
     </script>
   </body>
 </html>

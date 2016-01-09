@@ -1,9 +1,12 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 用户关注和取消关注日志
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "SubNUnsubEvent")
 public class SubNUnsubEvent extends MongoBase{
 
     public static final String SUB = "sub";

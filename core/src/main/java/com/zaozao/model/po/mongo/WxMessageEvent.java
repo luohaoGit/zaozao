@@ -4,12 +4,14 @@ import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 /**
  * Created by luohao on 15/12/18.
  */
+@Document(collection = "WxMessageEvent")
 public class WxMessageEvent extends MongoBase {
 
     protected static Logger logger = LoggerFactory.getLogger(WxMessageEvent.class);
@@ -45,6 +47,7 @@ public class WxMessageEvent extends MongoBase {
             int end = eventKey.indexOf("&response_type");
             message.setEventKey(eventKey.substring(start, end));
         }
+        message.setCreateTime(System.currentTimeMillis());
         WxMessageEvent wxMessageEvent = new WxMessageEvent();
         try {
             PropertyUtils.copyProperties(wxMessageEvent, message);

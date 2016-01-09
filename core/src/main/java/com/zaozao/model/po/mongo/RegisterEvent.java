@@ -4,6 +4,7 @@ import com.zaozao.model.po.User;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * 用户注册日志
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "RegisterEvent")
 public class RegisterEvent extends MongoBase {
 
     protected static Logger logger = LoggerFactory.getLogger(RegisterEvent.class);

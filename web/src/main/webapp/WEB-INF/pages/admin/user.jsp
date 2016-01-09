@@ -19,18 +19,10 @@
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            用户管理
-            <small></small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active"><a href="/admin/users">用户管理</a></li>
-          </ol>
-        </section>
+        <c:set var="pageTitle" value="用户管理"/>
+        <c:set var="pageUrl" value="/admin/users"/>
+        <c:set var="activeId" value="user-li"/>
+        <%@ include file="../common/sectionHeader.jsp"%>
 
         <!-- Main content -->
         <section class="content">
@@ -45,13 +37,11 @@
                       <thead>
                       <tr>
                         <th>早早号</th>
-                        <th>OPENID</th>
                         <th>用户名</th>
                         <th>电话</th>
                         <th>注册时间</th>
                         <th>是否关注</th>
                         <th>性别</th>
-                        <th>微信号</th>
                         <th>操作</th>
                       </tr>
                       </thead>
@@ -59,31 +49,19 @@
                       <c:forEach var="item" items="${page.data}" varStatus="status">
                       <tr>
                         <td>${item.zzid}</td>
-                        <td>${item.openId}</td>
-                        <td>${item.username}</td>
+                        <td>${item.wxnickname}</td>
                         <td>${item.telephone}</td>
                         <td><fmt:formatDate value="${item.registerTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
                         <td>${item.subcribe ? "是" : "否"}</td>
-                        <td>${item.gender}</td>
-                        <td>${item.wxNumber}</td>
+                        <td>${item.sex}</td>
                         <td></td>
                       </tr>
                       </c:forEach>
                       </tbody>
                       <tfoot>
-                      <tr>
-                        <th>ID</th>
-                        <th>OPENID</th>
-                        <th>用户名</th>
-                        <th>电话</th>
-                        <th>注册时间</th>
-                        <th>是否关注</th>
-                        <th>性别</th>
-                        <th>微信号</th>
-                        <th>操作</th>
-                      </tr>
                       </tfoot>
                     </table>
+                  <%@ include file="../common/page.jsp"%>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div><!-- /.col -->
@@ -97,23 +75,9 @@
     </div>
 
     <%@ include file="../common/js.jsp"%>
-    <!-- DataTables -->
-    <script src="/js/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
-    <!-- SlimScroll -->
-    <script src="/js/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="/js/plugins/fastclick/fastclick.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="/js/demo.js"></script>
-    <!-- page script -->
     <script>
       $(function () {
-        $('#user-li').addClass("active");
-        $('#table').DataTable({
-          "searching": false,
-          "lengthChange": false
-        });
+
       });
     </script>
   </body>

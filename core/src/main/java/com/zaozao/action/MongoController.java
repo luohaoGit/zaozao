@@ -1,6 +1,5 @@
 package com.zaozao.action;
 
-import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.service.MongoService;
 import org.slf4j.Logger;
@@ -27,6 +26,20 @@ public class MongoController {
 		pageVO = mongoService.getUsersTransformation(pageVO);
 		model.addAttribute("page", pageVO);
 		return "admin/users_transfomate";
+	}
+
+	@RequestMapping(value="/users/register", method = RequestMethod.GET)
+	public String getRegister(ModelMap model, @ModelAttribute PageVO pageVO) {
+		pageVO = mongoService.getRegister(pageVO);
+		model.addAttribute("page", pageVO);
+		return "admin/users_register";
+	}
+
+	@RequestMapping(value="/users/browse", method = RequestMethod.GET)
+	public String getWxMessage(ModelMap model, @ModelAttribute PageVO pageVO) {
+		pageVO = mongoService.getWxMessage(pageVO);
+		model.addAttribute("page", pageVO);
+		return "admin/users_browse";
 	}
 
 }

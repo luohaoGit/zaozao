@@ -1,8 +1,10 @@
 package com.zaozao.mongo;
 
+import com.zaozao.model.vo.PageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -93,5 +95,22 @@ public abstract class MongoBaseDao<T> {
     public void updateInser(Query query, Update update){
         logger.info("[Mongo Dao ]updateInser:query(" + query + "),update(" + update + ")");
         this.mongoTemplate.upsert(query, update, this.getEntityClass());
+    }
+
+    public Query generateCountQuery(PageVO<T> queryVO){
+        Criteria criteria = Criteria.where("createTime").gte(queryVO.getStartDate().getTime()).lte(queryVO.getEndDate().getTime());
+        return new Query(criteria);
+    }
+
+    public Query generatePageQuery(PageVO<T> queryVO){
+        Criteria criteria = Criteria.where("createTime").gte(queryVO.getStartDate().getTime()).lte(queryVO.getEndDate().getTime());
+        int pageNum = queryVO.getPageNumber();
+        int size = queryVO.getPageSize();
+        int start = pageNum * size;
+        Query query = new Query(criteria);
+        query.skip(start);
+        query.limit(size);
+        query.with(new Sort(Sort.Direction.DESC, "createTime"));
+        return query;
     }
 }

@@ -1,9 +1,12 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 用户回复短信日志
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "SmsEvent")
 public class SmsEvent extends MongoBase {
 
     private String phone;

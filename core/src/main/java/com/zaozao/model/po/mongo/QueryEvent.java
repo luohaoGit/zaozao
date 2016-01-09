@@ -1,9 +1,12 @@
 package com.zaozao.model.po.mongo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 用户查询日志
  * Created by luohao on 15/12/11.
  */
+@Document(collection = "QueryEvent")
 public class QueryEvent extends MongoBase {
 
     private Long feedbackTime; //反馈结果的时间
