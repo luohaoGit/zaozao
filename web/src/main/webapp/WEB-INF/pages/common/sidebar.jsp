@@ -7,7 +7,7 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <li class="header">菜单</li>
-      <!-- Optionally, you can add icons to the links -->
+      <li id="user-main"><a href="/admin/main"><i class="fa fa-link"></i> <span>主页面</span></a></li>
       <li id="user-li"><a href="/admin/users"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
       <li id="user-reg-li"><a href="/admin/users/register"><i class="fa fa-link"></i> <span>用户注册日志</span></a></li>
       <li id="user-trans-li"><a href="/admin/users/transformation"><i class="fa fa-link"></i> <span>用户转换日志</span></a></li>

@@ -24,4 +24,8 @@ public class BindPhoneNCarDaoImpl extends MongoBaseDao<BindPhoneNCarEvent> imple
         Query query = this.generateCountQuery(queryVO);
         return this.getPageCount(query);
     }
+
+    public Long countCustom(Query query) {
+        return this.getPageCount(query);
+    }
 }

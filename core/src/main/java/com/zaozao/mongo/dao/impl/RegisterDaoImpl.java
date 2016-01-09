@@ -24,4 +24,8 @@ public class RegisterDaoImpl extends MongoBaseDao<RegisterEvent> implements Regi
         Query query = this.generateCountQuery(queryVO);
         return this.getPageCount(query);
     }
+
+    public Long countCustom(Query query) {
+        return this.getPageCount(query);
+    }
 }

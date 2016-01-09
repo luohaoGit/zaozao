@@ -22,7 +22,7 @@ public abstract class MongoBaseDao<T> {
     protected static Logger logger = LoggerFactory.getLogger(MongoBaseDao.class);
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 
     protected Class<T> getEntityClass(){
         Type genType = getClass().getGenericSuperclass();

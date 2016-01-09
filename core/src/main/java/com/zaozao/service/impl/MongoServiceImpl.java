@@ -1,14 +1,21 @@
 package com.zaozao.service.impl;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.CommandResult;
 import com.zaozao.model.po.mongo.BindPhoneNCarEvent;
 import com.zaozao.model.po.mongo.RegisterEvent;
+import com.zaozao.model.po.mongo.SubNUnsubEvent;
 import com.zaozao.model.po.mongo.WxMessageEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.mongo.dao.BindPhoneNCarDao;
 import com.zaozao.mongo.dao.RegisterDao;
+import com.zaozao.mongo.dao.SubNUnsubDao;
 import com.zaozao.mongo.dao.WxMessageDao;
 import com.zaozao.service.MongoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +27,9 @@ import java.util.List;
 public class MongoServiceImpl implements MongoService {
 
     @Autowired
+    protected MongoTemplate mongoTemplate;
+
+    @Autowired
     private BindPhoneNCarDao bindPhoneNCarDao;
 
     @Autowired
@@ -27,6 +37,9 @@ public class MongoServiceImpl implements MongoService {
 
     @Autowired
     private WxMessageDao wxMessageDao;
+
+    @Autowired
+    private SubNUnsubDao subNUnsubDao;
 
     public PageVO<BindPhoneNCarEvent> getUsersTransformation(PageVO<BindPhoneNCarEvent> queryVO) {
         List<BindPhoneNCarEvent> data = bindPhoneNCarDao.getPage(queryVO);
@@ -50,6 +63,40 @@ public class MongoServiceImpl implements MongoService {
         queryVO.setData(data);
         queryVO.setRowCount(rowCount);
         return queryVO;
+    }
+
+    public Long countRegister(PageVO<RegisterEvent> queryVO) {
+        Query query = generateByCT(queryVO);
+        return registerDao.countCustom(query);
+    }
+
+    public Long countUnsub(PageVO<SubNUnsubEvent> queryVO) {
+        Query query = generateByCT(queryVO);
+        query.addCriteria(Criteria.where("type").is(SubNUnsubEvent.UNSUB));
+        return subNUnsubDao.countCustom(query);
+    }
+
+    public int countBindCar(PageVO<BindPhoneNCarEvent> queryVO) {
+        String command = "{distinct:'BindPhoneNCarEvent', key:'openid', " +
+                "query:{'phone': null, 'createTime': {$gte : " + queryVO.getStartDate().getTime()
+                + " , $lte : " + queryVO.getEndDate().getTime() + "}}}";
+        CommandResult result = mongoTemplate.executeCommand(command);
+        BasicDBList list = (BasicDBList)result.get("values");
+        return list.size();
+    }
+
+    public int countBindPhone(PageVO<BindPhoneNCarEvent> queryVO) {
+        String command = "{distinct:'BindPhoneNCarEvent', key:'openid', " +
+                "query:{'carNumber': null, 'createTime': {$gte : " + queryVO.getStartDate().getTime()
+                + " , $lte : " + queryVO.getEndDate().getTime() + "}}}";
+        CommandResult result = mongoTemplate.executeCommand(command);
+        BasicDBList list = (BasicDBList)result.get("values");
+        return list.size();
+    }
+
+    private Query generateByCT(PageVO queryVO){
+        Criteria criteria = Criteria.where("createTime").gte(queryVO.getStartDate().getTime()).lte(queryVO.getEndDate().getTime());
+        return new Query(criteria);
     }
 
 }

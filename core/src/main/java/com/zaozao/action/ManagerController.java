@@ -3,6 +3,7 @@ package com.zaozao.action;
 import com.zaozao.model.po.User;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.model.vo.UserVO;
+import com.zaozao.service.MongoService;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.UserService;
 import com.zaozao.utils.GoodNumbersFilter;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +40,30 @@ public class ManagerController {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private MongoService mongoService;
+
+    @RequestMapping(value="/main", method = RequestMethod.GET)
+    public String main(ModelMap modelMap){
+        PageVO pageVO = new PageVO();
+        Date now = new Date();
+        pageVO.setEndDate(now);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.DATE, -7);
+        pageVO.setStartDate(calendar.getTime());
+        Long regCount = mongoService.countRegister(pageVO);
+        Long unsubCount = mongoService.countUnsub(pageVO);
+        int phoneCount = mongoService.countBindPhone(pageVO);
+        int carCount = mongoService.countBindCar(pageVO);
+
+        modelMap.put("regCount", regCount);
+        modelMap.put("unsubCount", unsubCount);
+        modelMap.put("phoneCount", phoneCount);
+        modelMap.put("carCount", carCount);
+        return "admin/main";
+    }
+
     @RequestMapping(value="/login", method = RequestMethod.GET)
     public String loginView(){
 
@@ -54,13 +81,13 @@ public class ManagerController {
         User user = (User)session.getAttribute("user");
         model.addAttribute("user", user);
         if(user != null){
-            return "admin/main";
+            return "redirect:/admin/main";
         }
         if(adminUsername.equals(userVO.getUsername()) && adminPassword.equals(userVO.getPassword())){
             user = new User();
             user.setUsername(userVO.getUsername());
             session.setAttribute("user", user);
-            return "admin/main";
+            return "redirect:/admin/main";
         }else{
             model.addAttribute("errorMsg", "用户名密码错误");
             return "error/error";
