@@ -6,6 +6,7 @@ import com.zaozao.model.vo.PageVO;
 import com.zaozao.mongo.MongoBaseDao;
 import com.zaozao.mongo.dao.RegisterDao;
 import com.zaozao.mongo.dao.WxMessageDao;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,11 +20,13 @@ public class WxMessageDaoImpl extends MongoBaseDao<WxMessageEvent> implements Wx
 
     public List<WxMessageEvent> getPage(PageVO<WxMessageEvent> queryVO){
         Query query = this.generatePageQuery(queryVO);
+        query.addCriteria(Criteria.where("event").is(queryVO.getEvent()));
         return this.queryList(query);
     }
 
     public Long count(PageVO<WxMessageEvent> queryVO) {
         Query query = this.generateCountQuery(queryVO);
+        query.addCriteria(Criteria.where("event").is(queryVO.getEvent()));
         return this.getPageCount(query);
     }
 }

@@ -27,18 +27,17 @@
 
     <mongo:db-factory dbname="${mongo.dbname}" mongo-ref="mongo" username="${mongo.username}" password="${mongo.passwd}" />
 
-    <mongo:mapping-converter id="mappingMongoConverter" base-package="com.zaozao.converter">
+    <mongo:mapping-converter base-package="com.zaozao.converter">
         <mongo:custom-converters>
             <mongo:converter>
                 <bean class="com.zaozao.converter.DateConverter" />
             </mongo:converter>
-
         </mongo:custom-converters>
     </mongo:mapping-converter>
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-        <constructor-arg name="mongoConverter" ref="mappingMongoConverter" />
+        <constructor-arg name="mongoConverter" ref="mappingConverter" />
     </bean>
 
 </beans>

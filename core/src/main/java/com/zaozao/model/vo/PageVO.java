@@ -18,6 +18,8 @@ public class PageVO<T> extends BaseVO {
     private List<T> data; //数据
     private long showCount = 8;
 
+    private String event;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -119,5 +121,13 @@ public class PageVO<T> extends BaseVO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }

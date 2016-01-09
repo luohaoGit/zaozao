@@ -37,6 +37,7 @@ public class MongoController {
 
 	@RequestMapping(value="/users/browse", method = RequestMethod.GET)
 	public String getWxMessage(ModelMap model, @ModelAttribute PageVO pageVO) {
+		pageVO.setEvent("VIEW");
 		pageVO = mongoService.getWxMessage(pageVO);
 		model.addAttribute("page", pageVO);
 		return "admin/users_browse";

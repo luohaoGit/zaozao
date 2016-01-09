@@ -92,7 +92,7 @@ public class ManagerController {
     @RequestMapping(value="/zzid", method = RequestMethod.GET)
     public String getZzid(ModelMap modelMap){
         long len = redisService.lenZzidList();
-        List<String> list = redisService.getZzid(len-11, 10);
+        List<String> list = redisService.getZzid(len - 10, len - 1);
         modelMap.put("list", list);
         return "admin/zzid";
     }
