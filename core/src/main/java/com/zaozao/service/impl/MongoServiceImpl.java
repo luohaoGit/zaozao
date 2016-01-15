@@ -94,9 +94,18 @@ public class MongoServiceImpl implements MongoService {
         return list.size();
     }
 
+    public List registerForThisMon() {
+        return registerDao.groupByThisMon();
+    }
+
+    public List registerForThisYear() {
+        return registerDao.groupByThisYear();
+    }
+
     private Query generateByCT(PageVO queryVO){
         Criteria criteria = Criteria.where("createTime").gte(queryVO.getStartDate().getTime()).lte(queryVO.getEndDate().getTime());
         return new Query(criteria);
     }
+
 
 }

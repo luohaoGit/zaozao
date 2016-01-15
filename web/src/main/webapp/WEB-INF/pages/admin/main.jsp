@@ -75,14 +75,13 @@
               <div class="nav-tabs-custom">
                 <!-- Tabs within a box -->
                 <ul class="nav nav-tabs pull-right">
-                  <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                  <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
+                  <li class="active"><a href="#regMon" data-toggle="tab">本月新增人数</a></li>
+                  <li><a href="#regYear" data-toggle="tab">本年新增人数</a></li>
                   <li class="pull-left header"><i class="fa fa-inbox"></i>新增人数</li>
                 </ul>
                 <div class="tab-content no-padding">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+                  <div class="chart tab-pane active" id="regMon" style="position: relative; height: 300px;"></div>
+                  <div class="chart tab-pane" id="regYear" style="position: relative; height: 300px;"></div>
                 </div>
               </div>
 
@@ -105,17 +104,13 @@
                 </div><!-- /.box-body -->
                 <div class="box-footer no-border">
                   <div class="row">
-                    <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                    <div class="col-xs-6 text-center" style="border-right: 1px solid #f4f4f4">
                       <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
                       <div class="knob-label">Mail-Orders</div>
                     </div><!-- ./col -->
-                    <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                    <div class="col-xs-6 text-center" style="border-right: 1px solid #f4f4f4">
                       <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
                       <div class="knob-label">Online</div>
-                    </div><!-- ./col -->
-                    <div class="col-xs-4 text-center">
-                      <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                      <div class="knob-label">In-Store</div>
                     </div><!-- ./col -->
                   </div><!-- /.row -->
                 </div><!-- /.box-footer -->
@@ -133,12 +128,50 @@
 
     <%@ include file="../common/js.jsp"%>
     <!-- Morris.js charts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="/js/raphael-min.js"></script>
     <script src="/js/jquery.sparkline.min.js"></script>
     <script src="/js/morris.min.js"></script>
     <script src="/js/jquery.knob.js"></script>
-    <script src="/js/dashboard.js"></script>
     <script src="/js/demo.js"></script>
+
+    <script type="text/javascript">
+      $(function () {
+
+        "use strict";
+
+        var regMon = new Morris.Line({
+          element: 'regMon',
+          resize: true,
+          data: ${monList},
+          xkey: 'day',
+          ykeys: ['count'],
+          parseTime: false,
+          labels: ['人数'],
+          lineColors: ['#a0d0e0', '#3c8dbc'],
+          hideHover: 'auto'
+        });
+
+        var regYear = new Morris.Bar({
+          element: 'regYear',
+          resize: true,
+          data: ${yearList},
+          xkey: 'month',
+          ykeys: ['count'],
+          parseTime: false,
+          labels: ['人数'],
+          lineColors: ['#a0d0e0', '#3c8dbc'],
+          hideHover: 'auto'
+        });
+
+        $('.box ul.nav a').on('shown.bs.tab', function () {
+          regMon.redraw();
+          regYear.redraw();
+        });
+
+        $(".knob").knob();
+
+      });
+    </script>
 
   </body>
 </html>

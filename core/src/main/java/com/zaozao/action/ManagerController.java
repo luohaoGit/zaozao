@@ -57,10 +57,15 @@ public class ManagerController {
         int phoneCount = mongoService.countBindPhone(pageVO);
         int carCount = mongoService.countBindCar(pageVO);
 
+        List monList = mongoService.registerForThisMon();
+        List yearList = mongoService.registerForThisYear();
+
         modelMap.put("regCount", regCount);
         modelMap.put("unsubCount", unsubCount);
         modelMap.put("phoneCount", phoneCount);
         modelMap.put("carCount", carCount);
+        modelMap.put("monList", monList);
+        modelMap.put("yearList", yearList);
         return "admin/main";
     }
 

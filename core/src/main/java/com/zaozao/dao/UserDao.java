@@ -23,6 +23,8 @@ public interface UserDao extends BaseDao<User> {
 
     User searchByCarNumber(String carNumber);
 
+    User searchByZzid(String zzid);
+
     User searchByUsername(String username);
 
     User findByTel(String telephone);

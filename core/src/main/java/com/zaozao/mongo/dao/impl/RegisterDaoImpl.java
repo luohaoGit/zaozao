@@ -1,12 +1,19 @@
 package com.zaozao.mongo.dao.impl;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.CommandResult;
 import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.mongo.MongoBaseDao;
 import com.zaozao.mongo.dao.RegisterDao;
+import org.springframework.data.mongodb.core.mapreduce.GroupBy;
+import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +35,57 @@ public class RegisterDaoImpl extends MongoBaseDao<RegisterEvent> implements Regi
     public Long countCustom(Query query) {
         return this.getPageCount(query);
     }
+
+    public List groupByThisMon() {
+        Criteria criteria = Criteria.where("createTime")
+                .gte(this.getMonthStart().getTime())
+                .lte(new Date().getTime());
+        String keyf =
+                "function(doc){ return {day: doc.born ? doc.born.substr(8, 2) : ''} }";
+        String reduce =
+                "function(doc, out){ out.count++; }";
+        GroupBy groupBy = GroupBy.keyFunction(keyf).initialDocument("{count:0}")
+                .reduceFunction(reduce);
+
+        GroupByResults<RegisterEvent> r = mongoTemplate.group(criteria, "RegisterEvent", groupBy, RegisterEvent.class);
+        BasicDBList list = (BasicDBList)r.getRawResults().get("retval");
+        return list;
+    }
+
+    public List groupByThisYear() {
+        Criteria criteria = Criteria.where("createTime")
+                .gte(this.getYearStart().getTime())
+                .lte(new Date().getTime());
+        String keyf =
+                "function(doc){ return {month: doc.born ? doc.born.substr(5, 2) : ''} }";
+        String reduce =
+                "function(doc, out){ out.count++; }";
+        GroupBy groupBy = GroupBy.keyFunction(keyf).initialDocument("{count:0}")
+                .reduceFunction(reduce);
+
+        GroupByResults<RegisterEvent> r = mongoTemplate.group(criteria, "RegisterEvent", groupBy, RegisterEvent.class);
+        BasicDBList list = (BasicDBList)r.getRawResults().get("retval");
+        return list;
+    }
+
+    private Date getMonthStart(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    private Date getYearStart(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_YEAR, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
 }

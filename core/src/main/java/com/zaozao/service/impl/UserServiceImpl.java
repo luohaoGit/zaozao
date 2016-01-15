@@ -53,6 +53,10 @@ public class UserServiceImpl implements UserService, LogstashService {
         return userDao.searchByUsername(username);
     }
 
+    public User findByZzid(String zzid) {
+        return userDao.searchByZzid(zzid);
+    }
+
     public User findByCarNumber(String carNumber) {
         return userDao.searchByCarNumber(carNumber);
     }

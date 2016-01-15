@@ -7,6 +7,8 @@ import com.zaozao.model.po.mongo.SubNUnsubEvent;
 import com.zaozao.model.po.mongo.WxMessageEvent;
 import com.zaozao.model.vo.PageVO;
 
+import java.util.List;
+
 /**
  * Created by luohao on 15/12/9.
  */
@@ -25,5 +27,9 @@ public interface MongoService {
     int countBindCar(PageVO<BindPhoneNCarEvent> queryVO);
 
     int countBindPhone(PageVO<BindPhoneNCarEvent> queryVO);
+
+    List registerForThisMon();
+
+    List registerForThisYear();
 
 }

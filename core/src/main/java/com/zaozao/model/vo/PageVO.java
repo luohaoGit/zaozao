@@ -130,4 +130,5 @@ public class PageVO<T> extends BaseVO {
     public void setEvent(String event) {
         this.event = event;
     }
+
 }

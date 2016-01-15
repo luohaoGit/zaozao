@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -114,26 +115,29 @@ public class RouteServiceImpl implements RouteService, LogstashService{
         }
     }
 
-    public RouteResultVO createVoiceRoute(String openid, String symbol) {
+    public RouteResultVO createVoiceRoute(String id, String symbol) {
         RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
         try{
-            User me = userService.findByOpenid(openid);
-            String myPhone = me.getTelephone();
-            if(me != null && !StringUtils.isEmpty(myPhone)){
+            if(id.matches(phoneRegex)){
+                //电话号码
                 User user = this.findUserForRoute(symbol, true);
-                if(user != null && !StringUtils.isEmpty(user.getTelephone())){//查到车主
-                    //为苦主建立与车主的路由
-                    Route kuRoute = new Route(myPhone, user.getTelephone(), true, 1);
-                    redisService.saveRoute(kuRoute);
-
-                    RouteExpireMessage routeExpireMessage = new RouteExpireMessage(myPhone, user.getTelephone(), 1);
-                    redisService.pushExpireMessage(routeExpireMessage.toJson());
-                }else{
-
+                if(user != null && !StringUtils.isEmpty(user.getTelephone())){
+                    this.saveVoiceRoute(id, user.getTelephone(), routeResultVO);
                 }
             }else{
-                //强制用户绑定手机号码
+                //openid
+                User me = userService.findByOpenid(id);
+                Assert.notNull(me);
+                String myPhone = me.getTelephone();
+                if(me != null && !StringUtils.isEmpty(myPhone)){
+                    User user = this.findUserForRoute(symbol, true);
+                    if(user != null && !StringUtils.isEmpty(user.getTelephone())){//查到车主
+                        this.saveVoiceRoute(myPhone, user.getTelephone(), routeResultVO);
+                    }
+                }else{
+                    //强制用户绑定手机号码
 
+                }
             }
         }catch (Exception e){
             error.error(e.getMessage(), e);
@@ -141,6 +145,17 @@ public class RouteServiceImpl implements RouteService, LogstashService{
         }finally {
             return routeResultVO;
         }
+    }
+
+    private void saveVoiceRoute(String from, String to, RouteResultVO routeResultVO){
+        //为苦主建立与车主的路由
+        Route kuRoute = new Route(from, to, true, 1);
+        redisService.saveRoute(kuRoute);
+        routeResultVO.setRoute(kuRoute);
+
+        RouteExpireMessage routeExpireMessage = new RouteExpireMessage(from, to, 1);
+        redisService.pushExpireMessage(routeExpireMessage.toJson());
+        //日志
     }
 
     private User findUserForRoute(String symbol, boolean needPhone) throws Exception{
@@ -154,7 +169,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                 }
             }
         }else{//查询是否为ID
-            user = userService.findByUsername(symbol);
+            user = userService.findByZzid(symbol);
         }
 
         //如果是建立语音路由
@@ -210,5 +225,5 @@ public class RouteServiceImpl implements RouteService, LogstashService{
     private String replyKu;
 
     private String carRegex = "^[(\\u4e00-\\u9fa5)|(a-zA-Z)]{1}[a-zA-Z]{1}[a-zA-Z_0-9]{4,6}[a-zA-Z_0-9_\\u4e00-\\u9fa5]$";
-    private String phoneRegex = "^((13[0-9])|(15[^4,\\\\D])|(18[0,5-9]))\\\\d{8}$";
+    private String phoneRegex = "^((13)|(15)|(18))\\\\d{9}$";
 }

@@ -142,6 +142,12 @@
         WHERE c.carnumber = #{carNumber};
     </select>
 
+    <select id="searchByZzid" resultMap="userResultMap" parameterType="String">
+        SELECT u.*, c.id cid, c.brand, c.model, c.color, c.carnumber
+        from t_user u left join t_car c on u.id=c.userid
+        WHERE u.zzid = #{zzid};
+    </select>
+
     <select id="searchByUsername" resultMap="userResultMap" parameterType="String">
         SELECT <include refid="userColumn" />
         from t_user
