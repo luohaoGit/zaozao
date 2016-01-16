@@ -30,7 +30,7 @@
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <%--<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>--%>
+                <a href="/admin/users/register" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-lg-3 col-xs-6">
@@ -42,6 +42,7 @@
                 <div class="icon">
                   <i class="ion ion-sad"></i>
                 </div>
+                <a href="/admin/users/register" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-lg-3 col-xs-6">
@@ -53,6 +54,7 @@
                 <div class="icon">
                   <i class="ion ion-android-phone-portrait"></i>
                 </div>
+                <a href="/admin/users/transformation" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-lg-3 col-xs-6">
@@ -64,6 +66,7 @@
                 <div class="icon">
                   <i class="ion ion-model-s"></i>
                 </div>
+                <a href="/admin/users/transformation" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -93,10 +96,10 @@
               <div class="box box-solid bg-teal-gradient">
                 <div class="box-header">
                   <i class="fa fa-th"></i>
-                  <h3 class="box-title">Sales Graph</h3>
+                  <h3 class="box-title">用户转化</h3>
                   <div class="box-tools pull-right">
                     <button class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <%--<button class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>--%>
                   </div>
                 </div>
                 <div class="box-body border-radius-none">
@@ -105,12 +108,12 @@
                 <div class="box-footer no-border">
                   <div class="row">
                     <div class="col-xs-6 text-center" style="border-right: 1px solid #f4f4f4">
-                      <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                      <div class="knob-label">Mail-Orders</div>
+                      <input type="text" class="knob" data-readonly="true" value="${phoneCount / (phoneCount+carCount) * 100}" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                      <div class="knob-label">绑定手机</div>
                     </div><!-- ./col -->
                     <div class="col-xs-6 text-center" style="border-right: 1px solid #f4f4f4">
-                      <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgColor="#39CCCC">
-                      <div class="knob-label">Online</div>
+                      <input type="text" class="knob" data-readonly="true" value="${carCount / (phoneCount+carCount) * 100}" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                      <div class="knob-label">绑定车牌</div>
                     </div><!-- ./col -->
                   </div><!-- /.row -->
                 </div><!-- /.box-footer -->
@@ -163,9 +166,34 @@
           hideHover: 'auto'
         });
 
+        var userTransd = ${userTransd};
+        userTransd.sort(function(a, b){
+          return a.day > b.day;
+        });
+
+        var line = new Morris.Line({
+          element: 'line-chart',
+          resize: true,
+          parseTime: false,
+          data: userTransd,
+          xkey: 'day',
+          ykeys: ['car', 'tel'],
+          labels: ['车牌', '手机'],
+          lineColors: ['#efefef'],
+          lineWidth: 2,
+          hideHover: 'auto',
+          gridTextColor: "#fff",
+          gridStrokeWidth: 0.4,
+          pointSize: 4,
+          pointStrokeColors: ["#efefef"],
+          gridLineColor: "#efefef",
+          gridTextFamily: "Open Sans"
+        });
+
         $('.box ul.nav a').on('shown.bs.tab', function () {
           regMon.redraw();
           regYear.redraw();
+          line.redraw();
         });
 
         $(".knob").knob();

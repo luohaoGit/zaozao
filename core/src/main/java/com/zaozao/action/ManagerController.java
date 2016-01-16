@@ -59,6 +59,7 @@ public class ManagerController {
 
         List monList = mongoService.registerForThisMon();
         List yearList = mongoService.registerForThisYear();
+        List userTransd = mongoService.getUserTransfThisMon();
 
         modelMap.put("regCount", regCount);
         modelMap.put("unsubCount", unsubCount);
@@ -66,6 +67,7 @@ public class ManagerController {
         modelMap.put("carCount", carCount);
         modelMap.put("monList", monList);
         modelMap.put("yearList", yearList);
+        modelMap.put("userTransd", userTransd);
         return "admin/main";
     }
 

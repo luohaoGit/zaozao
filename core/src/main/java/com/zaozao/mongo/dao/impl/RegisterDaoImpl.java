@@ -1,7 +1,6 @@
 package com.zaozao.mongo.dao.impl;
 
 import com.mongodb.BasicDBList;
-import com.mongodb.CommandResult;
 import com.zaozao.model.po.mongo.RegisterEvent;
 import com.zaozao.model.vo.PageVO;
 import com.zaozao.mongo.MongoBaseDao;
@@ -12,7 +11,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -66,26 +64,6 @@ public class RegisterDaoImpl extends MongoBaseDao<RegisterEvent> implements Regi
         GroupByResults<RegisterEvent> r = mongoTemplate.group(criteria, "RegisterEvent", groupBy, RegisterEvent.class);
         BasicDBList list = (BasicDBList)r.getRawResults().get("retval");
         return list;
-    }
-
-    private Date getMonthStart(){
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTime();
-    }
-
-    private Date getYearStart(){
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_YEAR, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTime();
     }
 
 }

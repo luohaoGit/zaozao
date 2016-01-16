@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,5 +114,25 @@ public abstract class MongoBaseDao<T> {
         query.limit(size);
         query.with(new Sort(Sort.Direction.DESC, "createTime"));
         return query;
+    }
+
+    protected Date getMonthStart(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
+    protected Date getYearStart(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_YEAR, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
     }
 }
