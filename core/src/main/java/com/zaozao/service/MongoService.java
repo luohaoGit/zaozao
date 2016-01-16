@@ -20,6 +20,8 @@ public interface MongoService {
 
     PageVO<WxMessageEvent> getWxMessage(PageVO<WxMessageEvent> queryVO);
 
+    PageVO<SubNUnsubEvent> getUnsubLog(PageVO<SubNUnsubEvent> queryVO);
+
     Long countRegister(PageVO<RegisterEvent> queryVO);
 
     Long countUnsub(PageVO<SubNUnsubEvent> queryVO);

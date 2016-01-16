@@ -65,6 +65,14 @@ public class MongoServiceImpl implements MongoService {
         return queryVO;
     }
 
+    public PageVO<SubNUnsubEvent> getUnsubLog(PageVO<SubNUnsubEvent> queryVO) {
+        List<SubNUnsubEvent> data = subNUnsubDao.getPage(queryVO);
+        Long rowCount = subNUnsubDao.count(queryVO);
+        queryVO.setData(data);
+        queryVO.setRowCount(rowCount);
+        return queryVO;
+    }
+
     public Long countRegister(PageVO<RegisterEvent> queryVO) {
         Query query = generateByCT(queryVO);
         return registerDao.countCustom(query);

@@ -42,7 +42,7 @@
                 <div class="icon">
                   <i class="ion ion-sad"></i>
                 </div>
-                <a href="/admin/users/register" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/admin/users/unsub" class="small-box-footer">详细 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div class="col-lg-3 col-xs-6">

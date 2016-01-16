@@ -10,6 +10,7 @@
       <li id="user-main"><a href="/admin/main"><i class="fa fa-link"></i> <span>主页面</span></a></li>
       <li id="user-li"><a href="/admin/users"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
       <li id="user-reg-li"><a href="/admin/users/register"><i class="fa fa-link"></i> <span>用户注册日志</span></a></li>
+      <li id="user-unsub-li"><a href="/admin/users/unsub"><i class="fa fa-link"></i> <span>取消关注日志</span></a></li>
       <li id="user-trans-li"><a href="/admin/users/transformation"><i class="fa fa-link"></i> <span>用户转换日志</span></a></li>
       <li id="user-bro-li"><a href="/admin/users/browse"><i class="fa fa-link"></i> <span>用户浏览日志</span></a></li>
       <li id="zzid-li"><a href="/admin/zzid"><i class="fa fa-link"></i> <span>早早号</span></a></li>

@@ -43,4 +43,12 @@ public class MongoController {
 		return "admin/users_browse";
 	}
 
+	@RequestMapping(value="/users/unsub", method = RequestMethod.GET)
+	public String getUnsub(ModelMap model, @ModelAttribute PageVO pageVO) {
+		pageVO.setEvent("VIEW");
+		pageVO = mongoService.getUnsubLog(pageVO);
+		model.addAttribute("page", pageVO);
+		return "admin/users_unsub";
+	}
+
 }
