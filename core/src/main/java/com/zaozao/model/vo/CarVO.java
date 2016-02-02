@@ -9,6 +9,7 @@ public class CarVO extends BaseVO {
     private String openid;
     private String type;
     private String symbol;
+    private String tel;
 
     public String getCarNumber() {
         return carNumber;
@@ -40,5 +41,13 @@ public class CarVO extends BaseVO {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }

@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService, LogstashService {
                 carService.autoAddCar(car);
             } else {
                 user = userDao.findByWx(userVO.getOpenId());
-                if(user != null && StringUtils.isEmpty(user.getSubscribeTime()) && user.isSubcribe()){
+                if(user != null && !StringUtils.isEmpty(user.getSubscribeTime()) && user.isSubcribe()){
                     //同步微信信息
                     getWxInfo(user);
                     if(CollectionUtils.isEmpty(user.getCars())){
