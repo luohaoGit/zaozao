@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zaozao.dao.AuthUserDao">
+
+    <resultMap id="authUserResultMap" type="AuthUser">
+        <id property="id" column="id" javaType="string" />
+        <result property="appid" column="appid" javaType="string" />
+        <result property="appsecret" column="appsecret" javaType="string" />
+        <result property="nickname" column="nickname" javaType="string" />
+        <result property="remark" column="remark" javaType="string" />
+        <result property="headImgUrl" column="headImgUrl" javaType="string" />
+        <result property="type" column="type" javaType="string" />
+        <result property="registerTime" column="registertime" javaType="java.sql.Date" />
+    </resultMap>
+            
+    <sql id="authUserColumn">
+        id, appid, appsecret, nickname, remark, headImgUrl, type, registerTime
+    </sql>
+    
+    <select id="count" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_auth_user;
+    </select>
+    
+    <insert id="insert" parameterType="AuthUser">
+        INSERT INTO t_auth_user(
+        <include refid="authUserColumn" />
+        ) VALUES
+        (#{id}, #{appid}, #{appsecret}, #{nickname}, #{remark}, #{headImgUrl}, #{type}, #{registerTime});
+    </insert>
+
+    <select id="searchByAppId" resultMap="authUserResultMap" parameterType="String">
+        SELECT <include refid="authUserColumn" />
+        from t_auth_user u
+        WHERE u.appid = #{appid};
+    </select>
+</mapper>

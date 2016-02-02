@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zaozao.dao.TempUserDao">
+
+    <resultMap id="tempUserResultMap" type="TempUser">
+        <id property="id" column="id" javaType="string" />
+        <result property="tel" column="tel" javaType="string" />
+        <result property="userkey" column="userkey" javaType="string" />
+        <result property="usercode" column="usercode" javaType="string" />
+        <result property="nickname" column="nickname" javaType="string" />
+        <result property="sex" column="sex" javaType="string" />
+        <result property="remark" column="remark" javaType="string" />
+        <result property="headImgUrl" column="headImgUrl" javaType="string" />
+        <result property="type" column="type" javaType="string" />
+        <result property="fromUser" column="fromUser" javaType="string" />
+        <result property="transed" column="transed" javaType="boolean" />
+        <result property="optime" column="optime" javaType="java.sql.Date" />
+    </resultMap>
+            
+    <sql id="tempUserColumn">
+        id, tel, userkey, usercode, transed, optime, nickname, sex, remark, headImgUrl, type, fromUser
+    </sql>
+    
+    <select id="count" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_temp_user;
+    </select>
+    
+    <insert id="insert" parameterType="TempUser">
+        INSERT INTO t_temp_user(
+        <include refid="tempUserColumn" />
+        ) VALUES
+        (#{id}, #{tel}, #{userkey}, #{usercode}, #{transed}, #{optime}, #{nickname}, #{sex},
+        #{remark}, #{headImgUrl}, #{type}, #{fromUser});
+    </insert>
+
+    <select id="searchByUserkey" resultMap="tempUserResultMap" parameterType="String">
+        SELECT <include refid="tempUserColumn" />
+        from t_temp_user u
+        WHERE u.userkey = #{userkey};
+    </select>
+</mapper>
