@@ -152,7 +152,11 @@
 				contentType: 'application/json',
 				success: function (data) {
 					if(data.success){
-						wx.closeWindow();
+						if(type == "phone"){
+							window.location.href='tel:051280895104';
+						}else{
+							wx.closeWindow();
+						}
 					}else{
 						dialog(data.msg);
 					}
