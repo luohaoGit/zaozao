@@ -7,6 +7,7 @@
 	<title>个人中心</title>
 	<link rel="stylesheet" href="/weixinh5/css/weui.min.css"/>
 	<link rel="stylesheet" href="/weixinh5/css/zaozaowx.css"/>
+	<link rel="stylesheet" href="/weixinh5/css/businessCard.css"/>
 	<style>
 		.security{
 			position: absolute;
@@ -62,7 +63,7 @@
 			</div>
 
 			<div class="weui_cells weui_cells_access">
-				<a class="weui_cell js_cell" href="javascript:;" data-id="card">
+				<a class="weui_cell js_cell" href="javascript:;" data-id="">
 					<div class="weui_cell_bd weui_cell_primary">
 						<p>我的移车名片</p>
 					</div>
@@ -138,7 +139,32 @@
 <script type="text/html" id="tpl_card">
 	<div class="page">
 		<div class="bd">
-			<div class="weui_cells weui_cells_form"></div>
+			<div class="weui_cells weui_cells_form">
+				<div class="business-card-container">
+					<div class="card-title">
+						<img class="logo" src="/weixinh5/img/logo.jpg" />
+						<div class="ad">您的挪车好帮手</div>
+					</div>
+					<div class="code-right">
+						<div><img class="code" src="/img/qrcode_for_gh_f6aa1edbfa91_258.jpg"/></div>
+					</div>
+					<div class="code-container">
+						<div class="code-left">
+							<div class="">早早服务号：zaozaoyiche</div>
+						</div>
+					</div>
+					<div class="card-connection">
+						<div class="connection-left">车主早早号：11111</div>
+						<div class="connection-right">车主手机号：1111</div>
+					</div>
+				</div>
+				<div class="item item-checkbox checkbox-container">
+					<label class="checkbox">
+						<input type="checkbox">
+					</label>
+					不显示手机号
+				</div>
+			</div>
 		</div>
 	</div>
 </script>
