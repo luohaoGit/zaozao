@@ -40,14 +40,11 @@
 				<a id="wxbtn" class="weui_btn weui_btn_primary" href="javascript:">启动微信聊天</a>
 				<a id="telbtn" class="weui_btn weui_btn_primary" href="javascript:">拨打车主电话</a>
 			</div>
-			<div class="weui_dialog_alert" id="dialog" style="display: none;">
-				<div class="weui_mask"></div>
-				<div class="weui_dialog">
-					<div class="weui_dialog_hd"><strong class="weui_dialog_title">早早移车</strong></div>
-					<div class="weui_dialog_bd" id="dialog_msg"></div>
-					<div class="weui_dialog_ft">
-						<a href="javascript:;" class="weui_btn_dialog primary">确定</a>
-					</div>
+			<div id="toast" style="display: none;">
+				<div class="weui_mask_transparent"></div>
+				<div class="weui_toast">
+					<i class="weui_icon_warn" style="font-size: 35px;"></i>
+					<p class="weui_toast_content" id="toasttxt"></p>
 				</div>
 			</div>
 		</div>
@@ -201,11 +198,16 @@
 		}
 
 		function dialog(msg){
-			$("#dialog_msg").html(msg);
-			$('#dialog').show();
-			$('#dialog').find('.weui_btn_dialog').on('click', function () {
-				$('#dialog').hide();
-			});
+			$("#toasttxt").html(msg);
+			var $toast = $('#toast');
+			if ($toast.css('display') != 'none') {
+				return;
+			}
+
+			$toast.show();
+			setTimeout(function () {
+				$toast.hide();
+			}, 2000);
 		}
 	});
 </script>
