@@ -7,6 +7,7 @@ import com.zaozao.model.po.Car;
 import com.zaozao.model.po.User;
 import com.zaozao.model.po.mongo.QueryEvent;
 import com.zaozao.model.po.mongo.RouteEvent;
+import com.zaozao.model.vo.CarVO;
 import com.zaozao.model.vo.RouteResultVO;
 import com.zaozao.service.*;
 import me.chanjar.weixin.mp.bean.WxMpTemplateData;
@@ -43,68 +44,67 @@ public class RouteServiceImpl implements RouteService, LogstashService{
     @Autowired
     private HBService hbService;
 
-    public RouteResultVO createWxRoute(String openid, String symbol) {
+    public RouteResultVO createWxRoute(String openid, CarVO carVO) {
         QueryEvent queryEvent = new QueryEvent(openid, QueryEvent.WEIXIN);
-
         RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
+
+        User user = carVO.getUser();
+
         try{
-            symbol = symbol.replace(replacePattern, "");
-            User user; //车主
-            if(!StringUtils.isEmpty(symbol)){
-                user = this.findUserForRoute(symbol,false);
+            if(user != null && !StringUtils.isEmpty(user.getOpenId()) && user.isSubcribe()){//查询到用户
+                String symbol = RouteService.CARNO.equals(carVO.getQueryType()) ? carVO.getCarNumber() : carVO.getTelOrZzid();
 
-                if(user != null && !StringUtils.isEmpty(user.getOpenId()) && user.isSubcribe()){//查询到用户
-                    String ku = openid;
-                    String che = user.getOpenId();
-                    String carNumber = "";
-                    if(!CollectionUtils.isEmpty(user.getCars())){
-                        carNumber = user.getCars().get(0).getCarNumber();
-                        if(carNumber != null){
-                            carNumber = carNumber.toUpperCase();
-                        }
+                String ku = openid;
+                String che = user.getOpenId();
+                String carNumber = "";
+                if(!CollectionUtils.isEmpty(user.getCars())){
+                    carNumber = user.getCars().get(0).getCarNumber();
+                    if(carNumber != null){
+                        carNumber = carNumber.toUpperCase();
                     }
-
-                    if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌
-                        routeResultVO.setMsg(notOwnNO);
-                    }else{
-                        //为苦主建立与车主的路由
-                        Route kuRoute = new Route(ku, che, true, 0);
-                        redisService.saveRoute(kuRoute);
-                        //为车主建立与苦主的路由
-                        Route cheRoute = new Route(che, ku, false, 0);
-                        redisService.saveRoute(cheRoute);
-
-                        RouteEvent routeEvent = new RouteEvent(ku, che, RouteEvent.WEIXIN);
-                        routeEvent.setSymbol(symbol);
-                        logstash.info(routeEvent.toJson());
-
-                        RouteExpireMessage routeExpireMessage = new RouteExpireMessage(ku, che, 0);
-                        redisService.pushExpireMessage(routeExpireMessage.toJson());
-
-                        //通知车主
-                        WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
-                        templateMessage.setToUser(user.getOpenId());
-                        templateMessage.setTemplateId(informTempId);
-                        templateMessage.setUrl(detailUrl);
-                        templateMessage.getDatas().add(new WxMpTemplateData("first", String.format(first, carNumber)));
-                        templateMessage.getDatas().add(new WxMpTemplateData("keyword1", carNumber));
-                        templateMessage.getDatas().add(new WxMpTemplateData("keyword2",
-                                DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")));
-                        templateMessage.getDatas().add(new WxMpTemplateData("keyword3", keyword3));
-                        templateMessage.getDatas().add(new WxMpTemplateData("remark", remark));
-                        weixinService.pushTemplateMessage(templateMessage);
-
-                        //回复苦主
-                        routeResultVO = new RouteResultVO(true, replyKu);
-                    }
-                    queryEvent.setFeedbackTime(System.currentTimeMillis() - queryEvent.getCreateTime());
-                    queryEvent.setSucceed(true);
-                    queryEvent.setToUser(che);
-                    queryEvent.setSymbol(symbol);
-                }else{
-                    routeResultVO.setMsg(notFoundNO);
                 }
+
+                if(!StringUtils.isEmpty(ku) && ku.equals(user.getOpenId())){//用户输入自己的车牌
+                    routeResultVO.setMsg(notOwnNO);
+                }else{
+                    //为苦主建立与车主的路由
+                    Route kuRoute = new Route(ku, che, true, 0);
+                    redisService.saveRoute(kuRoute);
+                    //为车主建立与苦主的路由
+                    Route cheRoute = new Route(che, ku, false, 0);
+                    redisService.saveRoute(cheRoute);
+
+                    RouteEvent routeEvent = new RouteEvent(ku, che, RouteEvent.WEIXIN);
+                    routeEvent.setSymbol(symbol);
+                    logstash.info(routeEvent.toJson());
+
+                    RouteExpireMessage routeExpireMessage = new RouteExpireMessage(ku, che, 0);
+                    redisService.pushExpireMessage(routeExpireMessage.toJson());
+
+                    //通知车主
+                    WxMpTemplateMessage templateMessage = new WxMpTemplateMessage();
+                    templateMessage.setToUser(user.getOpenId());
+                    templateMessage.setTemplateId(informTempId);
+                    templateMessage.setUrl(detailUrl);
+                    templateMessage.getDatas().add(new WxMpTemplateData("first", String.format(first, carNumber)));
+                    templateMessage.getDatas().add(new WxMpTemplateData("keyword1", carNumber));
+                    templateMessage.getDatas().add(new WxMpTemplateData("keyword2",
+                            DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")));
+                    templateMessage.getDatas().add(new WxMpTemplateData("keyword3", keyword3));
+                    templateMessage.getDatas().add(new WxMpTemplateData("remark", remark));
+                    weixinService.pushTemplateMessage(templateMessage);
+
+                    //回复苦主
+                    routeResultVO = new RouteResultVO(true, replyKu);
+                }
+                queryEvent.setFeedbackTime(System.currentTimeMillis() - queryEvent.getCreateTime());
+                queryEvent.setSucceed(true);
+                queryEvent.setToUser(che);
+                queryEvent.setSymbol(symbol);
+            }else{
+                routeResultVO.setMsg(notFoundNO);
             }
+
         }catch (Exception e){
             routeResultVO.setMsg(notFoundNO);
             error.error(e.getMessage(), e);
@@ -115,52 +115,47 @@ public class RouteServiceImpl implements RouteService, LogstashService{
         }
     }
 
-    public RouteResultVO createVoiceRoute(String id, String symbol) {
+    public RouteResultVO createVoiceRoute(String id, CarVO carVO) {
         RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
+        QueryEvent queryEvent = new QueryEvent(id, QueryEvent.PHONE);
+        String symbol = RouteService.CARNO.equals(carVO.getQueryType()) ? carVO.getCarNumber() : carVO.getTelOrZzid();
+        User user = carVO.getUser();
         try{
-            if(id.matches(phoneRegex)){
-                //电话号码
-                User user = this.findUserForRoute(symbol, true);
-                if(user != null && !StringUtils.isEmpty(user.getTelephone())){
-                    this.saveVoiceRoute(id, user.getTelephone(), routeResultVO);
-                }
-            }else{
-                //openid
+            if(user != null && !StringUtils.isEmpty(user.getTelephone())){//查到车主
                 User me = userService.findByOpenid(id);
                 Assert.notNull(me);
                 String myPhone = me.getTelephone();
-                if(me != null && !StringUtils.isEmpty(myPhone)){
-                    User user = this.findUserForRoute(symbol, true);
-                    if(user != null && !StringUtils.isEmpty(user.getTelephone())){//查到车主
-                        this.saveVoiceRoute(myPhone, user.getTelephone(), routeResultVO);
-                    }
+                if(!StringUtils.isEmpty(myPhone)){
+                    //为苦主建立与车主的路由
+                    Route kuRoute = new Route(myPhone, user.getTelephone(), true, 1);
+                    redisService.saveRoute(kuRoute);
+                    routeResultVO.setRoute(kuRoute);
+
+                    RouteExpireMessage routeExpireMessage = new RouteExpireMessage(myPhone, user.getTelephone(), 1);
+                    redisService.pushExpireMessage(routeExpireMessage.toJson());
                 }else{
                     //强制用户绑定手机号码
 
                 }
+                queryEvent.setFeedbackTime(System.currentTimeMillis() - queryEvent.getCreateTime());
+                queryEvent.setSucceed(true);
+                queryEvent.setToUser(user.getTelephone());
+                queryEvent.setSymbol(symbol);
             }
         }catch (Exception e){
             error.error(e.getMessage(), e);
             throw new ZaozaoException(e.getMessage());
         }finally {
+            logstash.info(queryEvent.toJson());
             return routeResultVO;
         }
     }
 
-    private void saveVoiceRoute(String from, String to, RouteResultVO routeResultVO){
-        //为苦主建立与车主的路由
-        Route kuRoute = new Route(from, to, true, 1);
-        redisService.saveRoute(kuRoute);
-        routeResultVO.setRoute(kuRoute);
-
-        RouteExpireMessage routeExpireMessage = new RouteExpireMessage(from, to, 1);
-        redisService.pushExpireMessage(routeExpireMessage.toJson());
-        //日志
-    }
-
-    private User findUserForRoute(String symbol, boolean needPhone) throws Exception{
-        User user;
-        if(symbol.matches(carRegex)){//如果是车牌号
+    public CarVO findUserForRoute(CarVO carVO, boolean needPhone) throws Exception{
+        User user = null;
+        if(!StringUtils.isEmpty(carVO.getCarNumber())){//如果是车牌号
+            carVO.setQueryType(RouteService.CARNO);
+            String symbol = carVO.getCarNumber();
             user = userService.findByCarNumber(symbol);
             if(user == null){//查不到则从外部查询
                 String phoneNumber = getPhoneFromOthers(symbol);
@@ -168,8 +163,15 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                     user = userService.findByTel(phoneNumber);
                 }
             }
-        }else{//查询是否为ID
+        }
+
+        if(user == null && !StringUtils.isEmpty(carVO.getTelOrZzid())){//查询是否为ID
+            carVO.setQueryType(RouteService.ZZIDORTEL);
+            String symbol = carVO.getTelOrZzid();
             user = userService.findByZzid(symbol);
+            if(user == null){
+                user = userService.findByTel(symbol);
+            }
         }
 
         //如果是建立语音路由
@@ -183,8 +185,8 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                 }
             }
         }
-
-        return user;
+        carVO.setUser(user);
+        return carVO;
     }
 
     private String getPhoneFromOthers(String carNumber) throws Exception{
@@ -198,7 +200,14 @@ public class RouteServiceImpl implements RouteService, LogstashService{
         return phoneNumber;
     }
 
-    public String getPhoneFromeRoute(String caller) {
+    public String getPhone(String caller, String to) {
+        if(to.matches(phoneRegex)){
+            return to;
+        }
+        User user = userService.findByZzid(to);
+        if(user != null){
+            return user.getTelephone();
+        }
         return null;
     }
 

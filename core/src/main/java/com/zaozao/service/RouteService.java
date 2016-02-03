@@ -1,5 +1,6 @@
 package com.zaozao.service;
 
+import com.zaozao.model.vo.CarVO;
 import com.zaozao.model.vo.RouteResultVO;
 
 /**
@@ -7,10 +8,15 @@ import com.zaozao.model.vo.RouteResultVO;
  */
 public interface RouteService {
 
-    RouteResultVO createWxRoute(String openid, String symbol);
+    String CARNO = "CARNO";
+    String ZZIDORTEL = "ZZIDORTEL";
 
-    RouteResultVO createVoiceRoute(String openid, String symbol);
+    RouteResultVO createWxRoute(String openid, CarVO carVO);
 
-    String getPhoneFromeRoute(String caller);
+    RouteResultVO createVoiceRoute(String openid, CarVO carVO);
+
+    String getPhone(String caller, String to);
+
+    CarVO findUserForRoute(CarVO carVO, boolean needPhone) throws Exception;
 
 }

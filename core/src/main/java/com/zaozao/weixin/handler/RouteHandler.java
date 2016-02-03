@@ -26,16 +26,16 @@ public class RouteHandler implements WxMpMessageHandler {
     private RouteService routeService;
 
     public WxMpXmlOutMessage handle(WxMpXmlMessage message, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        RouteResultVO routeResultVO = routeService.createWxRoute(message.getFromUserName(), message.getContent());
+        //RouteResultVO routeResultVO = routeService.createWxRoute(message.getFromUserName(), message.getContent());
 
         WxMpXmlOutMessage wxMpXmlOutMessage = null;
-        if(routeResultVO.getSuccess()){
+/*        if(routeResultVO.getSuccess()){
             wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
                     .content(routeResultVO.getMsg())
                     .fromUser(message.getToUserName())
                     .toUser(message.getFromUserName())
                     .build();
-        }
+        }*/
         return wxMpXmlOutMessage;
     }
 }

@@ -2,7 +2,6 @@ package com.zaozao.action;
 
 import com.zaozao.jedis.bean.Route;
 import com.zaozao.model.bo.VoiceVO;
-import com.zaozao.model.vo.RouteResultVO;
 import com.zaozao.service.RedisService;
 import com.zaozao.service.RouteService;
 import com.zaozao.service.UserService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,9 +91,9 @@ public class ZaozaoController {
 				}
 			}else{
 				//外部查询电话
-				RouteResultVO routeResultVO = routeService.createVoiceRoute(caller, symbol);
-				if(routeResultVO.getRoute() != null){
-					voiceVO.setPhoneNumber(routeResultVO.getRoute().getToUserName());
+				String tel = routeService.getPhone(caller, symbol);
+				if(!StringUtils.isEmpty(tel)){
+					voiceVO.setPhoneNumber(tel);
 					voiceVO.setMsg(1);
 				}else{
 					voiceVO.setMsg(0);

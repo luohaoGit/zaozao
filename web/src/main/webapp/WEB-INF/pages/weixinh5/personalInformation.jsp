@@ -62,11 +62,11 @@
 			</div>
 
 			<div class="weui_cells weui_cells_access">
-				<a class="weui_cell js_cell" href="javascript:;">
+				<a class="weui_cell js_cell" href="javascript:;" data-id="card">
 					<div class="weui_cell_bd weui_cell_primary">
 						<p>我的移车名片</p>
 					</div>
-					<div class="weui_cell_ft"></div>
+					<div class="weui_cell_ft" id="card"></div>
 				</a>
 			</div>
 		</div>
@@ -131,6 +131,14 @@
 			<div class="weui_btn_area">
 				<a id="phoneBtn" class="weui_btn weui_btn_primary" href="javascript:">确定</a>
 			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="tpl_card">
+	<div class="page">
+		<div class="bd">
+			<div class="weui_cells weui_cells_form"></div>
 		</div>
 	</div>
 </script>

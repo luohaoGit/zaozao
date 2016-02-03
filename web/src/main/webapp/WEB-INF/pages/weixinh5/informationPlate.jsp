@@ -32,12 +32,12 @@
 				<div class="weui_cells_title">您也可以输入车主留下的其他信息</div>
 				<div class="weui_cell">
 					<div class="weui_cell_bd weui_cell_primary">
-						<input class="weui_input" type="tel" placeholder="请输入早早号或手机号"/>
+						<input id="telzz" class="weui_input" type="tel" placeholder="请输入早早号或手机号"/>
 					</div>
 				</div>
 			</div>
 			<div class="weui_btn_area">
-				<a id="wxbtn" class="weui_btn weui_btn_disabled weui_btn_primary" href="javascript:">启动微信聊天</a>
+				<a id="wxbtn" class="weui_btn weui_btn_primary" href="javascript:">启动微信聊天</a>
 				<a id="telbtn" class="weui_btn weui_btn_primary" href="javascript:">拨打车主电话</a>
 			</div>
 			<div class="weui_dialog_alert" id="dialog" style="display: none;">
@@ -108,15 +108,25 @@
 		});
 
 		$("#wxbtn").on("click", function() {
-			var carnum = $("#carnum").val();
+			query("wx");
+		});
 
-			if(!validate()){
-				$("#wxbtn").addClass("weui_btn_disabled");
-				$('.js_tooltips').show();
-				setTimeout(function () {
-					$('.js_tooltips').hide();
-				}, 3000);
-				return;
+		$("#telbtn").on("click", function() {
+			query("phone");
+		});
+
+		function query(type){
+			var carnum = $("#carnum").val();
+			var telzz = $("#telzz").val();
+			if(telzz == ''){
+				if(!validate()){
+					//$("#wxbtn").addClass("weui_btn_disabled");
+					$('.js_tooltips').show();
+					setTimeout(function () {
+						$('.js_tooltips').hide();
+					}, 3000);
+					return;
+				}
 			}
 
 			localStorage.area = areas[$("#area").val()];
@@ -125,10 +135,15 @@
 			localStorage.openid = authinfo.openid;
 			var newNumber = areas[$("#area").val()] + letters[$("#letter").val()] + carnum;
 
+			if(!validate()){
+				newNumber = '';
+			}
+
 			var postdata = {
 				openid : authinfo.openid ? authinfo.openid : localStorage.openid,
-				type:"wx",
-				symbol: newNumber
+				type:type,
+				carNumber: newNumber,
+				telOrZzid: telzz
 			};
 
 			$.ajax({
@@ -146,8 +161,7 @@
 					dialog("没有找到车主");
 				}
 			});
-
-		});
+		}
 
 		validate();
 		$('#carnum').on('input propertychange', function() {
@@ -172,10 +186,10 @@
 			}
 
 			$("#carnum").val(newValue.replace(/[^A-Za-z0-9]*/g,"").toUpperCase());
-			$("#wxbtn").addClass("weui_btn_disabled");
+			//$("#wxbtn").addClass("weui_btn_disabled");
 			if(newValue.length == 5){
 				if(/^[A-Za-z0-9]+$/.test(newValue)) {
-					$("#wxbtn").removeClass("weui_btn_disabled");
+					//$("#wxbtn").removeClass("weui_btn_disabled");
 					res = true;
 				}
 			}

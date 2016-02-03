@@ -121,24 +121,31 @@ public class Weixinh5Controller extends BaseController{
 
 	@RequestMapping(value="/h5/car/plate", method = RequestMethod.POST, consumes = "application/json")
 	public String queryUser(ModelMap model, @RequestBody CarVO carVO) {
-
-		if(StringUtils.isEmpty(carVO.getSymbol()) || StringUtils.isEmpty(carVO.getOpenid())){
+		logger.info(carVO.toString());
+		if(StringUtils.isEmpty(carVO.getOpenid())){
 			throw new ZaozaoException("参数非法");
 		}
 
 		CommonResultVO commonResultVO = new CommonResultVO(null, false);
 
 		RouteResultVO routeResultVO = new RouteResultVO();
-		if("wx".equals(carVO.getType())){
-			routeResultVO = routeService.createWxRoute(carVO.getOpenid(), carVO.getSymbol());
-			if(routeResultVO.getSuccess()){
-				MessageVO messageVO = new MessageVO();
-				messageVO.setOpenid(carVO.getOpenid());
-				messageVO.setContent(replyKu);
-				weixinService.sendCustomMessage(messageVO);
+		try {
+			if("wx".equals(carVO.getType())){
+				carVO = routeService.findUserForRoute(carVO, false);
+				logger.info(carVO.toString());
+				routeResultVO = routeService.createWxRoute(carVO.getOpenid(), carVO);
+				if(routeResultVO.getSuccess()){
+					MessageVO messageVO = new MessageVO();
+					messageVO.setOpenid(carVO.getOpenid());
+					messageVO.setContent(replyKu);
+					weixinService.sendCustomMessage(messageVO);
+				}
+			}else if("phone".equals(carVO.getType())){
+				carVO = routeService.findUserForRoute(carVO, true);
+				routeResultVO = routeService.createVoiceRoute(carVO.getOpenid(), carVO);
 			}
-		}else if("phone".equals(carVO.getType())){
-			routeResultVO = routeService.createVoiceRoute(carVO.getOpenid(), carVO.getSymbol());
+		} catch (Exception e) {
+			error.error(e.getMessage(), e);
 		}
 
 		if(routeResultVO.getSuccess()){

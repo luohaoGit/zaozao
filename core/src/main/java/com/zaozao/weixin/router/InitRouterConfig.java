@@ -77,12 +77,12 @@ public class InitRouterConfig implements InitializingBean {
                 .handler(scanHandler)
                 .end()*/
 
-                .rule()
+/*                .rule()
                 .async(false)
                 .msgType(WxConsts.XML_MSG_TEXT)
                 .rContent(queryPattern)
                 .handler(routeHandler)
-                .end()
+                .end()*/
 
                 .rule()
                 .async(false)

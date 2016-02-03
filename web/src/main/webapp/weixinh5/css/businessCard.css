@@ -32,13 +32,14 @@ body{
 }
 .code-container{
 	position: relative;
-	height: 8rem;
-	text-align: center;
+	height: 6.5rem;
+	text-align: start;
 }
 .code-left{
 	position: absolute;
 	top: 1rem;
 	left: 13%;
+	line-height: 3rem;
 }
 .code-middle{
 	position: absolute;
@@ -47,11 +48,11 @@ body{
 }
 .code-right{
 	position: absolute;
-	top: 1rem;
-	right: 13%;
+	top: 0.5rem;
+	right: 0;
 }
 .code{
-	width: 5rem;
+	width: 8rem;
 	height: auto;
 }
 .right{
@@ -61,11 +62,12 @@ body{
 	color: #4CD964;
 }
 .card-connection{
-	line-height: 2.5rem;
-	height: 2.5rem;
+	line-height: 3rem;
+	height: 3rem;
 	position: relative;
-	color: #555555;
+	color: #FFFFFF;
 	font-size: 0.5rem;
+	background-color: #4CD964;
 }
 .connection-left{
 	position: absolute;
