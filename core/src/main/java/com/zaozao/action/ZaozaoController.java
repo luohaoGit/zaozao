@@ -41,7 +41,7 @@ public class ZaozaoController {
 		return test;
 	}
 
-	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value="/phone0/{caller}", method = RequestMethod.GET, produces = "application/json")
 	public String getPhoneNumber(@PathVariable String caller, @RequestParam(required=false) String symbol, ModelMap model) {
 
 		//15850761726
@@ -74,7 +74,7 @@ public class ZaozaoController {
 		return null;
 	}
 
-	@RequestMapping(value="/phone1/{caller}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value="/phone/{caller}", method = RequestMethod.GET, produces = "application/json")
 	public String getPhoneNumber1(@PathVariable String caller, @RequestParam(required=false) String symbol, ModelMap model) {
 		VoiceVO voiceVO = new VoiceVO();
 		if(!caller.matches("[0-9]*")){

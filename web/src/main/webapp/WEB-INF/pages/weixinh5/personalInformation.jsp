@@ -150,12 +150,12 @@
 					</div>
 					<div class="code-container">
 						<div class="code-left">
-							<div class="">早早服务号：zaozaoyiche</div>
+							<div class="">早早服务号：051280895104</div>
 						</div>
 					</div>
 					<div class="card-connection">
-						<div class="connection-left">车主早早号：11111</div>
-						<div class="connection-right">车主手机号：1111</div>
+						<div class="connection-left">车主早早号：${user.zzid}</div>
+						<div class="connection-right">车主手机号：${user.telephone}</div>
 					</div>
 				</div>
 				<div class="item item-checkbox checkbox-container">
@@ -183,7 +183,7 @@
 		}
 		var registerTime = '${user.registerTime}';
 		var openid = '${user.openId}';
-		var time = 120, send = false;
+		var time = 60, send = false;
 
 		// page stack
 		var stack = [];
