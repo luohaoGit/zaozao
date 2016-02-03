@@ -116,7 +116,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
     }
 
     public RouteResultVO createVoiceRoute(String id, CarVO carVO) {
-        RouteResultVO routeResultVO = new RouteResultVO(false, defaultMsg);
+        RouteResultVO routeResultVO = new RouteResultVO(false, "没有找到车主");
         QueryEvent queryEvent = new QueryEvent(id, QueryEvent.PHONE);
         String symbol = RouteService.CARNO.equals(carVO.getQueryType()) ? carVO.getCarNumber() : carVO.getTelOrZzid();
         User user = carVO.getUser();
@@ -130,6 +130,7 @@ public class RouteServiceImpl implements RouteService, LogstashService{
                     Route kuRoute = new Route(myPhone, user.getTelephone(), true, 1);
                     redisService.saveRoute(kuRoute);
                     routeResultVO.setRoute(kuRoute);
+                    routeResultVO.setSuccess(true);
 
                     RouteExpireMessage routeExpireMessage = new RouteExpireMessage(myPhone, user.getTelephone(), 1);
                     redisService.pushExpireMessage(routeExpireMessage.toJson());

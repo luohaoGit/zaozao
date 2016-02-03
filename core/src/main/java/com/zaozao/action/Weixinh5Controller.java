@@ -121,7 +121,6 @@ public class Weixinh5Controller extends BaseController{
 
 	@RequestMapping(value="/h5/car/plate", method = RequestMethod.POST, consumes = "application/json")
 	public String queryUser(ModelMap model, @RequestBody CarVO carVO) {
-		logger.info(carVO.toString());
 		if(StringUtils.isEmpty(carVO.getOpenid())){
 			throw new ZaozaoException("参数非法");
 		}
@@ -132,7 +131,6 @@ public class Weixinh5Controller extends BaseController{
 		try {
 			if("wx".equals(carVO.getType())){
 				carVO = routeService.findUserForRoute(carVO, false);
-				logger.info(carVO.toString());
 				routeResultVO = routeService.createWxRoute(carVO.getOpenid(), carVO);
 				if(routeResultVO.getSuccess()){
 					MessageVO messageVO = new MessageVO();
